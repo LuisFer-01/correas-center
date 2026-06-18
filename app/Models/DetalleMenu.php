@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable('menu_id', 'ruta', 'estado',)]
 class DetalleMenu extends Model
 {
+    protected $table = 'detalle_menus';
+
     protected $casts = [
         'estado' => 'string',
     ];

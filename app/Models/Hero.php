@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable('imagen', 'titulo', 'subtitulo', 'badge_text', 'orden', 'estado',)]
 class Hero extends Model
 {
+    protected $table = 'heroes';
+
     protected $casts = [
         'orden' => 'integer',
         'estado' => 'string',

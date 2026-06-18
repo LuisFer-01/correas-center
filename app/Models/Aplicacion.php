@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable('nombre', 'orden', 'estado',)]
 class Aplicacion extends Model
 {
+    protected $table = 'aplicaciones';
+
     protected $casts = [
         'orden' => 'integer',
         'estado' => 'string',

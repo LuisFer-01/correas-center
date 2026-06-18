@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable('industria_id', 'grupo', 'campo_id', 'estado',)]
 class DetalleIndustria extends Model
 {
+    protected $table = 'detalle_industrias';
+
     protected $casts = [
         'estado' => 'string',
     ];

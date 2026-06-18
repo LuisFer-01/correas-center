@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable('grupo', 'campo_id', 'ruta', 'icon', 'estado',)]
 class Menu extends Model
 {
+    protected $table = 'menus';
+
     protected $casts = [
         'estado' => 'string',
     ];

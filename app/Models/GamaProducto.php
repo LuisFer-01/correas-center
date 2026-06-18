@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable('nombre', 'orden', 'estado',)]
 class GamaProducto extends Model
 {
+    protected $table = 'gama_productos';
+
     protected $casts = [
         'orden' => 'integer',
         'estado' => 'string',

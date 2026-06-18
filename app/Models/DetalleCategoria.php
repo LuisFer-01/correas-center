@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable('categoria_id', 'marca_id', 'gama_producto_id', 'caracteristica_id', 'medida_id', 'composicion_id', 'orden', 'estado',)]
 class DetalleCategoria extends Model
 {
+    protected $table = 'detalle_categorias';
+
     protected $casts = [
         'orden' => 'integer',
         'estado' => 'string',
