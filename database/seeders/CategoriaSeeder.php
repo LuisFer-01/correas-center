@@ -39,8 +39,16 @@ class CategoriaSeeder extends Seeder
             ['producto' => 'Retenes, Sellos y O-rings', 'nombre' => 'Sellos Neumáticos', 'descripcion' => 'Sellos para sistemas neumáticos', 'descripcion_corta' => 'Sistemas neumáticos'],
 
             // Bandas Transportadoras
-            ['producto' => 'Bandas Transportadoras Pesadas', 'nombre' => 'Bandas Transportadoras Pesadas', 'descripcion' => 'Bandas para cargas pesadas y minería', 'descripcion_corta' => 'Cargas pesadas'],
-            ['producto' => 'Bandas Transportadoras Livianas', 'nombre' => 'Bandas Transportadoras Livianas', 'descripcion' => 'Bandas para industria ligera', 'descripcion_corta' => 'Industria ligera'],
+            ['producto' => 'Bandas Transportadoras Pesadas', 'nombre' => 'Bandas Lisas', 'descripcion' => 'Bandas para cargas pesadas, minería e industria', 'descripcion_corta' => 'Cargas pesadas'],
+            ['producto' => 'Bandas Transportadoras Pesadas', 'nombre' => 'Bandas Nervadas', 'descripcion' => 'Bandas para cargas pesadas, minería e industria', 'descripcion_corta' => 'Cargas pesadas'],
+            ['producto' => 'Bandas Transportadoras Pesadas', 'nombre' => 'Bandas Verticales', 'descripcion' => 'Bandas para cargas pesadas, minería e industria', 'descripcion_corta' => 'Cargas pesadas'],
+            ['producto' => 'Bandas Transportadoras Pesadas', 'nombre' => 'Bandas con Bordes', 'descripcion' => 'Bandas para cargas pesadas, minería e industria', 'descripcion_corta' => 'Cargas pesadas'],
+            ['producto' => 'Bandas Transportadoras Pesadas', 'nombre' => 'Bandas Corrugadas', 'descripcion' => 'Bandas para cargas pesadas, minería e industria', 'descripcion_corta' => 'Cargas pesadas'],
+            ['producto' => 'Bandas Transportadoras Livianas', 'nombre' => 'Bandas Sintenticas', 'descripcion' => 'Bandas para industria ligera', 'descripcion_corta' => 'Industria ligera'],
+            ['producto' => 'Bandas Transportadoras Livianas', 'nombre' => 'Bandas Modulares', 'descripcion' => 'Bandas para industria ligera', 'descripcion_corta' => 'Industria ligera'],
+            ['producto' => 'Bandas Transportadoras Livianas', 'nombre' => 'Bandas PTFE', 'descripcion' => 'Bandas para industria ligera', 'descripcion_corta' => 'Industria ligera'],
+            ['producto' => 'Bandas Transportadoras Livianas', 'nombre' => 'Bandas Homogeneas', 'descripcion' => 'Bandas para industria ligera', 'descripcion_corta' => 'Industria ligera'],
+            ['producto' => 'Bandas Transportadoras Livianas', 'nombre' => 'Bandas de Caucho Ligeras', 'descripcion' => 'Bandas para industria ligera', 'descripcion_corta' => 'Industria ligera'],
 
             // Cadenas
             ['producto' => 'Cadenas', 'nombre' => 'Cadenas de Rodillos de Precisión', 'descripcion' => 'Cadenas para transmisión de potencia', 'descripcion_corta' => 'Transmisión'],

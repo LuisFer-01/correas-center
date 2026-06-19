@@ -94,6 +94,10 @@ class HandleInertiaRequests extends Middleware
                     'mensaje' => 'Hola, necesito información sobre sus productos y servicios',
                 ],
             ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
         ];
     }
 }

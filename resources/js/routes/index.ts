@@ -133,7 +133,7 @@ logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     
     logout.form = logoutForm
 /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
 export const home = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -147,7 +147,7 @@ home.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
 home.url = (options?: RouteQueryOptions) => {
@@ -155,7 +155,7 @@ home.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
 home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -163,7 +163,7 @@ home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
 home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -172,7 +172,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
     const homeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -181,7 +181,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
         homeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -189,7 +189,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:11
+ * @see routes/web.php:13
  * @route '/'
  */
         homeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -282,8 +282,8 @@ about.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     about.form = aboutForm
 /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
 export const contact = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -297,8 +297,8 @@ contact.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
 contact.url = (options?: RouteQueryOptions) => {
@@ -306,8 +306,8 @@ contact.url = (options?: RouteQueryOptions) => {
 }
 
 /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
 contact.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -315,8 +315,8 @@ contact.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
 contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -325,8 +325,8 @@ contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
     const contactForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -335,8 +335,8 @@ contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
         contactForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -344,8 +344,8 @@ contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
+* @see \App\Http\Controllers\ContactController::contact
+ * @see app/Http/Controllers/ContactController.php:19
  * @route '/contact'
  */
         contactForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -593,6 +593,84 @@ terms.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
     
     terms.form = termsForm
+/**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+export const search = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: search.url(options),
+    method: 'get',
+})
+
+search.definition = {
+    methods: ["get","head"],
+    url: '/search',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+search.url = (options?: RouteQueryOptions) => {
+    return search.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+search.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: search.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+search.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: search.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+    const searchForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: search.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+        searchForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: search.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\SearchController::search
+ * @see app/Http/Controllers/SearchController.php:17
+ * @route '/search'
+ */
+        searchForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: search.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    search.form = searchForm
 /**
 * @see \Inertia\Controller::__invoke
  * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13

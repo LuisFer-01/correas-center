@@ -78,84 +78,6 @@ about.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     about.form = aboutForm
 /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-export const contact = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: contact.url(options),
-    method: 'get',
-})
-
-contact.definition = {
-    methods: ["get","head"],
-    url: '/contact',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-contact.url = (options?: RouteQueryOptions) => {
-    return contact.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-contact.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: contact.url(options),
-    method: 'get',
-})
-/**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: contact.url(options),
-    method: 'head',
-})
-
-    /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-    const contactForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: contact.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-        contactForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: contact.url(options),
-            method: 'get',
-        })
-            /**
-* @see \App\Http\Controllers\PageController::contact
- * @see app/Http/Controllers/PageController.php:60
- * @route '/contact'
- */
-        contactForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: contact.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    contact.form = contactForm
-/**
 * @see \App\Http\Controllers\PageController::branches
  * @see app/Http/Controllers/PageController.php:69
  * @route '/branches'
@@ -389,6 +311,6 @@ terms.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
     
     terms.form = termsForm
-const PageController = { about, contact, branches, privacy, terms }
+const PageController = { about, branches, privacy, terms }
 
 export default PageController

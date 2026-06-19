@@ -6,6 +6,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SearchController;
 
 // Landing
 Route::get('/', function () {
@@ -32,6 +34,12 @@ Route::get('/branches', [PageController::class, 'branches'])->name('branches');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 
+// Contacto
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Búsqueda
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 //Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {

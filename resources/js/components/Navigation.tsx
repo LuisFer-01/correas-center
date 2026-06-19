@@ -41,7 +41,7 @@ export default function Navigation() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
-            window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
+            window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
             setSearchQuery('');
             setShowSuggestions(false);
             setIsOpen(false);
@@ -49,7 +49,7 @@ export default function Navigation() {
     };
 
     const handleSuggestionClick = (suggestion: string) => {
-        window.location.href = `/products?search=${encodeURIComponent(suggestion)}`;
+        window.location.href = `/search?q=${encodeURIComponent(suggestion)}`;
         setSearchQuery('');
         setShowSuggestions(false);
         setIsOpen(false);

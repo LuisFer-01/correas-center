@@ -1,10 +1,10 @@
 import AppLayout from '@/layouts/AppLayout';
-import { usePage } from '@inertiajs/react';
-import { Clock, Mail, MapPin, MessageCircle, Phone, Send } from 'lucide-react';
-import { useState } from 'react';
+import { router, usePage } from '@inertiajs/react';
+import { AlertCircle, CheckCircle2, Clock, Mail, MapPin, MessageCircle, Phone, Send } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Contact() {
-    const { globals } = usePage<any>().props;
+    const { globals, flash } = usePage<any>().props;
     const sucursalPrincipal = globals.sucursales?.find((s: any) => s.es_principal) || globals.sucursales?.[0];
 
     const [formData, setFormData] = useState({
@@ -15,33 +15,52 @@ export default function Contact() {
         mensaje: '',
     });
 
+    const [errors, setErrors] = useState<any>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    // Limpiar mensajes flash después de 5 segundos
+    useEffect(() => {
+        if (flash?.success || flash?.error) {
+            const timer = setTimeout(() => {
+                router.reload({ only: ['flash'] });
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         });
+        // Limpiar error del campo al escribir
+        if (errors[e.target.name]) {
+            setErrors({ ...errors, [e.target.name]: null });
+        }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setSubmitStatus('idle');
+        setErrors({});
 
-        // Simular envío (aquí irá la lógica real con Inertia)
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setSubmitStatus('success');
-            setFormData({
-                nombre: '',
-                empresa: '',
-                telefono: '',
-                email: '',
-                mensaje: '',
-            });
-        }, 1500);
+        router.post('/contact', formData, {
+            onSuccess: () => {
+                setFormData({
+                    nombre: '',
+                    empresa: '',
+                    telefono: '',
+                    email: '',
+                    mensaje: '',
+                });
+                setIsSubmitting(false);
+            },
+            onError: (errors) => {
+                setErrors(errors);
+                setIsSubmitting(false);
+            },
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -62,6 +81,30 @@ export default function Contact() {
                 </div>
             </section>
 
+            {/* Mensajes flash */}
+            {(flash?.success || flash?.error) && (
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                    {flash?.success && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
+                            <CheckCircle2 size={20} className="text-green-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                                <p className="text-green-800 font-semibold">¡Mensaje enviado!</p>
+                                <p className="text-green-700 text-sm mt-1">{flash.success}</p>
+                            </div>
+                        </div>
+                    )}
+                    {flash?.error && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                            <AlertCircle size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                                <p className="text-red-800 font-semibold">Error</p>
+                                <p className="text-red-700 text-sm mt-1">{flash.error}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
             {/* Contenido principal */}
             <section className="py-12 md:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,7 +113,7 @@ export default function Contact() {
                         <div className="space-y-6">
                             <div className="bg-gradient-to-br from-[#EA0A2A] to-[#c90825] rounded-2xl p-8 text-white">
                                 <h3 className="text-2xl font-bold mb-6">Información de Contacto</h3>
-                                
+
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4">
                                         <div className="bg-white/20 p-3 rounded-lg">
@@ -162,17 +205,6 @@ export default function Contact() {
                         {/* Formulario de contacto */}
                         <div className="bg-gray-50 rounded-2xl p-8">
                             <h3 className="text-2xl font-bold text-gray-900 mb-6">Cuéntanos qué necesitas</h3>
-                            
-                            {submitStatus === 'success' && (
-                                <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <p className="text-green-800 font-semibold">
-                                        ✓ Mensaje enviado correctamente
-                                    </p>
-                                    <p className="text-green-700 text-sm mt-1">
-                                        Nos pondremos en contacto contigo pronto
-                                    </p>
-                                </div>
-                            )}
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -186,10 +218,12 @@ export default function Contact() {
                                             name="nombre"
                                             value={formData.nombre}
                                             onChange={handleChange}
-                                            required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all"
+                                            className={`w-full px-4 py-3 rounded-lg border ${errors.nombre ? 'border-red-500' : 'border-gray-300'} focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all`}
                                             placeholder="Juan Perez"
                                         />
+                                        {errors.nombre && (
+                                            <p className="text-red-600 text-sm mt-1">{errors.nombre}</p>
+                                        )}
                                     </div>
                                     <div>
                                         <label htmlFor="empresa" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -201,9 +235,12 @@ export default function Contact() {
                                             name="empresa"
                                             value={formData.empresa}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all"
+                                            className={`w-full px-4 py-3 rounded-lg border ${errors.empresa ? 'border-red-500' : 'border-gray-300'} focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all`}
                                             placeholder="Nombre de tu empresa"
                                         />
+                                        {errors.empresa && (
+                                            <p className="text-red-600 text-sm mt-1">{errors.empresa}</p>
+                                        )}
                                     </div>
                                 </div>
 
@@ -218,10 +255,12 @@ export default function Contact() {
                                             name="telefono"
                                             value={formData.telefono}
                                             onChange={handleChange}
-                                            required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all"
+                                            className={`w-full px-4 py-3 rounded-lg border ${errors.telefono ? 'border-red-500' : 'border-gray-300'} focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all`}
                                             placeholder="+591 7000-0000"
                                         />
+                                        {errors.telefono && (
+                                            <p className="text-red-600 text-sm mt-1">{errors.telefono}</p>
+                                        )}
                                     </div>
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -233,10 +272,12 @@ export default function Contact() {
                                             name="email"
                                             value={formData.email}
                                             onChange={handleChange}
-                                            required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all"
+                                            className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all`}
                                             placeholder="email@empresa.com"
                                         />
+                                        {errors.email && (
+                                            <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                                        )}
                                     </div>
                                 </div>
 
@@ -249,11 +290,13 @@ export default function Contact() {
                                         name="mensaje"
                                         value={formData.mensaje}
                                         onChange={handleChange}
-                                        required
                                         rows={4}
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all resize-none"
+                                        className={`w-full px-4 py-3 rounded-lg border ${errors.mensaje ? 'border-red-500' : 'border-gray-300'} focus:border-[#EA0A2A] focus:ring-2 focus:ring-[#EA0A2A]/20 transition-all resize-none`}
                                         placeholder="Cuéntanos qué necesitas..."
                                     />
+                                    {errors.mensaje && (
+                                        <p className="text-red-600 text-sm mt-1">{errors.mensaje}</p>
+                                    )}
                                 </div>
 
                                 <button
