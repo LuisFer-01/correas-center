@@ -1,3 +1,4 @@
+import TechnicalSheetDownload from '@/components/TechnicalSheet';
 import AppLayout from '@/layouts/AppLayout';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight, CheckCircle2, FlaskConical, Layers, Ruler, Wrench } from 'lucide-react';
@@ -225,6 +226,11 @@ export default function CategoryDetail() {
                                 >
                                     Solicitar por WhatsApp
                                 </a>
+                            </div>
+
+                            <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                <h3 className="text-lg font-bold text-gray-900 mb-4">Descargar Información</h3>
+                                <TechnicalSheetDownload producto={producto} categoria={categoria} />
                             </div>
 
                             {/* Productos relacionados */}

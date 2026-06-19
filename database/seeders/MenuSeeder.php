@@ -23,7 +23,7 @@ class MenuSeeder extends Seeder
             Menu::create([
                 'grupo' => 'Producto',
                 'campo_id' => $producto->id,
-                'ruta' => '/producto/' . $producto->slug,
+                'ruta' => '/products/' . $producto->slug,
                 'icon' => 'fa-box',
                 'estado' => 'activo',
             ]);
@@ -35,7 +35,7 @@ class MenuSeeder extends Seeder
             Menu::create([
                 'grupo' => 'Aplicacion',
                 'campo_id' => $industria->id,
-                'ruta' => '/aplicacion/' . $industria->slug,
+                'ruta' => '/applications/' . $industria->slug,
                 'icon' => 'fa-industry',
                 'estado' => 'activo',
             ]);
@@ -47,7 +47,7 @@ class MenuSeeder extends Seeder
             Menu::create([
                 'grupo' => 'Servicio',
                 'campo_id' => $servicio->id,
-                'ruta' => '/servicio/' . Str::slug($servicio->nombre),
+                'ruta' => '/services/' . Str::slug($servicio->nombre),
                 'icon' => 'fa-wrench',
                 'estado' => 'activo',
             ]);

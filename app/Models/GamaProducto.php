@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable('nombre', 'orden', 'estado',)]
@@ -20,6 +21,14 @@ class GamaProducto extends Model
     public function detalleCategorias(): HasMany
     {
         return $this->hasMany(DetalleCategoria::class);
+    }
+
+    // Relacion Gama Medidas
+    public function medidas(): BelongsToMany
+    {
+        return $this->belongsToMany(Medida::class, 'medida_gama_producto')
+                    ->withPivot('valor', 'orden', 'estado')
+                    ->withTimestamps();
     }
 
     // Scopes

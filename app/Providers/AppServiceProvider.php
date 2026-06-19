@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use App\Models\Medida;
+use App\Models\Hero;
+use App\Observers\MedidaObserver;
+use App\Observers\HeroObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Medida::observe(MedidaObserver::class);
+        Hero::observe(HeroObserver::class);
         $this->configureDefaults();
     }
 

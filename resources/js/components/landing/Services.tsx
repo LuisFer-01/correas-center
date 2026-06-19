@@ -21,7 +21,7 @@ export default function Services() {
                     </p>
                 </div>
 
-                {/* Grid de servicios */}
+                {/* Grid de servicios - Ahora con imágenes desde la BD */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {servicios.map((servicio: any) => (
                         <Link
@@ -29,9 +29,22 @@ export default function Services() {
                             href={`/services/${servicio.nombre.toLowerCase().replace(/\s+/g, '-')}`}
                             className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/20"
                         >
-                            {/* Icono */}
-                            <div className="bg-gradient-to-br from-[#EA0A2A] to-[#c90825] p-6 flex items-center justify-center">
-                                <Wrench size={48} className="text-white" />
+                            {/* Imagen del servicio - Ahora desde la BD */}
+                            <div className="relative h-48 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
+                                {servicio.imagen ? (
+                                    <img
+                                        src={servicio.imagen}
+                                        alt={servicio.nombre}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="bg-[#EA0A2A]/10 p-4 rounded-full">
+                                            <Wrench size={48} className="text-[#EA0A2A]" />
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             </div>
 
                             {/* Contenido */}

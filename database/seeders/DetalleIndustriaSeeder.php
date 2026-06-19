@@ -2,41 +2,40 @@
 
 namespace Database\Seeders;
 
-use App\Models\Categoria;
+use Illuminate\Database\Seeder;
 use App\Models\DetalleIndustria;
 use App\Models\Industria;
+use App\Models\Categoria;
 use App\Models\Servicio;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 
 class DetalleIndustriaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $industrias = Industria::all();
         $categorias = Categoria::all();
         $servicios = Servicio::all();
 
+        $orden = 1;
         foreach ($industrias as $industria) {
-            // Asociar categorías aleatorias
-            foreach ($categorias->random(3) as $categoria) {
+            // Asociar categorías aleatorias con orden
+            foreach ($categorias->random(min(3, $categorias->count())) as $categoria) {
                 DetalleIndustria::create([
                     'industria_id' => $industria->id,
                     'grupo' => 'Categoria',
                     'campo_id' => $categoria->id,
+                    'orden' => $orden++,
                     'estado' => 'activo',
                 ]);
             }
 
-            // Asociar servicios aleatorios
-            foreach ($servicios->random(2) as $servicio) {
+            // Asociar servicios aleatorios con orden
+            foreach ($servicios->random(min(2, $servicios->count())) as $servicio) {
                 DetalleIndustria::create([
                     'industria_id' => $industria->id,
                     'grupo' => 'Servicio',
                     'campo_id' => $servicio->id,
+                    'orden' => $orden++,
                     'estado' => 'activo',
                 ]);
             }

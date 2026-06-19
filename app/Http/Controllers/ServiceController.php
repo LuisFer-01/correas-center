@@ -26,6 +26,7 @@ class ServiceController extends Controller
                     'nombre' => $servicio->nombre,
                     'slug' => Str::slug($servicio->nombre),
                     'descripcion' => $servicio->descripcion,
+                    'imagen' => $servicio->imagen,
                 ];
             });
 

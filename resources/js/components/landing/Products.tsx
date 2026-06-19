@@ -29,11 +29,19 @@ export default function Products() {
                             href={`/products/${producto.slug}`}
                             className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/20"
                         >
-                            {/* Imagen del producto */}
+                            {/* Imagen del producto - Ahora desde la BD */}
                             <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <div className="text-6xl">📦</div>
-                                </div>
+                                {producto.imagen ? (
+                                    <img
+                                        src={producto.imagen}
+                                        alt={producto.nombre}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                                        <div className="text-6xl">📦</div>
+                                    </div>
+                                )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             </div>
 

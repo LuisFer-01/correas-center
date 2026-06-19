@@ -2,29 +2,31 @@
 
 namespace Database\Seeders;
 
-use App\Models\Medida;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Medida;
+use App\Models\TipoMedida;
 
 class MedidaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $tipos = TipoMedida::all()->keyBy('nombre');
+
         $medidas = [
-            ['nombre' => 'Ancho superior', 'medida' => 'pulgadas'],
-            ['nombre' => 'Longitud interior', 'medida' => 'pulgadas'],
-            ['nombre' => 'Espesor', 'medida' => 'pulgadas'],
-            ['nombre' => 'Ángulo', 'medida' => 'grados'],
+            ['nombre' => 'Ancho externo', 'tipo' => 'Milímetro', 'magnitud' => null],
+            ['nombre' => 'Longitud', 'tipo' => 'Milímetro', 'magnitud' => null],
+            ['nombre' => 'Diámetro interno', 'tipo' => 'Pulgada', 'magnitud' => null],
+            ['nombre' => 'Ángulo', 'tipo' => 'Grado', 'magnitud' => null],
+            ['nombre' => 'Presión máxima', 'tipo' => 'Libra por pulgada cuadrada', 'magnitud' => 3000],
+            ['nombre' => 'Diámetro exterior', 'tipo' => 'Milímetro', 'magnitud' => 40.00],
         ];
 
         $orden = 1;
-        foreach ($medidas as $med) {
+        foreach ($medidas as $medida) {
             Medida::create([
-                'nombre' => $med['nombre'],
-                'medida' => $med['medida'],
+                'tipo_medida_id' => $tipos[$medida['tipo']]->id,
+                'nombre' => $medida['nombre'],
+                'magnitud' => $medida['magnitud'],
                 'orden' => $orden++,
                 'estado' => 'activo',
             ]);

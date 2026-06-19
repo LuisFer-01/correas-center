@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,
             GamaProductoSeeder::class,
             CaracteristicaSeeder::class,
+            TipoMedidaSeeder::class,
             MedidaSeeder::class,
             ComposicionSeeder::class,
             AplicacionSeeder::class,
@@ -38,6 +39,9 @@ class DatabaseSeeder extends Seeder
             HeroSeeder::class,
             MenuSeeder::class,
             DetalleMenuSeeder::class,
+            DiferencialSeeder::class,
+            InfraestructuraSeeder::class,
+            PasoWizardSeeder::class,
         ]);
     }
 }

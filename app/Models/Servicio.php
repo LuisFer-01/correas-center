@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('nombre', 'descripcion', 'estado',)]
+#[Fillable('nombre', 'descripcion', 'imagen', 'estado',)]
 class Servicio extends Model
 {
     protected $table = 'servicios';

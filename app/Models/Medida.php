@@ -4,22 +4,46 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable('nombre', 'medida', 'orden', 'estado',)]
+#[Fillable('tipo_medida_id', 'nombre', 'magnitud', 'orden', 'estado',)]
 class Medida extends Model
 {
     protected $table = 'medidas';
 
     protected $casts = [
+        'magnitud' => 'decimal:4',
         'orden' => 'integer',
-        'estado' => 'string',
     ];
 
     // Relaciones
+    public function tipoMedida(): BelongsTo
+    {
+        return $this->belongsTo(TipoMedida::class);
+    }
+
     public function detalleCategorias(): HasMany
     {
         return $this->hasMany(DetalleCategoria::class);
+    }
+
+    public function gamaProductos(): BelongsToMany
+    {
+        return $this->belongsToMany(GamaProducto::class, 'medida_gama_producto')
+                    ->withPivot('valor', 'orden', 'estado')
+                    ->withTimestamps();
+    }
+
+    // Accessors
+    public function getMedidaCompletaAttribute(): string
+    {
+        $tipo = $this->tipoMedida;
+        if (!$tipo) return '';
+
+        $valor = $this->magnitud ?? '';
+        return trim("{$valor} {$tipo->representacion}");
     }
 
     // Scopes

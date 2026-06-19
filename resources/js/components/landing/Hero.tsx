@@ -1,117 +1,198 @@
-import { Link } from '@inertiajs/react';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
+import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Hero() {
+    const { globals } = usePage<any>().props;
+    const heroesFromDB = globals.heroes || [];
+
+    // Convertir datos de BD al formato esperado
+    const carouselSlides = heroesFromDB.map((hero: any) => ({
+        id: hero.id,
+        image: hero.imagen,
+        title: hero.titulo,
+        subtitle: hero.subtitulo,
+        badge: hero.badge_text,
+        ctaPrimary: {
+            text: hero.cta_primary_text,
+            href: hero.cta_primary_href,
+        },
+        ctaSecondary: {
+            text: hero.cta_secondary_text,
+            href: hero.cta_secondary_href,
+        },
+    }));
+
     const [currentSlide, setCurrentSlide] = useState(0);
-    
-    const slides = [
-        {
-            imagen: '/images/hero/hero-1.jpg',
-            titulo: 'Líder en Soluciones Industriales',
-            subtitulo: 'Cobertura Nacional Inmediata',
-            badge_text: 'Solución Confiable',
-            cta_primary: { text: 'Solicitar Asesoría', href: '/contact' },
-            cta_secondary: { text: 'Ver Productos', href: '/products' },
-        },
-        {
-            imagen: '/images/hero/hero-2.jpg',
-            titulo: 'Calidad SKF Garantizada',
-            subtitulo: 'Fabricación autorizada SKF con los más altos estándares de calidad',
-            badge_text: 'Fabricante Autorizado',
-            cta_primary: { text: 'Conocer Más', href: '/services/fabricacion-de-sellos-skf' },
-            cta_secondary: { text: 'Ver Productos', href: '/products' },
-        },
-        {
-            imagen: '/images/hero/hero-3.jpg',
-            titulo: 'Entregas Rápidas a Todo Bolivia',
-            subtitulo: 'Con el respaldo de nuestro equipo técnico especializado',
-            badge_text: 'Cobertura Nacional',
-            cta_primary: { text: 'Contactar Ahora', href: '/contact' },
-            cta_secondary: { text: 'Ver Sucursales', href: '/#ubicaciones' },
-        },
-    ];
+    const [previousSlide, setPreviousSlide] = useState(0);
+    const [contentVisible, setContentVisible] = useState(true);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000);
-        return () => clearInterval(timer);
-    }, [slides.length]);
+        if (carouselSlides.length === 0) return;
 
-    const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-    const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+        const timer = setInterval(() => {
+            // Primero difuminar el contenido
+            setContentVisible(false);
+
+            // Después de que el contenido se difumine, cambiar slide
+            setTimeout(() => {
+                setPreviousSlide(currentSlide);
+                setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
+            }, 800);
+
+            // Mostrar el nuevo contenido después de que la imagen empiece a transicionar
+            setTimeout(() => setContentVisible(true), 2000);
+        }, 7000);
+
+        return () => clearInterval(timer);
+    }, [currentSlide, carouselSlides.length]);
+
+    // Si no hay slides, mostrar fallback
+    if (carouselSlides.length === 0) {
+        return (
+            <section className='relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-gradient-to-br from-gray-900 to-gray-800'>
+                <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center'>
+                    <h1 className='text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6'>
+                        Bienvenido a Correas Center
+                    </h1>
+                    <p className='text-xl text-white/90 mb-8'>
+                        Soluciones industriales de calidad
+                    </p>
+                </div>
+            </section>
+        );
+    }
+
+    const currentSlideData = carouselSlides[currentSlide];
+
+    const handleSlideChange = (index: number) => {
+        setContentVisible(false);
+        setTimeout(() => {
+            setPreviousSlide(currentSlide);
+            setCurrentSlide(index);
+        }, 800);
+        setTimeout(() => setContentVisible(true), 2000);
+    };
 
     return (
-        <section className="relative h-[600px] md:h-[700px] overflow-hidden">
-            {slides.map((slide, index) => (
-                <div
-                    key={index}
-                    className={`absolute inset-0 transition-opacity duration-1000 ${
-                        index === currentSlide ? 'opacity-100' : 'opacity-0'
-                    }`}
-                >
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-                        <div className="absolute inset-0 bg-black/50"></div>
-                    </div>
+        <section className='relative min-h-screen flex items-center justify-center overflow-hidden pt-20'>
+            {/* Fondo con imagen */}
+            <div className='absolute inset-0 bg-gradient-to-br from-black/20 via-black/15 to-black/10'>
+                <img
+                    src={currentSlideData.image}
+                    alt='Industrial background'
+                    className='absolute w-full h-full object-cover transition-opacity duration-[4000ms] ease-in-out'
+                    style={{ opacity: 1 }}
+                />
 
-                    <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
-                        <div className="max-w-2xl">
-                            <div className="inline-flex items-center gap-2 bg-[#EA0A2A]/20 border border-[#EA0A2A]/30 rounded-full px-4 py-2 mb-6 animate-fade-in">
-                                <div className="w-2 h-2 bg-[#EA0A2A] rounded-full animate-pulse"></div>
-                                <span className="text-sm text-white font-semibold">{slide.badge_text}</span>
-                            </div>
-
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight animate-slide-up">
-                                {slide.titulo}
-                            </h1>
-
-                            <p className="text-lg md:text-xl text-gray-300 mb-8 animate-slide-up-delay">
-                                {slide.subtitulo}
-                            </p>
-
-                            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up-delay-2">
-                                <Link href={slide.cta_primary.href} className="bg-[#EA0A2A] hover:bg-[#c90825] text-white px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105 flex items-center justify-center gap-2 group">
-                                    {slide.cta_primary.text}
-                                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                                <Link href={slide.cta_secondary.href} className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-lg font-semibold transition-all border border-white/20">
-                                    {slide.cta_secondary.text}
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ))}
-
-            <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-sm transition-all z-10" aria-label="Anterior">
-                <ChevronLeft size={24} />
-            </button>
-            <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-sm transition-all z-10" aria-label="Siguiente">
-                <ChevronRight size={24} />
-            </button>
-
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                {slides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setCurrentSlide(index)}
-                        className={`h-2 rounded-full transition-all ${
-                            index === currentSlide ? 'w-12 bg-[#EA0A2A]' : 'w-2 bg-white/50 hover:bg-white/75'
-                        }`}
-                        aria-label={`Ir a slide ${index + 1}`}
+                {previousSlide !== currentSlide && (
+                    <img
+                        src={carouselSlides[previousSlide].image}
+                        alt=''
+                        className='absolute w-full h-full object-cover transition-opacity duration-[4000ms] ease-in-out'
+                        style={{ opacity: 0 }}
+                        aria-hidden='true'
                     />
-                ))}
+                )}
+
+                <div className='absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-black/15'></div>
             </div>
 
-            <style>{`
-                @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-                @keyframes slide-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-                .animate-fade-in { animation: fade-in 0.6s ease-out; }
-                .animate-slide-up { animation: slide-up 0.8s ease-out; }
-                .animate-slide-up-delay { animation: slide-up 0.8s ease-out 0.2s both; }
-                .animate-slide-up-delay-2 { animation: slide-up 0.8s ease-out 0.4s both; }
-            `}</style>
+            <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20'>
+                <div className='max-w-3xl'>
+                    {/* Badge */}
+                    {currentSlideData.badge && (
+                        <div
+                            className={`inline-block bg-white/10 border border-white/30 rounded-full px-4 py-2 mb-6 backdrop-blur-sm transition-all duration-[1500ms] ease-in-out ${contentVisible
+                                    ? 'opacity-100 blur-0'
+                                    : 'opacity-0 blur-md'
+                                }`}
+                        >
+                            <p className='text-white text-sm font-medium'>
+                                {currentSlideData.badge}
+                            </p>
+                        </div>
+                    )}
+
+                    {/* CONTENEDOR CON ALTURA FIJA para evitar saltos */}
+                    <div className='min-h-[280px] sm:min-h-[320px] lg:min-h-[360px] flex flex-col justify-center'>
+                        {/* Título con difuminación suave */}
+                        <h1
+                            className={`text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight transition-all duration-[1500ms] ease-in-out ${contentVisible
+                                    ? 'opacity-100 blur-0'
+                                    : 'opacity-0 blur-lg'
+                                }`}
+                        >
+                            {currentSlideData.title}
+                        </h1>
+
+                        {/* Subtítulo con difuminación suave */}
+                        {currentSlideData.subtitle && (
+                            <p
+                                className={`text-xl text-white/90 mb-8 leading-relaxed transition-all duration-[1500ms] ease-in-out delay-200 ${contentVisible
+                                        ? 'opacity-100 blur-0'
+                                        : 'opacity-0 blur-lg'
+                                    }`}
+                            >
+                                {currentSlideData.subtitle}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Botones */}
+                    {(currentSlideData.ctaPrimary?.text || currentSlideData.ctaSecondary?.text) && (
+                        <div
+                            className={`flex flex-col sm:flex-row gap-4 mb-12 transition-all duration-[1500ms] ease-in-out delay-300 ${contentVisible
+                                    ? 'opacity-100 blur-0'
+                                    : 'opacity-0 blur-md'
+                                }`}
+                        >
+                            {currentSlideData.ctaPrimary?.text && currentSlideData.ctaPrimary?.href && (
+                                <a
+                                    href={currentSlideData.ctaPrimary.href}
+                                    className='inline-flex items-center justify-center gap-2 bg-white text-[#EA0A2A] px-8 py-4 rounded-md hover:bg-gray-100 transition-all font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105'
+                                >
+                                    {currentSlideData.ctaPrimary.text}
+                                    <ArrowRight size={20} />
+                                </a>
+                            )}
+
+                            {currentSlideData.ctaSecondary?.text && currentSlideData.ctaSecondary?.href && (
+                                <a
+                                    href={currentSlideData.ctaSecondary.href}
+                                    className='inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-md hover:bg-white/20 transition-all font-semibold text-lg border border-white/30'
+                                >
+                                    {currentSlideData.ctaSecondary.text}
+                                </a>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Indicadores - solo mostrar si hay más de 1 slide */}
+                    {carouselSlides.length > 1 && (
+                        <div
+                            className={`flex gap-2 mt-8 justify-center sm:justify-start transition-all duration-[1500ms] ease-in-out delay-300 ${contentVisible
+                                    ? 'opacity-100 blur-0'
+                                    : 'opacity-0 blur-md'
+                                }`}
+                        >
+                            {carouselSlides.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => handleSlideChange(index)}
+                                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
+                                            ? 'bg-white w-8'
+                                            : 'bg-white/40 hover:bg-white/60'
+                                        }`}
+                                    aria-label={`Go to slide ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div className='absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent'></div>
         </section>
     );
 }

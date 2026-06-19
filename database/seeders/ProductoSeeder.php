@@ -15,21 +15,21 @@ class ProductoSeeder extends Seeder
     public function run(): void
     {
         $productos = [
-            ['nombre' => 'Correas', 'imagen' => '/producto/Correas.jpg'],
-            ['nombre' => 'Mangueras', 'imagen' => '/producto/Mangueras.jpg'],
-            ['nombre' => 'Rodamientos', 'imagen' => '/producto/Rodamientos.jpg'],
-            ['nombre' => 'Retenes, Sellos y O-rings', 'imagen' => '/producto/Retenes_Sellos_Cubetas.jpg'],
-            ['nombre' => 'Bandas Transportadoras Pesadas', 'imagen' => '/producto/Bandas_Transportadoras_Pesadas.jpg'],
-            ['nombre' => 'Bandas Transportadoras Livianas', 'imagen' => '/producto/Bandas_Transportadoras_Livianas.png'],
-            ['nombre' => 'Cadenas', 'imagen' => '/producto/Cadenas.jpg'],
-            ['nombre' => 'Poleas', 'imagen' => '/producto/Poleas.jpg'],
-            ['nombre' => 'Piñones', 'imagen' => '/producto/Piñones.jpg'],
-            ['nombre' => 'Niples, Conexiones y Conectores', 'imagen' => '/producto/Niples_Casquillos_ConectoresHidraulicos.png'],
-            ['nombre' => 'Cilindros', 'imagen' => '/producto/Cilindro_Neumatico.jpg'],
-            ['nombre' => 'Cangilones', 'imagen' => '/producto/Cangilones.jpg'],
-            ['nombre' => 'Cardanes', 'imagen' => '/producto/Cardanes.jpg'],
-            ['nombre' => 'Cajas de Comandos', 'imagen' => '/producto/Comandos.jpg'],
-            ['nombre' => 'Abrazaderas', 'imagen' => '/producto/Abrazaderas.jpg'],
+            ['nombre' => 'Correas', 'imagen' => 'storage/producto/Correas.jpg'],
+            ['nombre' => 'Mangueras', 'imagen' => 'storage/producto/Mangueras.jpg'],
+            ['nombre' => 'Rodamientos', 'imagen' => 'storage/producto/Rodamientos.jpg'],
+            ['nombre' => 'Retenes, Sellos y O-rings', 'imagen' => 'storage/producto/Retenes_Sellos_Cubetas.png'],
+            ['nombre' => 'Bandas Transportadoras Pesadas', 'imagen' => 'storage/producto/Bandas_Transportadoras_Pesadas.jpg'],
+            ['nombre' => 'Bandas Transportadoras Livianas', 'imagen' => 'storage/producto/Bandas_Transportadoras_Livianas.png'],
+            ['nombre' => 'Cadenas', 'imagen' => 'storage/producto/Cadenas.jpg'],
+            ['nombre' => 'Poleas', 'imagen' => 'storage/producto/Poleas.jpg'],
+            ['nombre' => 'Piñones', 'imagen' => 'storage/producto/Piñones.jpg'],
+            ['nombre' => 'Niples, Conexiones y Conectores', 'imagen' => 'storage/producto/Niples_Casquillos_ConectoresHidraulicos.png'],
+            ['nombre' => 'Cilindros', 'imagen' => 'storage/producto/Cilindro_Neumatico.jpg'],
+            ['nombre' => 'Cangilones', 'imagen' => 'storage/producto/Cangilon.jpg'],
+            ['nombre' => 'Cardanes', 'imagen' => 'storage/producto/Cardanes.jpg'],
+            ['nombre' => 'Cajas de Comandos', 'imagen' => 'storage/producto/Comandos.jpg'],
+            ['nombre' => 'Abrazaderas', 'imagen' => 'storage/producto/Abrazaderas.jpg'],
         ];
 
         $orden = 1;

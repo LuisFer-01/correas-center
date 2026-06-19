@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProductController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SucursalController;
 
 // Landing
 Route::get('/', function () {
@@ -19,6 +21,9 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/{producto}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/products/{producto}/{categoria}', [ProductController::class, 'categoryDetail'])->name('products.category');
 
+// Ruta API para obtener marcas (usada por el carrusel)
+Route::get('/api/brands', [BrandController::class, 'index']);
+
 // Aplicaciones/Industrias
 Route::get('/applications', [IndustryController::class, 'index'])->name('applications.index');
 Route::get('/applications/{slug}', [IndustryController::class, 'show'])->name('applications.show');
@@ -26,6 +31,10 @@ Route::get('/applications/{slug}', [IndustryController::class, 'show'])->name('a
 // Servicios
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');
+
+// Rutas para sucursales
+Route::get('/api/sucursales', [SucursalController::class, 'index']);
+Route::get('/api/sucursales/{id}', [SucursalController::class, 'show']);
 
 // Páginas secundarias
 Route::get('/about', [PageController::class, 'about'])->name('about');

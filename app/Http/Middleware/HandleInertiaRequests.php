@@ -10,48 +10,32 @@ use App\Models\Industria;
 use App\Models\Servicio;
 use App\Models\Sucursal;
 use App\Models\Empresa;
+use App\Models\Hero;
+use App\Models\Diferencial;
+use App\Models\CaracteristicaInfraestructura;
+use App\Models\CapacidadInfraestructura;
+use App\Models\PasoWizard;
+use App\Models\Marca;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that's loaded on the first page visit.
-     *
-     * @see https://inertiajs.com/server-side-setup#root-template
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
-    /**
-     * Determines the current asset version.
-     *
-     * @see https://inertiajs.com/asset-versioning
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
     }
 
-    /**
-     * Define the props that are shared by default.
-     *
-     * @see https://inertiajs.com/shared-data
-     *
-     * @return array<string, mixed>
-     */
     public function share(Request $request): array
     {
-        // Obtener empresa principal
         $empresa = Empresa::where('estado', 'activo')->first();
 
-        // Obtener menús dinámicos agrupados por grupo
         $menus = Menu::with(['detalleMenus'])
             ->where('estado', 'activo')
             ->orderBy('id')
             ->get()
             ->groupBy('grupo');
 
-        // Obtener productos con sus categorías
         $productos = Producto::with(['categorias' => function($query) {
             $query->where('estado', 'activo')->orderBy('orden');
         }])
@@ -59,19 +43,79 @@ class HandleInertiaRequests extends Middleware
         ->orderBy('orden')
         ->get();
 
-        // Obtener industrias
+        // NUEVO: Productos populares (primeros 5)
+        $productosPopulares = Producto::where('estado', 'activo')
+            ->orderBy('orden')
+            ->limit(5)
+            ->get()
+            ->map(function ($producto) {
+                return [
+                    'id' => $producto->id,
+                    'nombre' => $producto->nombre,
+                    'slug' => $producto->slug,
+                ];
+            });
+
+        // NUEVO: Todas las marcas para el carrusel
+        $todasLasMarcas = Marca::where('estado', 'activo')
+            ->orderBy('nombre')
+            ->get()
+            ->map(function ($marca) {
+                return [
+                    'id' => $marca->id,
+                    'nombre' => $marca->nombre,
+                    'logo' => $marca->logo,
+                ];
+            });
+
         $industrias = Industria::where('estado', 'activo')
             ->orderBy('orden')
             ->get();
 
-        // Obtener servicios
-        $servicios = Servicio::where('estado', 'activo')
-            ->get();
+        $servicios = Servicio::where('estado', 'activo')->get();
 
-        // Obtener sucursales (principal primero)
+        // NUEVO: Sucursales con formato mejorado
         $sucursales = Sucursal::where('estado', 'activo')
             ->orderByDesc('es_principal')
-            ->get();
+            ->orderBy('nombre')
+            ->get()
+            ->map(function ($sucursal) {
+                return [
+                    'id' => $sucursal->id,
+                    'nombre' => $sucursal->nombre,
+                    'direccion' => $sucursal->direccion,
+                    'telefono' => $sucursal->telefono,
+                    'email' => $sucursal->email,
+                    'horarios' => $sucursal->horarios,
+                    'mapa_incrustado' => $sucursal->mapa_incrustado,
+                    'latitud' => $sucursal->latitud,
+                    'longitud' => $sucursal->longitud,
+                    'es_principal' => $sucursal->es_principal,
+                    'whatsapp' => preg_replace('/[^0-9]/', '', $sucursal->telefono),
+                ];
+            });
+
+        $heroes = Hero::where('estado', 'activo')
+            ->orderBy('orden')
+            ->get()
+            ->map(function ($hero) {
+                return [
+                    'id' => $hero->id,
+                    'imagen' => $hero->imagen,
+                    'titulo' => $hero->titulo,
+                    'subtitulo' => $hero->subtitulo,
+                    'badge_text' => $hero->badge_text,
+                    'cta_primary_text' => $hero->cta_primary_text,
+                    'cta_primary_href' => $hero->cta_primary_href,
+                    'cta_secondary_text' => $hero->cta_secondary_text,
+                    'cta_secondary_href' => $hero->cta_secondary_href,
+                ];
+            });
+
+        $diferenciales = Diferencial::activos()->ordenados()->get();
+        $caracteristicasInfraestructura = CaracteristicaInfraestructura::activos()->ordenados()->get();
+        $capacidadesInfraestructura = CapacidadInfraestructura::activos()->ordenados()->get();
+        $pasosWizard = PasoWizard::activos()->ordenados()->get();
 
         return [
             ...parent::share($request),
@@ -80,23 +124,28 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-
-            // Datos globales para todas las vistas
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
             'globals' => [
                 'empresa' => $empresa,
                 'menus' => $menus,
                 'productos' => $productos,
+                'productos_populares' => $productosPopulares,
+                'marcas' => $todasLasMarcas,
                 'industrias' => $industrias,
                 'servicios' => $servicios,
                 'sucursales' => $sucursales,
+                'heroes' => $heroes,
+                'diferenciales' => $diferenciales,
+                'caracteristicas_infraestructura' => $caracteristicasInfraestructura,
+                'capacidades_infraestructura' => $capacidadesInfraestructura,
+                'pasos_wizard' => $pasosWizard,
                 'whatsapp' => [
                     'numero' => '59177306576',
                     'mensaje' => 'Hola, necesito información sobre sus productos y servicios',
                 ],
-            ],
-            'flash' => [
-                'success' => fn () => $request->session()->get('success'),
-                'error' => fn () => $request->session()->get('error'),
             ],
         ];
     }
