@@ -13,7 +13,7 @@ export default function Footer() {
         <footer className="bg-gray-900 text-white">
             {/* Sección principal */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
                     {/* COLUMNA 1: Logo y descripción */}
                     <div className="lg:col-span-1">
                         <Link href="/" className="flex items-center gap-3 cursor-pointer mb-4">
@@ -151,7 +151,7 @@ export default function Footer() {
 
                     {/* COLUMNA 4: Sucursales */}
                     <div>
-                        <h4 className="text-base font-bold mb-4 text-white flex items-center gap-2">
+                        <h4 className="text-base font-bold mb-3 text-white flex items-center gap-2">
                             <span className="w-8 h-0.5 bg-[#EA0A2A]"></span>
                             Nuestras Sucursales
                         </h4>
@@ -192,7 +192,7 @@ export default function Footer() {
                         <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-gray-400">
                             <Link href="/privacy" className="hover:text-[#EA0A2A] transition-colors">Política de Privacidad</Link>
                             <Link href="/terms" className="hover:text-[#EA0A2A] transition-colors">Términos y Condiciones</Link>
-                            <Link href="/sitemap" className="hover:text-[#EA0A2A] transition-colors">Mapa del Sitio</Link>
+                            <Link href="/branches" className="hover:text-[#EA0A2A] transition-colors">Mapa del Sitio</Link>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/breadcrumbs';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/Navigation';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
@@ -13,7 +13,7 @@ export default function AppLayout({ children, showBreadcrumbs = true }: AppLayou
     const { url } = usePage();
 
     // Rutas donde NO queremos mostrar breadcrumbs
-    const hideBreadcrumbsRoutes = ['/', '/products', '/applications', '/services'];
+    const hideBreadcrumbsRoutes = ['/'];
     const shouldShowBreadcrumbs = showBreadcrumbs && !hideBreadcrumbsRoutes.includes(url);
 
     return (
