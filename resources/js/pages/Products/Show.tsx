@@ -8,8 +8,20 @@ export default function ProductShow() {
     return (
         <AppLayout>
             {/* Header de página */}
-            <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20 overflow-hidden">
+                {/* Imagen de fondo del producto */}
+                {producto.imagen && (
+                    <div className="absolute inset-0">
+                        <img
+                            src={producto.imagen}
+                            alt={producto.nombre}
+                            className="w-full h-full object-cover opacity-20"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800/90 to-gray-900"></div>
+                    </div>
+                )}
+
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="inline-flex items-center gap-2 bg-[#EA0A2A]/20 border border-[#EA0A2A]/30 rounded-full px-4 py-2 mb-6">
                         <Package size={16} className="text-[#EA0A2A]" />
                         <span className="text-sm text-white font-semibold">{producto.nombre}</span>
@@ -20,6 +32,41 @@ export default function ProductShow() {
                     <p className="text-lg text-gray-300 max-w-2xl mx-auto">
                         Explora todas las categorías y subcategorías disponibles de {producto.nombre.toLowerCase()}
                     </p>
+
+                    {/* NUEVO: Logos de marcas */}
+                    {producto.marcas && producto.marcas.length > 0 && (
+                        <div className="mt-6 flex flex-col items-center gap-3">
+                            <p className="text-sm text-gray-400">Marcas disponibles:</p>
+                            <div className="flex flex-wrap justify-center gap-3">
+                                {producto.marcas.slice(0, 12).map((marca: any) => (
+                                    <div
+                                        key={marca.id}
+                                        className="bg-white/10 backdrop-blur-sm rounded-lg p-2 border border-white/20 hover:bg-white/20 transition-all"
+                                        title={marca.nombre}
+                                    >
+                                        {marca.logo ? (
+                                            <img
+                                                src={marca.logo}
+                                                alt={marca.nombre}
+                                                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all"
+                                            />
+                                        ) : (
+                                            <span className="text-xs font-bold text-white">
+                                                {marca.nombre}
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
+                                {producto.marcas.length > 12 && (
+                                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 border border-white/20 flex items-center justify-center">
+                                        <span className="text-xs font-bold text-white">
+                                            +{producto.marcas.length - 12} más
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -40,7 +87,7 @@ export default function ProductShow() {
                                 href={`/products/${producto.slug}/${categoria.slug}`}
                                 className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                             >
-                                {/* Imagen placeholder */}
+                                {/* Imagen de la categoría */}
                                 <div className="relative h-48 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
                                     {categoria.imagen ? (
                                         <img src={categoria.imagen} alt={categoria.nombre} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />

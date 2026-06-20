@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable('producto_id', 'nombre', 'slug', 'imagen', 'descripcion', 'descripcion_corta', 'orden', 'estado',)]
+#[Fillable('producto_id', 'nombre', 'slug', 'imagen', 'descripcion', 'descripcion_corta', 'uso', 'orden', 'estado',)]
 class Categoria extends Model
 {
     protected $table = 'categorias';

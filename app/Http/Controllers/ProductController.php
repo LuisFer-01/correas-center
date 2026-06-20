@@ -15,8 +15,16 @@ class ProductController extends Controller
      */
     public function index(): Response
     {
-        $productos = Producto::withCount(['categorias' => function($query) {
-                $query->where('estado', 'activo');
+        $productos = Producto::with([
+                'categorias' => function($query) {
+                    $query->where('categorias.estado', 'activo'); // ✅ Especificar tabla
+                },
+                'marcas' => function($query) {
+                    $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+                }
+            ])
+            ->withCount(['categorias' => function($query) {
+                $query->where('categorias.estado', 'activo'); // ✅ Especificar tabla
             }])
             ->where('estado', 'activo')
             ->orderBy('orden')
@@ -26,10 +34,17 @@ class ProductController extends Controller
                     'id' => $producto->id,
                     'nombre' => $producto->nombre,
                     'slug' => $producto->slug,
-                    'imagen' => $producto->imagen_url, // Usar accessor
+                    'imagen' => $producto->imagen_url,
                     'orden' => $producto->orden,
                     'categorias_count' => $producto->categorias_count,
                     'descripcion_corta' => $producto->categorias->first()?->descripcion_corta ?? 'Productos de alta calidad para tu industria',
+                    'marcas' => $producto->marcas->map(function ($marca) {
+                        return [
+                            'id' => $marca->id,
+                            'nombre' => $marca->nombre,
+                            'logo' => $marca->logo_url,
+                        ];
+                    }),
                 ];
             });
 
@@ -43,9 +58,15 @@ class ProductController extends Controller
      */
     public function show(string $slug): Response
     {
-        $producto = Producto::with(['categorias' => function($query) {
-                $query->where('estado', 'activo')->orderBy('orden');
-            }])
+        $producto = Producto::with([
+                'categorias' => function($query) {
+                    $query->where('categorias.estado', 'activo')
+                          ->orderBy('categorias.orden'); // ✅ Especificar tabla
+                },
+                'marcas' => function($query) {
+                    $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+                }
+            ])
             ->where('slug', $slug)
             ->where('estado', 'activo')
             ->firstOrFail();
@@ -55,13 +76,20 @@ class ProductController extends Controller
                 'id' => $producto->id,
                 'nombre' => $producto->nombre,
                 'slug' => $producto->slug,
-                'imagen' => $producto->imagen_url, // Usar accessor
+                'imagen' => $producto->imagen_url,
+                'marcas' => $producto->marcas->map(function ($marca) {
+                    return [
+                        'id' => $marca->id,
+                        'nombre' => $marca->nombre,
+                        'logo' => $marca->logo_url,
+                    ];
+                }),
                 'categorias' => $producto->categorias->map(function ($categoria) {
                     return [
                         'id' => $categoria->id,
                         'nombre' => $categoria->nombre,
                         'slug' => $categoria->slug,
-                        'imagen' => $categoria->imagen_url, // Usar accessor
+                        'imagen' => $categoria->imagen_url,
                         'descripcion' => $categoria->descripcion,
                         'descripcion_corta' => $categoria->descripcion_corta,
                     ];
@@ -79,11 +107,13 @@ class ProductController extends Controller
             ->where('estado', 'activo')
             ->firstOrFail();
 
-        $categoria = Categoria::with(['detalleCategorias' => function($query) {
-                $query->where('estado', 'activo')
-                    ->with(['marca', 'gamaProducto', 'caracteristica', 'medida', 'composicion'])
-                    ->orderBy('orden');
-            }])
+        $categoria = Categoria::with([
+                'detalleCategorias' => function($query) {
+                    $query->where('detalle_categorias.estado', 'activo') // ✅ Especificar tabla
+                          ->with(['marca', 'gamaProducto', 'caracteristica', 'medida', 'composicion'])
+                          ->orderBy('detalle_categorias.orden'); // ✅ Especificar tabla
+                }
+            ])
             ->where('producto_id', $producto->id)
             ->where('slug', $categoriaSlug)
             ->where('estado', 'activo')
@@ -99,7 +129,7 @@ class ProductController extends Controller
                 'id' => $categoria->id,
                 'nombre' => $categoria->nombre,
                 'slug' => $categoria->slug,
-                'imagen' => $categoria->imagen_url, // Usar accessor
+                'imagen' => $categoria->imagen_url,
                 'descripcion' => $categoria->descripcion,
                 'descripcion_corta' => $categoria->descripcion_corta,
                 'detalles' => $categoria->detalleCategorias->map(function ($detalle) {
@@ -109,7 +139,7 @@ class ProductController extends Controller
                         'marca' => $detalle->marca ? [
                             'id' => $detalle->marca->id,
                             'nombre' => $detalle->marca->nombre,
-                            'logo' => $detalle->marca->logo_url, // Usar accessor
+                            'logo' => $detalle->marca->logo_url,
                         ] : null,
                         'gama_producto' => $detalle->gamaProducto ? [
                             'id' => $detalle->gamaProducto->id,

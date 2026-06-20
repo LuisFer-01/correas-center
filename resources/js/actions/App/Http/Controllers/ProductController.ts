@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
 export const show = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
 show.url = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -122,7 +122,7 @@ show.url = (args: { producto: string | number } | [producto: string | number ] |
 
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
 show.get = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -131,7 +131,7 @@ show.get = (args: { producto: string | number } | [producto: string | number ] |
 })
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
 show.head = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -141,7 +141,7 @@ show.head = (args: { producto: string | number } | [producto: string | number ] 
 
     /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
     const showForm = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -151,7 +151,7 @@ show.head = (args: { producto: string | number } | [producto: string | number ] 
 
             /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
         showForm.get = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ show.head = (args: { producto: string | number } | [producto: string | number ] 
         })
             /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:44
+ * @see app/Http/Controllers/ProductController.php:59
  * @route '/products/{producto}'
  */
         showForm.head = (args: { producto: string | number } | [producto: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -176,7 +176,7 @@ show.head = (args: { producto: string | number } | [producto: string | number ] 
     show.form = showForm
 /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
 export const categoryDetail = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -191,7 +191,7 @@ categoryDetail.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
 categoryDetail.url = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions) => {
@@ -217,7 +217,7 @@ categoryDetail.url = (args: { producto: string | number, categoria: string | num
 
 /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
 categoryDetail.get = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -226,7 +226,7 @@ categoryDetail.get = (args: { producto: string | number, categoria: string | num
 })
 /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
 categoryDetail.head = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -236,7 +236,7 @@ categoryDetail.head = (args: { producto: string | number, categoria: string | nu
 
     /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
     const categoryDetailForm = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -246,7 +246,7 @@ categoryDetail.head = (args: { producto: string | number, categoria: string | nu
 
             /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
         categoryDetailForm.get = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -255,7 +255,7 @@ categoryDetail.head = (args: { producto: string | number, categoria: string | nu
         })
             /**
 * @see \App\Http\Controllers\ProductController::categoryDetail
- * @see app/Http/Controllers/ProductController.php:76
+ * @see app/Http/Controllers/ProductController.php:104
  * @route '/products/{producto}/{categoria}'
  */
         categoryDetailForm.head = (args: { producto: string | number, categoria: string | number } | [producto: string | number, categoria: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

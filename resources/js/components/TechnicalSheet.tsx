@@ -73,7 +73,7 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
             <Page size="A4" style={styles.page}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <Text style={styles.title}>FICHA TÉCNICA</Text>
+                    <Text style={styles.title}>CARACTERÍSTICAS GENERALES</Text>
                     <Text style={styles.subtitle}>{categoria.nombre}</Text>
                 </View>
 
@@ -102,12 +102,6 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                         <Text style={styles.sectionTitle}>Características Técnicas</Text>
                         {categoria.detalles.map((detalle: any, index: number) => (
                             <View key={index} style={{ marginBottom: 15 }}>
-                                {detalle.marca && (
-                                    <View style={styles.row}>
-                                        <Text style={styles.label}>Marca:</Text>
-                                        <Text style={styles.value}>{detalle.marca.nombre}</Text>
-                                    </View>
-                                )}
                                 {detalle.gama_producto && (
                                     <View style={styles.row}>
                                         <Text style={styles.label}>Gama/Serie:</Text>

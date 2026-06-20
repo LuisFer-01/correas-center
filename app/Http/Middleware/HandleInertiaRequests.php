@@ -36,9 +36,16 @@ class HandleInertiaRequests extends Middleware
             ->get()
             ->groupBy('grupo');
 
-        $productos = Producto::with(['categorias' => function($query) {
-            $query->where('estado', 'activo')->orderBy('orden');
-        }])
+        // ✅ CORREGIDO: Especificar tabla en todas las relaciones
+        $productos = Producto::with([
+            'categorias' => function($query) {
+                $query->where('categorias.estado', 'activo')
+                      ->orderBy('categorias.orden');
+            },
+            'marcas' => function($query) {
+                $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+            }
+        ])
         ->where('estado', 'activo')
         ->orderBy('orden')
         ->get()
@@ -59,10 +66,21 @@ class HandleInertiaRequests extends Middleware
                         'descripcion_corta' => $categoria->descripcion_corta,
                     ];
                 }),
+                'marcas' => $producto->marcas->map(function ($marca) {
+                    return [
+                        'id' => $marca->id,
+                        'nombre' => $marca->nombre,
+                        'logo' => $marca->logo_url,
+                    ];
+                }),
             ];
         });
 
-        $productosPopulares = Producto::where('estado', 'activo')
+        // ✅ CORREGIDO: Productos populares con marcas
+        $productosPopulares = Producto::with(['marcas' => function($query) {
+                $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+            }])
+            ->where('estado', 'activo')
             ->orderBy('orden')
             ->limit(5)
             ->get()
@@ -93,12 +111,11 @@ class HandleInertiaRequests extends Middleware
                     'id' => $industria->id,
                     'nombre' => $industria->nombre,
                     'slug' => $industria->slug,
-                    'imagen' => $industria->imagen_url, // Usar accessor
+                    'imagen' => $industria->imagen_url,
                     'orden' => $industria->orden,
                 ];
             });
 
-        // NUEVO: Servicios con imágenes
         $servicios = Servicio::where('estado', 'activo')
             ->orderBy('nombre')
             ->get()
@@ -107,7 +124,7 @@ class HandleInertiaRequests extends Middleware
                     'id' => $servicio->id,
                     'nombre' => $servicio->nombre,
                     'descripcion' => $servicio->descripcion,
-                    'imagen' => $servicio->imagen_url, // Usar accessor
+                    'imagen' => $servicio->imagen_url,
                 ];
             });
 

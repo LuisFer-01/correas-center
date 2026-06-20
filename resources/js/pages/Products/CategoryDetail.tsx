@@ -27,7 +27,7 @@ export default function CategoryDetail() {
     const medidas = categoria.detalles
         .filter((d: any) => d.medida)
         .map((d: any) => d.medida)
-        .filter((m: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === t.id) === i);
+        .filter((m: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === m.id) === i);
 
     const marcas = categoria.detalles
         .filter((d: any) => d.marca)
@@ -43,9 +43,21 @@ export default function CategoryDetail() {
 
     return (
         <AppLayout>
-            {/* Header */}
-            <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Header con imagen destacada */}
+            <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20 overflow-hidden">
+                {/* Imagen de fondo de la categoría */}
+                {categoria.imagen && (
+                    <div className="absolute inset-0">
+                        <img
+                            src={categoria.imagen}
+                            alt={categoria.nombre}
+                            className="w-full h-full object-cover opacity-20"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800/90 to-gray-900"></div>
+                    </div>
+                )}
+
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Breadcrumb inline */}
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-6">
                         <Link href="/products" className="hover:text-white transition-colors">Productos</Link>
@@ -66,7 +78,7 @@ export default function CategoryDetail() {
 
                     {/* Marcas asociadas */}
                     {marcas.length > 0 && (
-                        <div className="mt-6 flex items-center gap-3">
+                        <div className="mt-6 flex items-center gap-3 flex-wrap">
                             <span className="text-sm text-gray-400">Marcas disponibles:</span>
                             <div className="flex flex-wrap gap-2">
                                 {marcas.map((marca: any) => (
@@ -89,6 +101,17 @@ export default function CategoryDetail() {
                             ← Volver a {producto.nombre}
                         </Link>
                     </div>
+
+                    {/* Imagen destacada de la categoría */}
+                    {categoria.imagen && (
+                        <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
+                            <img
+                                src={categoria.imagen}
+                                alt={categoria.nombre}
+                                className="w-full h-64 md:h-96 object-cover"
+                            />
+                        </div>
+                    )}
 
                     {/* Tabs */}
                     <div className="border-b border-gray-200 mb-8">
@@ -229,7 +252,7 @@ export default function CategoryDetail() {
                             </div>
 
                             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">Descargar Información</h3>
+                                <h3 className="text-lg font-bold text-gray-900 mb-4">Descargar Información General</h3>
                                 <TechnicalSheetDownload producto={producto} categoria={categoria} />
                             </div>
 
@@ -237,7 +260,6 @@ export default function CategoryDetail() {
                             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
                                 <h3 className="text-lg font-bold text-gray-900 mb-4">Otros Productos</h3>
                                 <ul className="space-y-2">
-                                    {/* Se cargará dinámicamente */}
                                     <li>
                                         <Link href="/products" className="text-sm text-gray-600 hover:text-[#EA0A2A] transition-colors flex items-center gap-2">
                                             <ArrowRight size={14} /> Ver todos los productos

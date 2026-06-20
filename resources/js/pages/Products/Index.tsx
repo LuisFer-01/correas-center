@@ -33,7 +33,7 @@ export default function ProductsIndex() {
                                 href={`/products/${producto.slug}`}
                                 className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                             >
-                                {/* Imagen placeholder */}
+                                {/* Imagen del producto */}
                                 <div className="relative h-52 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                                     {producto.imagen ? (
                                         <img src={producto.imagen} alt={producto.nombre} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
@@ -44,19 +44,42 @@ export default function ProductsIndex() {
                                     )}
                                     {/* Overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     {/* Badge de categorías */}
                                     <div className="absolute top-3 right-3 bg-[#EA0A2A] text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                                         <Layers size={12} />
                                         {producto.categorias_count}
                                     </div>
 
-                                    {/* Botón hover */}
-                                    <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                                        <span className="block w-full bg-white text-[#EA0A2A] text-center py-2 rounded-lg font-semibold text-sm">
-                                            Ver categorías →
-                                        </span>
-                                    </div>
+                                    {/* NUEVO: Logos de marcas en la esquina inferior */}
+                                    {producto.marcas && producto.marcas.length > 0 && (
+                                        <div className="absolute bottom-3 left-3 right-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-lg p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            {producto.marcas.slice(0, 5).map((marca: any) => (
+                                                <div
+                                                    key={marca.id}
+                                                    className="w-8 h-8 flex items-center justify-center bg-white rounded border border-gray-200 overflow-hidden flex-shrink-0"
+                                                    title={marca.nombre}
+                                                >
+                                                    {marca.logo ? (
+                                                        <img
+                                                            src={marca.logo}
+                                                            alt={marca.nombre}
+                                                            className="w-full h-full object-contain p-0.5"
+                                                        />
+                                                    ) : (
+                                                        <span className="text-[8px] font-bold text-gray-600 text-center leading-tight px-0.5">
+                                                            {marca.nombre.substring(0, 3)}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                            {producto.marcas.length > 5 && (
+                                                <div className="w-8 h-8 flex items-center justify-center bg-[#EA0A2A] text-white rounded text-[10px] font-bold flex-shrink-0">
+                                                    +{producto.marcas.length - 5}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Contenido */}
@@ -67,6 +90,37 @@ export default function ProductsIndex() {
                                     <p className="text-sm text-gray-500 mb-4 line-clamp-2">
                                         {producto.descripcion_corta}
                                     </p>
+
+                                    {/* NUEVO: Logos de marcas permanentes debajo del texto */}
+                                    {producto.marcas && producto.marcas.length > 0 && (
+                                        <div className="flex items-center gap-1 mb-3 flex-wrap">
+                                            {producto.marcas.slice(0, 6).map((marca: any) => (
+                                                <div
+                                                    key={marca.id}
+                                                    className="w-6 h-6 flex items-center justify-center bg-gray-50 rounded border border-gray-200 overflow-hidden"
+                                                    title={marca.nombre}
+                                                >
+                                                    {marca.logo ? (
+                                                        <img
+                                                            src={marca.logo}
+                                                            alt={marca.nombre}
+                                                            className="w-full h-full object-contain p-0.5"
+                                                        />
+                                                    ) : (
+                                                        <span className="text-[7px] font-bold text-gray-600">
+                                                            {marca.nombre.substring(0, 2)}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                            {producto.marcas.length > 6 && (
+                                                <span className="text-[10px] text-gray-500 font-medium">
+                                                    +{producto.marcas.length - 6}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+
                                     <div className="flex items-center justify-between">
                                         <span className="text-xs text-gray-400 font-medium">
                                             {producto.categorias_count} {producto.categorias_count === 1 ? 'categoría' : 'categorías'}
