@@ -28,7 +28,7 @@ class IndustryController extends Controller
                     'id' => $industria->id,
                     'nombre' => $industria->nombre,
                     'slug' => $industria->slug,
-                    'imagen' => $industria->imagen,
+                    'imagen' => $industria->imagen_url, // Usar accessor
                     'orden' => $industria->orden,
                     'categorias_count' => $industria->categorias_count,
                     'servicios_count' => $industria->servicios_count,
@@ -53,6 +53,7 @@ class IndustryController extends Controller
         // Obtener detalles de la industria
         $detalles = DetalleIndustria::where('industria_id', $industria->id)
             ->where('estado', 'activo')
+            ->orderBy('orden')
             ->get();
 
         // Separar por grupo
@@ -70,7 +71,7 @@ class IndustryController extends Controller
                     'id' => $categoria->id,
                     'nombre' => $categoria->nombre,
                     'slug' => $categoria->slug,
-                    'imagen' => $categoria->imagen,
+                    'imagen' => $categoria->imagen_url, // Usar accessor
                     'descripcion' => $categoria->descripcion,
                     'descripcion_corta' => $categoria->descripcion_corta,
                     'producto' => $categoria->producto ? [
@@ -90,6 +91,7 @@ class IndustryController extends Controller
                     'id' => $servicio->id,
                     'nombre' => $servicio->nombre,
                     'descripcion' => $servicio->descripcion,
+                    'imagen' => $servicio->imagen_url, // Usar accessor
                     'slug' => Str::slug($servicio->nombre),
                 ];
             });
@@ -99,7 +101,7 @@ class IndustryController extends Controller
                 'id' => $industria->id,
                 'nombre' => $industria->nombre,
                 'slug' => $industria->slug,
-                'imagen' => $industria->imagen,
+                'imagen' => $industria->imagen_url, // Usar accessor
                 'categorias' => $categorias,
                 'servicios' => $servicios,
             ],

@@ -36,7 +36,6 @@ class HandleInertiaRequests extends Middleware
             ->get()
             ->groupBy('grupo');
 
-        // Usar los accessors para obtener URLs correctas
         $productos = Producto::with(['categorias' => function($query) {
             $query->where('estado', 'activo')->orderBy('orden');
         }])
@@ -48,14 +47,14 @@ class HandleInertiaRequests extends Middleware
                 'id' => $producto->id,
                 'nombre' => $producto->nombre,
                 'slug' => $producto->slug,
-                'imagen' => $producto->imagen_url, // Usar accessor
+                'imagen' => $producto->imagen_url,
                 'orden' => $producto->orden,
                 'categorias' => $producto->categorias->map(function ($categoria) {
                     return [
                         'id' => $categoria->id,
                         'nombre' => $categoria->nombre,
                         'slug' => $categoria->slug,
-                        'imagen' => $categoria->imagen_url, // Usar accessor
+                        'imagen' => $categoria->imagen_url,
                         'descripcion' => $categoria->descripcion,
                         'descripcion_corta' => $categoria->descripcion_corta,
                     ];
@@ -82,15 +81,35 @@ class HandleInertiaRequests extends Middleware
                 return [
                     'id' => $marca->id,
                     'nombre' => $marca->nombre,
-                    'logo' => $marca->logo_url, // Usar accessor
+                    'logo' => $marca->logo_url,
                 ];
             });
 
         $industrias = Industria::where('estado', 'activo')
             ->orderBy('orden')
-            ->get();
+            ->get()
+            ->map(function ($industria) {
+                return [
+                    'id' => $industria->id,
+                    'nombre' => $industria->nombre,
+                    'slug' => $industria->slug,
+                    'imagen' => $industria->imagen_url, // Usar accessor
+                    'orden' => $industria->orden,
+                ];
+            });
 
-        $servicios = Servicio::where('estado', 'activo')->get();
+        // NUEVO: Servicios con imágenes
+        $servicios = Servicio::where('estado', 'activo')
+            ->orderBy('nombre')
+            ->get()
+            ->map(function ($servicio) {
+                return [
+                    'id' => $servicio->id,
+                    'nombre' => $servicio->nombre,
+                    'descripcion' => $servicio->descripcion,
+                    'imagen' => $servicio->imagen_url, // Usar accessor
+                ];
+            });
 
         $sucursales = Sucursal::where('estado', 'activo')
             ->orderByDesc('es_principal')

@@ -23,7 +23,7 @@ export default function ServicesIndex() {
                 </div>
             </section>
 
-            {/* Grid de servicios */}
+            {/* Grid de servicios - AHORA CON IMÁGENES */}
             <section className="py-12 md:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -33,9 +33,20 @@ export default function ServicesIndex() {
                                 href={`/services/${servicio.slug}`}
                                 className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                             >
-                                {/* Header con icono */}
-                                <div className="bg-gradient-to-br from-[#EA0A2A] to-[#c90825] p-8 flex items-center justify-center">
-                                    <Wrench size={56} className="text-white" />
+                                {/* Imagen del servicio */}
+                                <div className="relative h-48 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
+                                    {servicio.imagen ? (
+                                        <img
+                                            src={servicio.imagen}
+                                            alt={servicio.nombre}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#EA0A2A] to-[#c90825]">
+                                            <Wrench size={56} className="text-white" />
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 </div>
 
                                 {/* Contenido */}

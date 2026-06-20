@@ -19,6 +19,7 @@ class ServiceController extends Controller
     public function index(): Response
     {
         $servicios = Servicio::where('estado', 'activo')
+            ->orderBy('nombre')
             ->get()
             ->map(function ($servicio) {
                 return [
@@ -26,7 +27,7 @@ class ServiceController extends Controller
                     'nombre' => $servicio->nombre,
                     'slug' => Str::slug($servicio->nombre),
                     'descripcion' => $servicio->descripcion,
-                    'imagen' => $servicio->imagen,
+                    'imagen' => $servicio->imagen_url, // Usar accessor
                 ];
             });
 
@@ -41,7 +42,6 @@ class ServiceController extends Controller
      */
     public function show(string $slug): Response
     {
-        // Buscar servicio por nombre formateado como slug
         $servicio = Servicio::where('estado', 'activo')
             ->get()
             ->first(function ($s) use ($slug) {
@@ -67,7 +67,7 @@ class ServiceController extends Controller
                     'id' => $industria->id,
                     'nombre' => $industria->nombre,
                     'slug' => $industria->slug,
-                    'imagen' => $industria->imagen,
+                    'imagen' => $industria->imagen_url, // Usar accessor
                 ];
             });
 
@@ -77,6 +77,7 @@ class ServiceController extends Controller
                 'nombre' => $servicio->nombre,
                 'slug' => Str::slug($servicio->nombre),
                 'descripcion' => $servicio->descripcion,
+                'imagen' => $servicio->imagen_url, // Usar accessor
                 'industrias' => $industrias,
             ],
         ]);

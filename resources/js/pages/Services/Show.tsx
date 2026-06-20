@@ -7,10 +7,21 @@ export default function ServiceShow() {
 
     return (
         <AppLayout>
-            {/* Header */}
-            <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Breadcrumb inline */}
+            {/* Header con imagen de fondo */}
+            <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20 overflow-hidden">
+                {/* Imagen de fondo del servicio */}
+                {servicio.imagen && (
+                    <div className="absolute inset-0">
+                        <img
+                            src={servicio.imagen}
+                            alt={servicio.nombre}
+                            className="w-full h-full object-cover opacity-20"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800/90 to-gray-900"></div>
+                    </div>
+                )}
+
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-6">
                         <Link href="/services" className="hover:text-white transition-colors">Servicios</Link>
                         <span>/</span>
@@ -39,6 +50,17 @@ export default function ServiceShow() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Contenido */}
                         <div className="lg:col-span-2 space-y-8">
+                            {/* Imagen destacada del servicio */}
+                            {servicio.imagen && (
+                                <div className="rounded-xl overflow-hidden shadow-lg">
+                                    <img
+                                        src={servicio.imagen}
+                                        alt={servicio.nombre}
+                                        className="w-full h-64 md:h-96 object-cover"
+                                    />
+                                </div>
+                            )}
+
                             {/* Descripción detallada */}
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -86,13 +108,21 @@ export default function ServiceShow() {
                                                 href={`/applications/${industria.slug}`}
                                                 className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 p-4 flex items-center gap-3"
                                             >
-                                                <div className="bg-[#EA0A2A]/10 p-2 rounded-lg group-hover:bg-[#EA0A2A] transition-colors">
-                                                    <Building2 size={20} className="text-[#EA0A2A] group-hover:text-white transition-colors" />
-                                                </div>
-                                                <span className="font-semibold text-gray-900 group-hover:text-[#EA0A2A] transition-colors">
+                                                {industria.imagen ? (
+                                                    <img
+                                                        src={industria.imagen}
+                                                        alt={industria.nombre}
+                                                        className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                                                    />
+                                                ) : (
+                                                    <div className="bg-[#EA0A2A]/10 p-2 rounded-lg group-hover:bg-[#EA0A2A] transition-colors flex-shrink-0">
+                                                        <Building2 size={20} className="text-[#EA0A2A] group-hover:text-white transition-colors" />
+                                                    </div>
+                                                )}
+                                                <span className="font-semibold text-gray-900 group-hover:text-[#EA0A2A] transition-colors flex-1">
                                                     {industria.nombre}
                                                 </span>
-                                                <ArrowRight size={16} className="ml-auto text-gray-400 group-hover:text-[#EA0A2A] group-hover:translate-x-1 transition-all" />
+                                                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#EA0A2A] group-hover:translate-x-1 transition-all" />
                                             </Link>
                                         ))}
                                     </div>
@@ -102,7 +132,6 @@ export default function ServiceShow() {
 
                         {/* Sidebar */}
                         <div className="space-y-6">
-                            {/* CTA Contacto */}
                             <div className="bg-gradient-to-br from-[#EA0A2A] to-[#c90825] rounded-xl p-6 text-white sticky top-24">
                                 <h3 className="text-xl font-bold mb-3">
                                     ¿Necesitas este servicio?
@@ -110,7 +139,7 @@ export default function ServiceShow() {
                                 <p className="text-white/90 text-sm mb-6">
                                     Contáctanos ahora y recibe asesoría personalizada sin costo
                                 </p>
-                                
+
                                 <div className="space-y-3">
                                     <a
                                         href={`https://wa.me/59177306576?text=${encodeURIComponent(`Hola, necesito el servicio: ${servicio.nombre}`)}`}

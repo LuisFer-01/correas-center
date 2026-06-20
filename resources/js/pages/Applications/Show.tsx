@@ -22,7 +22,6 @@ export default function IndustryShow() {
             {/* Header */}
             <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Breadcrumb inline */}
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-6">
                         <Link href="/applications" className="hover:text-white transition-colors">Aplicaciones</Link>
                         <span>/</span>
@@ -68,7 +67,6 @@ export default function IndustryShow() {
                                     href={`/products/${categoria.producto?.slug}/${categoria.slug}`}
                                     className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                                 >
-                                    {/* Imagen */}
                                     <div className="relative h-40 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
                                         {categoria.imagen ? (
                                             <img src={categoria.imagen} alt={categoria.nombre} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
@@ -79,7 +77,6 @@ export default function IndustryShow() {
                                         )}
                                     </div>
 
-                                    {/* Contenido */}
                                     <div className="p-5">
                                         {categoria.producto && (
                                             <div className="inline-block bg-[#EA0A2A]/10 text-[#EA0A2A] text-xs font-semibold px-2 py-1 rounded-full mb-2">
@@ -111,7 +108,7 @@ export default function IndustryShow() {
                 </div>
             </section>
 
-            {/* Servicios */}
+            {/* Servicios - AHORA CON IMÁGENES */}
             <section className="py-12 md:py-16 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-3 mb-8">
@@ -136,12 +133,22 @@ export default function IndustryShow() {
                                     href={`/services/${servicio.slug}`}
                                     className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                                 >
-                                    {/* Header con icono */}
-                                    <div className="bg-gradient-to-br from-[#EA0A2A] to-[#c90825] p-6 flex items-center justify-center">
-                                        <Wrench size={40} className="text-white" />
+                                    {/* Imagen del servicio */}
+                                    <div className="relative h-48 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
+                                        {servicio.imagen ? (
+                                            <img
+                                                src={servicio.imagen}
+                                                alt={servicio.nombre}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                            />
+                                        ) : (
+                                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#EA0A2A] to-[#c90825]">
+                                                <Wrench size={48} className="text-white" />
+                                            </div>
+                                        )}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     </div>
 
-                                    {/* Contenido */}
                                     <div className="p-6">
                                         <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#EA0A2A] transition-colors">
                                             {servicio.nombre}
