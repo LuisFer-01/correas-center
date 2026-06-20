@@ -48,6 +48,25 @@ const styles = StyleSheet.create({
         width: '70%',
         color: '#666',
     },
+    warningBox: {
+        backgroundColor: '#FEF2F2',
+        borderLeftWidth: 4,
+        borderLeftColor: '#DC2626',
+        padding: 15,
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    warningTitle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#991B1B',
+        marginBottom: 5,
+    },
+    warningText: {
+        fontSize: 10,
+        color: '#B91C1C',
+        lineHeight: 1.5,
+    },
     footer: {
         position: 'absolute',
         bottom: 30,
@@ -88,10 +107,10 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                         <Text style={styles.label}>Categoría:</Text>
                         <Text style={styles.value}>{categoria.nombre}</Text>
                     </View>
-                    {categoria.descripcion && (
+                    {categoria.descripcion_corta && (
                         <View style={styles.row}>
                             <Text style={styles.label}>Descripción:</Text>
-                            <Text style={styles.value}>{categoria.descripcion}</Text>
+                            <Text style={styles.value}>{categoria.descripcion_corta}</Text>
                         </View>
                     )}
                 </View>
@@ -137,6 +156,16 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                     </View>
                 )}
 
+                {/* NUEVO: Advertencia en el PDF */}
+                <View style={styles.warningBox}>
+                    <Text style={styles.warningTitle}>⚠ Información Importante</Text>
+                    <Text style={styles.warningText}>
+                        Los datos mostrados en este documento son características generales de esta categoría.
+                        Pueden existir variaciones en las especificaciones técnicas según la marca del producto.
+                        Para obtener información detallada por marca, por favor contáctanos.
+                    </Text>
+                </View>
+
                 {/* Footer */}
                 <View style={styles.footer}>
                     <Text>Correas Center - Solución Confiable</Text>
@@ -148,7 +177,7 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
     );
 }
 
-// Componente de descarga
+// Componente de descarga - NUEVO: Texto cambiado
 interface DownloadButtonProps {
     producto: any;
     categoria: any;
@@ -158,7 +187,7 @@ export default function TechnicalSheetDownload({ producto, categoria }: Download
     return (
         <PDFDownloadLink
             document={<TechnicalSheetDocument producto={producto} categoria={categoria} />}
-            fileName={`ficha-tecnica-${categoria.slug}.pdf`}
+            fileName={`caracteristicas-generales-${categoria.slug}.pdf`}
             className="inline-flex items-center gap-2 bg-[#EA0A2A] hover:bg-[#c90825] text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105"
         >
             {({ blob, url, loading, error }) =>
@@ -170,7 +199,7 @@ export default function TechnicalSheetDownload({ producto, categoria }: Download
                 ) : (
                     <>
                         <Download size={20} />
-                        Descargar Ficha Técnica
+                        Descargar Características Generales
                     </>
                 )
             }

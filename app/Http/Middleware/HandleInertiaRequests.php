@@ -36,20 +36,20 @@ class HandleInertiaRequests extends Middleware
             ->get()
             ->groupBy('grupo');
 
-        // ✅ CORREGIDO: Especificar tabla en todas las relaciones
         $productos = Producto::with([
             'categorias' => function($query) {
                 $query->where('categorias.estado', 'activo')
-                      ->orderBy('categorias.orden');
+                    ->orderBy('categorias.orden');
             },
             'marcas' => function($query) {
-                $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+                $query->where('marcas.estado', 'activo');
             }
         ])
         ->where('estado', 'activo')
         ->orderBy('orden')
         ->get()
         ->map(function ($producto) {
+            $primeraCategoria = $producto->categorias->first();
             return [
                 'id' => $producto->id,
                 'nombre' => $producto->nombre,
@@ -62,8 +62,9 @@ class HandleInertiaRequests extends Middleware
                         'nombre' => $categoria->nombre,
                         'slug' => $categoria->slug,
                         'imagen' => $categoria->imagen_url,
-                        'descripcion' => $categoria->descripcion,
+                        'uso' => $categoria->uso,
                         'descripcion_corta' => $categoria->descripcion_corta,
+                        'descripcion' => $categoria->descripcion,
                     ];
                 }),
                 'marcas' => $producto->marcas->map(function ($marca) {
@@ -73,12 +74,14 @@ class HandleInertiaRequests extends Middleware
                         'logo' => $marca->logo_url,
                     ];
                 }),
+                // NUEVO: Agregar uso y descripcion_corta de la primera categoría
+                'uso' => $primeraCategoria?->uso ?? '',
+                'descripcion_corta' => $primeraCategoria?->descripcion_corta ?? '',
             ];
         });
 
-        // ✅ CORREGIDO: Productos populares con marcas
         $productosPopulares = Producto::with(['marcas' => function($query) {
-                $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+                $query->where('marcas.estado', 'activo');
             }])
             ->where('estado', 'activo')
             ->orderBy('orden')

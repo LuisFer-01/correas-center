@@ -9,7 +9,6 @@ export default function ProductShow() {
         <AppLayout>
             {/* Header de página */}
             <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20 overflow-hidden">
-                {/* Imagen de fondo del producto */}
                 {producto.imagen && (
                     <div className="absolute inset-0">
                         <img
@@ -32,41 +31,6 @@ export default function ProductShow() {
                     <p className="text-lg text-gray-300 max-w-2xl mx-auto">
                         Explora todas las categorías y subcategorías disponibles de {producto.nombre.toLowerCase()}
                     </p>
-
-                    {/* NUEVO: Logos de marcas */}
-                    {producto.marcas && producto.marcas.length > 0 && (
-                        <div className="mt-6 flex flex-col items-center gap-3">
-                            <p className="text-sm text-gray-400">Marcas disponibles:</p>
-                            <div className="flex flex-wrap justify-center gap-3">
-                                {producto.marcas.slice(0, 12).map((marca: any) => (
-                                    <div
-                                        key={marca.id}
-                                        className="bg-white/10 backdrop-blur-sm rounded-lg p-2 border border-white/20 hover:bg-white/20 transition-all"
-                                        title={marca.nombre}
-                                    >
-                                        {marca.logo ? (
-                                            <img
-                                                src={marca.logo}
-                                                alt={marca.nombre}
-                                                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all"
-                                            />
-                                        ) : (
-                                            <span className="text-xs font-bold text-white">
-                                                {marca.nombre}
-                                            </span>
-                                        )}
-                                    </div>
-                                ))}
-                                {producto.marcas.length > 12 && (
-                                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 border border-white/20 flex items-center justify-center">
-                                        <span className="text-xs font-bold text-white">
-                                            +{producto.marcas.length - 12} más
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </section>
 
@@ -108,16 +72,53 @@ export default function ProductShow() {
                                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#EA0A2A] transition-colors">
                                         {categoria.nombre}
                                     </h3>
+
+                                    {/* Uso como badge */}
+                                    {categoria.uso && (
+                                        <div className="inline-block bg-[#EA0A2A]/10 text-[#EA0A2A] text-xs font-semibold px-2 py-1 rounded-full mb-2">
+                                            {categoria.uso}
+                                        </div>
+                                    )}
+
                                     {categoria.descripcion_corta && (
                                         <p className="text-sm text-gray-500 mb-4 line-clamp-2">
                                             {categoria.descripcion_corta}
                                         </p>
                                     )}
-                                    {categoria.descripcion && (
-                                        <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                                            {categoria.descripcion}
-                                        </p>
+
+                                    {/* NUEVO: Logos de marcas de esta categoría */}
+                                    {categoria.marcas && categoria.marcas.length > 0 && (
+                                        <div className="mb-4 pt-3 border-t border-gray-100">
+                                            <p className="text-xs text-gray-400 font-semibold mb-2 uppercase tracking-wide">Marcas disponibles</p>
+                                            <div className="flex items-center gap-2 flex-wrap">
+                                                {categoria.marcas.slice(0, 6).map((marca: any) => (
+                                                    <div
+                                                        key={marca.id}
+                                                        className="w-14 h-10 flex items-center justify-center bg-white rounded-md border border-gray-200 overflow-hidden hover:border-[#EA0A2A] hover:shadow-md transition-all"
+                                                        title={marca.nombre}
+                                                    >
+                                                        {marca.logo ? (
+                                                            <img
+                                                                src={marca.logo}
+                                                                alt={marca.nombre}
+                                                                className="w-full h-full object-contain p-1"
+                                                            />
+                                                        ) : (
+                                                            <span className="text-[10px] font-bold text-gray-600 text-center leading-tight px-1">
+                                                                {marca.nombre.substring(0, 4)}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                                {categoria.marcas.length > 6 && (
+                                                    <div className="w-14 h-10 flex items-center justify-center bg-[#EA0A2A] text-white rounded-md text-xs font-bold">
+                                                        +{categoria.marcas.length - 6}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     )}
+
                                     <div className="flex items-center text-[#EA0A2A] font-semibold text-sm group-hover:gap-2 transition-all">
                                         <span>Ver detalles</span>
                                         <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />

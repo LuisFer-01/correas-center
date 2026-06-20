@@ -42,7 +42,6 @@ export default function ProductsIndex() {
                                             <Package size={64} className="text-gray-300" />
                                         </div>
                                     )}
-                                    {/* Overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                                     {/* Badge de categorías */}
@@ -50,36 +49,6 @@ export default function ProductsIndex() {
                                         <Layers size={12} />
                                         {producto.categorias_count}
                                     </div>
-
-                                    {/* NUEVO: Logos de marcas en la esquina inferior */}
-                                    {producto.marcas && producto.marcas.length > 0 && (
-                                        <div className="absolute bottom-3 left-3 right-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-lg p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            {producto.marcas.slice(0, 5).map((marca: any) => (
-                                                <div
-                                                    key={marca.id}
-                                                    className="w-8 h-8 flex items-center justify-center bg-white rounded border border-gray-200 overflow-hidden flex-shrink-0"
-                                                    title={marca.nombre}
-                                                >
-                                                    {marca.logo ? (
-                                                        <img
-                                                            src={marca.logo}
-                                                            alt={marca.nombre}
-                                                            className="w-full h-full object-contain p-0.5"
-                                                        />
-                                                    ) : (
-                                                        <span className="text-[8px] font-bold text-gray-600 text-center leading-tight px-0.5">
-                                                            {marca.nombre.substring(0, 3)}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            ))}
-                                            {producto.marcas.length > 5 && (
-                                                <div className="w-8 h-8 flex items-center justify-center bg-[#EA0A2A] text-white rounded text-[10px] font-bold flex-shrink-0">
-                                                    +{producto.marcas.length - 5}
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
                                 </div>
 
                                 {/* Contenido */}
@@ -87,41 +56,53 @@ export default function ProductsIndex() {
                                     <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#EA0A2A] transition-colors">
                                         {producto.nombre}
                                     </h3>
+
+                                    {/* NUEVO: Uso (badge) */}
+                                    {producto.uso && (
+                                        <div className="inline-block bg-[#EA0A2A]/10 text-[#EA0A2A] text-xs font-semibold px-2 py-1 rounded-full mb-2">
+                                            {producto.uso}
+                                        </div>
+                                    )}
+
+                                    {/* NUEVO: descripcion_corta */}
                                     <p className="text-sm text-gray-500 mb-4 line-clamp-2">
                                         {producto.descripcion_corta}
                                     </p>
 
-                                    {/* NUEVO: Logos de marcas permanentes debajo del texto */}
+                                    {/* NUEVO: Logos de marcas más grandes */}
                                     {producto.marcas && producto.marcas.length > 0 && (
-                                        <div className="flex items-center gap-1 mb-3 flex-wrap">
-                                            {producto.marcas.slice(0, 6).map((marca: any) => (
-                                                <div
-                                                    key={marca.id}
-                                                    className="w-6 h-6 flex items-center justify-center bg-gray-50 rounded border border-gray-200 overflow-hidden"
-                                                    title={marca.nombre}
-                                                >
-                                                    {marca.logo ? (
-                                                        <img
-                                                            src={marca.logo}
-                                                            alt={marca.nombre}
-                                                            className="w-full h-full object-contain p-0.5"
-                                                        />
-                                                    ) : (
-                                                        <span className="text-[7px] font-bold text-gray-600">
-                                                            {marca.nombre.substring(0, 2)}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            ))}
-                                            {producto.marcas.length > 6 && (
-                                                <span className="text-[10px] text-gray-500 font-medium">
-                                                    +{producto.marcas.length - 6}
-                                                </span>
-                                            )}
+                                        <div className="mb-3">
+                                            <p className="text-xs text-gray-400 font-semibold mb-2 uppercase tracking-wide">Marcas disponibles</p>
+                                            <div className="flex items-center gap-2 flex-wrap">
+                                                {producto.marcas.slice(0, 8).map((marca: any) => (
+                                                    <div
+                                                        key={marca.id}
+                                                        className="w-14 h-10 flex items-center justify-center bg-white rounded-md border border-gray-200 overflow-hidden hover:border-[#EA0A2A] hover:shadow-md transition-all"
+                                                        title={marca.nombre}
+                                                    >
+                                                        {marca.logo ? (
+                                                            <img
+                                                                src={marca.logo}
+                                                                alt={marca.nombre}
+                                                                className="w-full h-full object-contain p-1"
+                                                            />
+                                                        ) : (
+                                                            <span className="text-[10px] font-bold text-gray-600 text-center leading-tight px-1">
+                                                                {marca.nombre.substring(0, 4)}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                                {producto.marcas.length > 8 && (
+                                                    <div className="w-14 h-10 flex items-center justify-center bg-[#EA0A2A] text-white rounded-md text-xs font-bold">
+                                                        +{producto.marcas.length - 8}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     )}
 
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                                         <span className="text-xs text-gray-400 font-medium">
                                             {producto.categorias_count} {producto.categorias_count === 1 ? 'categoría' : 'categorías'}
                                         </span>

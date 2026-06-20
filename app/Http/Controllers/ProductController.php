@@ -17,19 +17,20 @@ class ProductController extends Controller
     {
         $productos = Producto::with([
                 'categorias' => function($query) {
-                    $query->where('categorias.estado', 'activo'); // ✅ Especificar tabla
+                    $query->where('categorias.estado', 'activo');
                 },
                 'marcas' => function($query) {
-                    $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+                    $query->where('marcas.estado', 'activo');
                 }
             ])
             ->withCount(['categorias' => function($query) {
-                $query->where('categorias.estado', 'activo'); // ✅ Especificar tabla
+                $query->where('categorias.estado', 'activo');
             }])
             ->where('estado', 'activo')
             ->orderBy('orden')
             ->get()
             ->map(function ($producto) {
+                $primeraCategoria = $producto->categorias->first();
                 return [
                     'id' => $producto->id,
                     'nombre' => $producto->nombre,
@@ -37,7 +38,9 @@ class ProductController extends Controller
                     'imagen' => $producto->imagen_url,
                     'orden' => $producto->orden,
                     'categorias_count' => $producto->categorias_count,
-                    'descripcion_corta' => $producto->categorias->first()?->descripcion_corta ?? 'Productos de alta calidad para tu industria',
+                    // NUEVO: usar campo 'uso' y 'descripcion_corta'
+                    'uso' => $primeraCategoria?->uso ?? '',
+                    'descripcion_corta' => $primeraCategoria?->descripcion_corta ?? 'Productos de alta calidad para tu industria',
                     'marcas' => $producto->marcas->map(function ($marca) {
                         return [
                             'id' => $marca->id,
@@ -61,10 +64,13 @@ class ProductController extends Controller
         $producto = Producto::with([
                 'categorias' => function($query) {
                     $query->where('categorias.estado', 'activo')
-                          ->orderBy('categorias.orden'); // ✅ Especificar tabla
+                          ->orderBy('categorias.orden');
+                },
+                'categorias.marcas' => function($query) {
+                    $query->where('marcas.estado', 'activo');
                 },
                 'marcas' => function($query) {
-                    $query->where('marcas.estado', 'activo'); // ✅ Especificar tabla
+                    $query->where('marcas.estado', 'activo');
                 }
             ])
             ->where('slug', $slug)
@@ -77,21 +83,23 @@ class ProductController extends Controller
                 'nombre' => $producto->nombre,
                 'slug' => $producto->slug,
                 'imagen' => $producto->imagen_url,
-                'marcas' => $producto->marcas->map(function ($marca) {
-                    return [
-                        'id' => $marca->id,
-                        'nombre' => $marca->nombre,
-                        'logo' => $marca->logo_url,
-                    ];
-                }),
                 'categorias' => $producto->categorias->map(function ($categoria) {
                     return [
                         'id' => $categoria->id,
                         'nombre' => $categoria->nombre,
                         'slug' => $categoria->slug,
                         'imagen' => $categoria->imagen_url,
-                        'descripcion' => $categoria->descripcion,
+                        'uso' => $categoria->uso,
                         'descripcion_corta' => $categoria->descripcion_corta,
+                        'descripcion' => $categoria->descripcion,
+                        // NUEVO: marcas de esta categoría específica
+                        'marcas' => $categoria->marcas->map(function ($marca) {
+                            return [
+                                'id' => $marca->id,
+                                'nombre' => $marca->nombre,
+                                'logo' => $marca->logo_url,
+                            ];
+                        }),
                     ];
                 }),
             ],
@@ -109,9 +117,9 @@ class ProductController extends Controller
 
         $categoria = Categoria::with([
                 'detalleCategorias' => function($query) {
-                    $query->where('detalle_categorias.estado', 'activo') // ✅ Especificar tabla
-                          ->with(['marca', 'gamaProducto', 'caracteristica', 'medida', 'composicion'])
-                          ->orderBy('detalle_categorias.orden'); // ✅ Especificar tabla
+                    $query->where('detalle_categorias.estado', 'activo')
+                          ->with(['gamaProducto', 'caracteristica', 'medida', 'composicion'])
+                          ->orderBy('detalle_categorias.orden');
                 }
             ])
             ->where('producto_id', $producto->id)
@@ -130,17 +138,14 @@ class ProductController extends Controller
                 'nombre' => $categoria->nombre,
                 'slug' => $categoria->slug,
                 'imagen' => $categoria->imagen_url,
+                'uso' => $categoria->uso,
                 'descripcion' => $categoria->descripcion,
                 'descripcion_corta' => $categoria->descripcion_corta,
                 'detalles' => $categoria->detalleCategorias->map(function ($detalle) {
                     return [
                         'id' => $detalle->id,
                         'orden' => $detalle->orden,
-                        'marca' => $detalle->marca ? [
-                            'id' => $detalle->marca->id,
-                            'nombre' => $detalle->marca->nombre,
-                            'logo' => $detalle->marca->logo_url,
-                        ] : null,
+                        // SIN MARCA - solo características generales
                         'gama_producto' => $detalle->gamaProducto ? [
                             'id' => $detalle->gamaProducto->id,
                             'nombre' => $detalle->gamaProducto->nombre,

@@ -1,14 +1,14 @@
 import TechnicalSheetDownload from '@/components/TechnicalSheet';
 import AppLayout from '@/layouts/AppLayout';
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2, FlaskConical, Layers, Ruler, Wrench } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CheckCircle2, FlaskConical, Layers, Ruler, Wrench } from 'lucide-react';
 import { useState } from 'react';
 
 export default function CategoryDetail() {
     const { producto, categoria } = usePage<any>().props;
     const [activeTab, setActiveTab] = useState<'gamas' | 'caracteristicas' | 'composiciones' | 'medidas'>('gamas');
 
-    // Extraer datos únicos de los detalles
+    // Extraer datos únicos de los detalles (SIN MARCAS)
     const gamas = categoria.detalles
         .filter((d: any) => d.gama_producto)
         .map((d: any) => d.gama_producto)
@@ -29,11 +29,6 @@ export default function CategoryDetail() {
         .map((d: any) => d.medida)
         .filter((m: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === m.id) === i);
 
-    const marcas = categoria.detalles
-        .filter((d: any) => d.marca)
-        .map((d: any) => d.marca)
-        .filter((m: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === m.id) === i);
-
     const tabs = [
         { id: 'gamas' as const, label: 'Gamas / Series', icon: Layers, count: gamas.length },
         { id: 'caracteristicas' as const, label: 'Características', icon: Wrench, count: caracteristicas.length },
@@ -45,7 +40,6 @@ export default function CategoryDetail() {
         <AppLayout>
             {/* Header con imagen destacada */}
             <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-16 md:py-20 overflow-hidden">
-                {/* Imagen de fondo de la categoría */}
                 {categoria.imagen && (
                     <div className="absolute inset-0">
                         <img
@@ -58,7 +52,7 @@ export default function CategoryDetail() {
                 )}
 
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Breadcrumb inline */}
+                    {/* Breadcrumb inline - usando descripcion_corta */}
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-6">
                         <Link href="/products" className="hover:text-white transition-colors">Productos</Link>
                         <span>/</span>
@@ -70,24 +64,12 @@ export default function CategoryDetail() {
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
                         {categoria.nombre}
                     </h1>
-                    {categoria.descripcion && (
-                        <p className="text-lg text-gray-300 max-w-3xl">
-                            {categoria.descripcion}
-                        </p>
-                    )}
 
-                    {/* Marcas asociadas */}
-                    {marcas.length > 0 && (
-                        <div className="mt-6 flex items-center gap-3 flex-wrap">
-                            <span className="text-sm text-gray-400">Marcas disponibles:</span>
-                            <div className="flex flex-wrap gap-2">
-                                {marcas.map((marca: any) => (
-                                    <span key={marca.id} className="bg-white/10 text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/20">
-                                        {marca.nombre}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
+                    {/* NUEVO: Mostrar descripcion_corta en lugar de descripcion */}
+                    {categoria.descripcion_corta && (
+                        <p className="text-lg text-gray-300 max-w-3xl">
+                            {categoria.descripcion_corta}
+                        </p>
                     )}
                 </div>
             </section>
@@ -110,6 +92,16 @@ export default function CategoryDetail() {
                                 alt={categoria.nombre}
                                 className="w-full h-64 md:h-96 object-cover"
                             />
+                        </div>
+                    )}
+
+                    {/* NUEVO: Mostrar descripcion debajo de la imagen */}
+                    {categoria.descripcion && (
+                        <div className="mb-8 bg-gray-50 rounded-xl p-6 border border-gray-100">
+                            <h2 className="text-xl font-bold text-gray-900 mb-3">Descripción General</h2>
+                            <p className="text-gray-700 leading-relaxed">
+                                {categoria.descripcion}
+                            </p>
                         </div>
                     )}
 
@@ -231,6 +223,25 @@ export default function CategoryDetail() {
                                     )}
                                 </div>
                             )}
+
+                            {/* NUEVO: Advertencia fija debajo del tab */}
+                            <div className="mt-8 bg-red-50 border-l-4 border-red-500 rounded-lg p-5 shadow-sm">
+                                <div className="flex items-start gap-3">
+                                    <div className="bg-red-500 p-2 rounded-lg flex-shrink-0">
+                                        <AlertTriangle size={20} className="text-white" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-base font-bold text-red-800 mb-1">
+                                            Información Importante
+                                        </h4>
+                                        <p className="text-sm text-red-700 leading-relaxed">
+                                            Los datos mostrados arriba son <strong>características generales</strong> de esta categoría.
+                                            Pueden existir variaciones en las especificaciones técnicas según la marca del producto.
+                                            Para obtener información detallada por marca, por favor contáctanos.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Sidebar */}
@@ -251,8 +262,9 @@ export default function CategoryDetail() {
                                 </a>
                             </div>
 
+                            {/* NUEVO: Botón con texto cambiado */}
                             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">Descargar Información General</h3>
+                                <h3 className="text-lg font-bold text-gray-900 mb-4">Descargar Información</h3>
                                 <TechnicalSheetDownload producto={producto} categoria={categoria} />
                             </div>
 
