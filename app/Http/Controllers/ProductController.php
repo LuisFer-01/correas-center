@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Categoria;
-use App\Models\DetalleCategoria;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,7 +12,6 @@ class ProductController extends Controller
 {
     /**
      * Listado general de productos
-     * Ruta: /products
      */
     public function index(): Response
     {
@@ -28,7 +26,7 @@ class ProductController extends Controller
                     'id' => $producto->id,
                     'nombre' => $producto->nombre,
                     'slug' => $producto->slug,
-                    'imagen' => $producto->imagen,
+                    'imagen' => $producto->imagen_url, // Usar accessor
                     'orden' => $producto->orden,
                     'categorias_count' => $producto->categorias_count,
                     'descripcion_corta' => $producto->categorias->first()?->descripcion_corta ?? 'Productos de alta calidad para tu industria',
@@ -42,7 +40,6 @@ class ProductController extends Controller
 
     /**
      * Detalle de un producto con sus categorías
-     * Ruta: /products/{producto}
      */
     public function show(string $slug): Response
     {
@@ -58,13 +55,13 @@ class ProductController extends Controller
                 'id' => $producto->id,
                 'nombre' => $producto->nombre,
                 'slug' => $producto->slug,
-                'imagen' => $producto->imagen,
+                'imagen' => $producto->imagen_url, // Usar accessor
                 'categorias' => $producto->categorias->map(function ($categoria) {
                     return [
                         'id' => $categoria->id,
                         'nombre' => $categoria->nombre,
                         'slug' => $categoria->slug,
-                        'imagen' => $categoria->imagen,
+                        'imagen' => $categoria->imagen_url, // Usar accessor
                         'descripcion' => $categoria->descripcion,
                         'descripcion_corta' => $categoria->descripcion_corta,
                     ];
@@ -74,8 +71,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Detalle de una categoría con sus gamas, características, medidas, etc.
-     * Ruta: /products/{producto}/{categoria}
+     * Detalle de una categoría
      */
     public function categoryDetail(string $productoSlug, string $categoriaSlug): Response
     {
@@ -103,7 +99,7 @@ class ProductController extends Controller
                 'id' => $categoria->id,
                 'nombre' => $categoria->nombre,
                 'slug' => $categoria->slug,
-                'imagen' => $categoria->imagen,
+                'imagen' => $categoria->imagen_url, // Usar accessor
                 'descripcion' => $categoria->descripcion,
                 'descripcion_corta' => $categoria->descripcion_corta,
                 'detalles' => $categoria->detalleCategorias->map(function ($detalle) {
@@ -113,7 +109,7 @@ class ProductController extends Controller
                         'marca' => $detalle->marca ? [
                             'id' => $detalle->marca->id,
                             'nombre' => $detalle->marca->nombre,
-                            'logo' => $detalle->marca->logo,
+                            'logo' => $detalle->marca->logo_url, // Usar accessor
                         ] : null,
                         'gama_producto' => $detalle->gamaProducto ? [
                             'id' => $detalle->gamaProducto->id,

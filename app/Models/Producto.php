@@ -32,6 +32,28 @@ class Producto extends Model
         return $this->belongsToMany(Marca::class, 'detalle_productos');
     }
 
+    // ACCESSOR: URL absoluta de la imagen
+    public function getImagenUrlAttribute(): ?string
+    {
+        if (!$this->imagen) {
+            return null;
+        }
+
+        if (str_starts_with($this->imagen, 'http://') || str_starts_with($this->imagen, 'https://')) {
+            return $this->imagen;
+        }
+
+        if (str_starts_with($this->imagen, '/')) {
+            return $this->imagen;
+        }
+
+        if (str_starts_with($this->imagen, 'storage/')) {
+            return '/' . $this->imagen;
+        }
+
+        return '/' . $this->imagen;
+    }
+
     // Scopes
     public function scopeActivos($query)
     {

@@ -36,14 +36,33 @@ class HandleInertiaRequests extends Middleware
             ->get()
             ->groupBy('grupo');
 
+        // Usar los accessors para obtener URLs correctas
         $productos = Producto::with(['categorias' => function($query) {
             $query->where('estado', 'activo')->orderBy('orden');
         }])
         ->where('estado', 'activo')
         ->orderBy('orden')
-        ->get();
+        ->get()
+        ->map(function ($producto) {
+            return [
+                'id' => $producto->id,
+                'nombre' => $producto->nombre,
+                'slug' => $producto->slug,
+                'imagen' => $producto->imagen_url, // Usar accessor
+                'orden' => $producto->orden,
+                'categorias' => $producto->categorias->map(function ($categoria) {
+                    return [
+                        'id' => $categoria->id,
+                        'nombre' => $categoria->nombre,
+                        'slug' => $categoria->slug,
+                        'imagen' => $categoria->imagen_url, // Usar accessor
+                        'descripcion' => $categoria->descripcion,
+                        'descripcion_corta' => $categoria->descripcion_corta,
+                    ];
+                }),
+            ];
+        });
 
-        // NUEVO: Productos populares (primeros 5)
         $productosPopulares = Producto::where('estado', 'activo')
             ->orderBy('orden')
             ->limit(5)
@@ -56,7 +75,6 @@ class HandleInertiaRequests extends Middleware
                 ];
             });
 
-        // NUEVO: Todas las marcas para el carrusel
         $todasLasMarcas = Marca::where('estado', 'activo')
             ->orderBy('nombre')
             ->get()
@@ -64,7 +82,7 @@ class HandleInertiaRequests extends Middleware
                 return [
                     'id' => $marca->id,
                     'nombre' => $marca->nombre,
-                    'logo' => $marca->logo,
+                    'logo' => $marca->logo_url, // Usar accessor
                 ];
             });
 
@@ -74,7 +92,6 @@ class HandleInertiaRequests extends Middleware
 
         $servicios = Servicio::where('estado', 'activo')->get();
 
-        // NUEVO: Sucursales con formato mejorado
         $sucursales = Sucursal::where('estado', 'activo')
             ->orderByDesc('es_principal')
             ->orderBy('nombre')

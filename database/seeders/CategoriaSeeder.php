@@ -117,7 +117,7 @@ class CategoriaSeeder extends Seeder
                 'producto_id' => $producto->id,
                 'nombre' => $cat['nombre'],
                 'slug' => Str::slug($cat['nombre']),
-                'imagen' => 'storage/categoria/' . Str::slug($cat['nombre']) . '.jpg',
+                'imagen' => 'storage/producto/categoria/' . Str::slug($cat['nombre']) . '.jpg',
                 'descripcion' => $cat['descripcion'],
                 'descripcion_corta' => $cat['descripcion_corta'],
                 'orden' => $orden++,
