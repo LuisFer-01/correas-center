@@ -1,10 +1,10 @@
-import { createInertiaApp } from '@inertiajs/react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
-import AppLayout from '@/layouts/app-layout';
+import AppLayout from '@/layouts/AppLayout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { createInertiaApp } from '@inertiajs/react';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -18,8 +18,10 @@ createInertiaApp({
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+            // ✅ IMPORTANTE: NO aplicar AppLayout por defecto
+            // Cada página ya tiene su propio <AppLayout> envolviendo el contenido
             default:
-                return AppLayout;
+                return null;
         }
     },
     strictMode: true,
@@ -32,7 +34,7 @@ createInertiaApp({
         );
     },
     progress: {
-        color: '#4B5563',
+        color: '#EA0A2A',
     },
 });
 
