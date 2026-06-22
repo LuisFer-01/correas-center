@@ -16,6 +16,11 @@ use App\Models\CaracteristicaInfraestructura;
 use App\Models\CapacidadInfraestructura;
 use App\Models\PasoWizard;
 use App\Models\Marca;
+use App\Models\FooterConfiguracion;
+use App\Models\FooterPorqueElegirnos;
+use App\Models\FooterEstadistica;
+use App\Models\Registro;
+use App\Models\DetalleRegistro;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -29,6 +34,31 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $empresa = Empresa::where('estado', 'activo')->first();
+
+        // NUEVO: Cargar registros (Visión, Misión, Valores) para About
+        $registros = [];
+        if ($empresa) {
+            $registros = DetalleRegistro::with(['registro' => function($query) {
+                    $query->where('estado', 'activo');
+                }])
+                ->where('empresa_id', $empresa->id)
+                ->where('estado', 'activo')
+                ->orderBy('orden')
+                ->get()
+                ->map(function ($detalle) {
+                    return [
+                        'id' => $detalle->id,
+                        'grupo' => $detalle->grupo,
+                        'orden' => $detalle->orden,
+                        'registro' => $detalle->registro ? [
+                            'id' => $detalle->registro->id,
+                            'nombre' => $detalle->registro->nombre,
+                            'descripcion' => $detalle->registro->descripcion,
+                        ] : null,
+                    ];
+                })
+                ->toArray();
+        }
 
         $menus = Menu::with(['detalleMenus'])
             ->where('estado', 'activo')
@@ -74,7 +104,6 @@ class HandleInertiaRequests extends Middleware
                         'logo' => $marca->logo_url,
                     ];
                 }),
-                // NUEVO: Agregar uso y descripcion_corta de la primera categoría
                 'uso' => $primeraCategoria?->uso ?? '',
                 'descripcion_corta' => $primeraCategoria?->descripcion_corta ?? '',
             ];
@@ -173,6 +202,32 @@ class HandleInertiaRequests extends Middleware
         $capacidadesInfraestructura = CapacidadInfraestructura::activos()->ordenados()->get();
         $pasosWizard = PasoWizard::activos()->ordenados()->get();
 
+        $footerProductos = FooterConfiguracion::where('tipo', 'producto')
+            ->activos()
+            ->ordenados()
+            ->with('producto')
+            ->get();
+
+        $footerIndustrias = FooterConfiguracion::where('tipo', 'industria')
+            ->activos()
+            ->ordenados()
+            ->with('industria')
+            ->get();
+
+        $footerServicios = FooterConfiguracion::where('tipo', 'servicio')
+            ->activos()
+            ->ordenados()
+            ->with('servicio')
+            ->get();
+
+        $footerRedesSociales = FooterConfiguracion::where('tipo', 'red_social')
+            ->activos()
+            ->ordenados()
+            ->get();
+
+        $footerPorqueElegirnos = FooterPorqueElegirnos::activos()->ordenados()->get();
+        $footerEstadisticas = FooterEstadistica::activos()->ordenados()->get();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -198,11 +253,19 @@ class HandleInertiaRequests extends Middleware
                 'caracteristicas_infraestructura' => $caracteristicasInfraestructura,
                 'capacidades_infraestructura' => $capacidadesInfraestructura,
                 'pasos_wizard' => $pasosWizard,
+                'footer_productos' => $footerProductos,
+                'footer_industrias' => $footerIndustrias,
+                'footer_servicios' => $footerServicios,
+                'footer_redes_sociales' => $footerRedesSociales,
+                'footer_porque_elegirnos' => $footerPorqueElegirnos,
+                'footer_estadisticas' => $footerEstadisticas,
                 'whatsapp' => [
                     'numero' => '59177306576',
                     'mensaje' => 'Hola, necesito información sobre sus productos y servicios',
                 ],
             ],
+            // NUEVO: Compartir registros específicamente para la página About
+            'registros' => $registros,
         ];
     }
 }

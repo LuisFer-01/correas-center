@@ -5,9 +5,34 @@ import { Clock, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
     const { globals } = usePage<any>().props;
-    const { empresa, productos, industrias, servicios, sucursales } = globals;
+    const {
+        empresa,
+        sucursales,
+        footer_productos,
+        footer_industrias,
+        footer_servicios,
+        footer_redes_sociales,
+        footer_porque_elegirnos,
+        footer_estadisticas
+    } = globals;
 
     const currentYear = new Date().getFullYear();
+
+    // Mapeo de iconos de Font Awesome
+    const iconMap: Record<string, any> = {
+        'faFacebookF': faFacebookF,
+        'faInstagram': faInstagram,
+        'faTiktok': faTiktok,
+        'faYoutube': faYoutube,
+    };
+
+    // Mapeo de iconos de Lucide
+    const lucideIconMap: Record<string, any> = {
+        'CheckCircle2': () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+        'Clock': () => <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+        'Users': () => <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+        'Award': () => <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+    };
 
     return (
         <footer className="bg-gray-900 text-white">
@@ -17,51 +42,27 @@ export default function Footer() {
                     {/* COLUMNA 1: Logo y descripción */}
                     <div className="lg:col-span-1">
                         <Link href="/" className="flex items-center gap-3 cursor-pointer mb-4">
-                            <h3 className="text-2xl font-bold tracking-tight">CORREAS CENTER</h3>
+                            <h3 className="text-2xl font-bold tracking-tight">{empresa?.nombre || 'CORREAS CENTER'}</h3>
                         </Link>
                         <p className="text-gray-400 mb-6 text-sm leading-relaxed">
                             Líderes en soluciones industriales, hidráulicas, neumáticas y transmisión de potencia en Bolivia.
                             Más de 25 años brindando calidad y servicio técnico especializado.
                         </p>
 
-                        {/* Redes sociales */}
+                        {/* Redes sociales - Desde BD */}
                         <div className="flex gap-3 mb-6">
-                            <a
-                                href="https://www.facebook.com/CorreasCenterLtda"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-[#1877F2] transition-colors"
-                                aria-label="Facebook"
-                            >
-                                <FontAwesomeIcon icon={faFacebookF} size="lg" />
-                            </a>
-                            <a
-                                href="https://www.instagram.com/correascenterltda"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 transition-all"
-                                aria-label="Instagram"
-                            >
-                                <FontAwesomeIcon icon={faInstagram} size="lg" />
-                            </a>
-                            <a
-                                href="#"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-black transition-colors"
-                                aria-label="TikTok"
-                            >
-                                <FontAwesomeIcon icon={faTiktok} size="lg" />
-                            </a>
-                            <a
-                                href="#"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-[#FF0000] transition-colors"
-                                aria-label="YouTube"
-                            >
-                                <FontAwesomeIcon icon={faYoutube} size="lg" />
-                            </a>
+                            {footer_redes_sociales.map((red: any) => (
+                                <a
+                                    key={red.id}
+                                    href={red.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-[#1877F2] transition-colors"
+                                    aria-label={red.titulo}
+                                >
+                                    {iconMap[red.icono] && <FontAwesomeIcon icon={iconMap[red.icono]} size="lg" />}
+                                </a>
+                            ))}
                         </div>
 
                         {/* Badge de licencia */}
@@ -71,20 +72,22 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* COLUMNA 2: Productos */}
+                    {/* COLUMNA 2: Productos - Desde BD */}
                     <div className="lg:col-span-1">
                         <h4 className="text-base font-bold mb-4 text-white flex items-center gap-2">
                             Productos
                         </h4>
                         <ul className="space-y-2 text-sm">
-                            {productos.slice(0, 7).map((producto: any, index: number) => (
-                                <li key={index}>
-                                    <Link
-                                        href={`/products/${producto.slug}`}
-                                        className="text-gray-400 hover:text-[#EA0A2A] transition-colors hover:translate-x-1 inline-block"
-                                    >
-                                        {producto.nombre}
-                                    </Link>
+                            {footer_productos.map((item: any) => (
+                                <li key={item.id}>
+                                    {item.producto && (
+                                        <Link
+                                            href={`/products/${item.producto.slug}`}
+                                            className="text-gray-400 hover:text-[#EA0A2A] transition-colors hover:translate-x-1 inline-block"
+                                        >
+                                            {item.producto.nombre}
+                                        </Link>
+                                    )}
                                 </li>
                             ))}
                             <li>
@@ -98,20 +101,22 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* COLUMNA 3: Aplicaciones y Servicios */}
+                    {/* COLUMNA 3: Aplicaciones y Servicios - Desde BD */}
                     <div>
                         <h4 className="text-base font-bold mb-4 text-white flex items-center gap-2">
                             Aplicaciones
                         </h4>
                         <ul className="space-y-2 text-sm mb-6">
-                            {industrias.slice(0, 5).map((industria: any, index: number) => (
-                                <li key={index}>
-                                    <Link
-                                        href={`/applications/${industria.slug}`}
-                                        className="text-gray-400 hover:text-[#EA0A2A] transition-colors hover:translate-x-1 inline-block"
-                                    >
-                                        {industria.nombre}
-                                    </Link>
+                            {footer_industrias.map((item: any) => (
+                                <li key={item.id}>
+                                    {item.industria && (
+                                        <Link
+                                            href={`/applications/${item.industria.slug}`}
+                                            className="text-gray-400 hover:text-[#EA0A2A] transition-colors hover:translate-x-1 inline-block"
+                                        >
+                                            {item.industria.nombre}
+                                        </Link>
+                                    )}
                                 </li>
                             ))}
                             <li>
@@ -128,14 +133,16 @@ export default function Footer() {
                             Servicios
                         </h4>
                         <ul className="space-y-2 text-sm">
-                            {servicios.slice(0, 4).map((servicio: any, index: number) => (
-                                <li key={index}>
-                                    <Link
-                                        href={`/services/${servicio.nombre.toLowerCase().replace(/\s+/g, '-')}`}
-                                        className="text-gray-400 hover:text-[#EA0A2A] transition-colors hover:translate-x-1 inline-block"
-                                    >
-                                        {servicio.nombre}
-                                    </Link>
+                            {footer_servicios.map((item: any) => (
+                                <li key={item.id}>
+                                    {item.servicio && (
+                                        <Link
+                                            href={`/services/${item.servicio.nombre.toLowerCase().replace(/\s+/g, '-')}`}
+                                            className="text-gray-400 hover:text-[#EA0A2A] transition-colors hover:translate-x-1 inline-block"
+                                        >
+                                            {item.servicio.nombre}
+                                        </Link>
+                                    )}
                                 </li>
                             ))}
                             <li>

@@ -42,6 +42,9 @@ class DatabaseSeeder extends Seeder
             DiferencialSeeder::class,
             InfraestructuraSeeder::class,
             PasoWizardSeeder::class,
+            FooterConfiguracionSeeder::class,
+            FooterPorqueElegirnosSeeder::class,
+            FooterEstadisticaSeeder::class,
         ]);
     }
 }
