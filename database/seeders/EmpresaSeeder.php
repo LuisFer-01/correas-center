@@ -15,7 +15,7 @@ class EmpresaSeeder extends Seeder
     {
         Empresa::create([
             'nombre' => 'Correas Center',
-            'logo' => 'storage/empresa/Logo_CC_Blanco.png',
+            'logo' => 'empresa/Logo_CC_Blanco.png',
             'estado' => 'activo',
         ]);
     }
