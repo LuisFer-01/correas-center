@@ -186,7 +186,7 @@ class HandleInertiaRequests extends Middleware
             ->map(function ($hero) {
                 return [
                     'id' => $hero->id,
-                    'imagen' => $hero->imagen,
+                    'imagen' => $hero->imagen_url,
                     'titulo' => $hero->titulo,
                     'subtitulo' => $hero->subtitulo,
                     'badge_text' => $hero->badge_text,

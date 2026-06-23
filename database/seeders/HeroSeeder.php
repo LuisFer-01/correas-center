@@ -11,7 +11,7 @@ class HeroSeeder extends Seeder
     {
         $heroes = [
             [
-                'imagen' => 'storage/hero/Industria.jpg',
+                'imagen' => 'hero/Industria.jpg',
                 'titulo' => 'Soluciones Industriales Confiables',
                 'subtitulo' => 'Más de 25 años brindando repuestos, fabricación especializada y soporte técnico para la industria boliviana.',
                 'badge_text' => 'Lider en Soluciones Industriales',
@@ -21,7 +21,7 @@ class HeroSeeder extends Seeder
                 'cta_secondary_href' => '/products',
             ],
             [
-                'imagen' => 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxpbmR1c3RyaWFsJTIwcGFydHN8ZW58MXx8fHwxNzgwMjg1MDE3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+                'imagen' => 'hero/calidad.jpeg',
                 'titulo' => 'Calidad SKF Garantizada',
                 'subtitulo' => 'Fabricación autorizada SKF con los más altos estándares de calidad.',
                 'badge_text' => 'Fabricante Autorizado',
@@ -31,7 +31,7 @@ class HeroSeeder extends Seeder
                 'cta_secondary_href' => '/products',
             ],
             [
-                'imagen' => 'storage/hero/Cinta transportadora Fabrica.jpeg',
+                'imagen' => 'hero/Cinta transportadora Fabrica.jpeg',
                 'titulo' => 'Bandas Transportadoras, Correas y Transmisiones de Alta Resistencia',
                 'subtitulo' => 'Amplio stock en bandas transportadoras, correas en V, dentadas, variadoras y acanaladas para todo tipo de maquinaria.',
                 'badge_text' => 'Amplio Stock de Productos',
@@ -41,7 +41,7 @@ class HeroSeeder extends Seeder
                 'cta_secondary_href' => '/contact',
             ],
             [
-                'imagen' => 'storage/hero/Cinta transportadora cargada.png',
+                'imagen' => 'hero/Cinta transportadora cargada.png',
                 'titulo' => 'Sistemas Hidráulicos y Neumáticos',
                 'subtitulo' => 'Mangueras, conectores y componentes hidráulicos de las mejores marcas del mercado.',
                 'badge_text' => 'Proveedores de Sistemas Hidráulicos y Neumáticos',
@@ -51,7 +51,7 @@ class HeroSeeder extends Seeder
                 'cta_secondary_href' => '/contact',
             ],
             [
-                'imagen' => 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw2fHxpbmR1c3RyaWFsJTIwd2FyZWhvdXNlfGVufDF8fHx8MTc4MDI4NTAxN3ww&ixlib=rb-4.1.0&q=80&w=1080',
+                'imagen' => 'hero/soldador.jpeg',
                 'titulo' => 'Entregas Rápidas a Todo Bolivia',
                 'subtitulo' => 'Entregas rápidas a todo Bolivia con el respaldo de nuestro equipo técnico especializado',
                 'badge_text' => 'Cobertura Nacional',
