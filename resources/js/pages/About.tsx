@@ -8,21 +8,27 @@ export default function About() {
     const footer_porque_elegirnos = globals?.footer_porque_elegirnos || [];
     const footer_estadisticas = globals?.footer_estadisticas || [];
 
-    // Iconos para cada tipo de registro
-    const getIcon = (nombre: string) => {
-        const lowerName = nombre.toLowerCase();
-        if (lowerName.includes('visión')) return Eye;
-        if (lowerName.includes('mision')) return Target;
-        if (lowerName.includes('valor')) return Heart;
-        return Award;
-    };
-
     // Mapeo de iconos de Lucide para estadísticas
     const lucideIconMap: Record<string, any> = {
         'Clock': Clock,
         'Users': Users,
         'Award': Award,
         'CheckCircle2': CheckCircle2,
+        'Factory': Award,
+        'Truck': Award,
+        'Star': Award,
+        'Heart': Heart,
+        'Target': Target,
+        'Eye': Eye,
+    };
+
+    // Iconos para cada tipo de registro
+    const getIcon = (nombre: string) => {
+        const lowerName = nombre.toLowerCase();
+        if (lowerName.includes('visión') || lowerName.includes('vision')) return Eye;
+        if (lowerName.includes('misión') || lowerName.includes('mision')) return Target;
+        if (lowerName.includes('valor')) return Heart;
+        return Award;
     };
 
     return (
@@ -51,9 +57,10 @@ export default function About() {
                             Más de 25 Años de Experiencia
                         </h2>
                         <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                            En <span className="font-semibold text-[#EA0A2A]">{empresa?.nombre || 'Correas Center'}</span>, nos dedicamos a proveer soluciones integrales
-                            de transmisión de potencia, sistemas hidráulicos y neumáticos con los más altos estándares de calidad.
-                            Contamos con asesoría técnica especializada y servicio personalizado para nuestros clientes en todo Bolivia.
+                            En <span className="font-semibold text-[#EA0A2A]">{empresa?.nombre || 'Correas Center'}</span>,
+                            nos dedicamos a proveer soluciones integrales de transmisión de potencia, sistemas hidráulicos
+                            y neumáticos con los más altos estándares de calidad. Contamos con asesoría técnica especializada
+                            y servicio personalizado para nuestros clientes en todo Bolivia.
                         </p>
 
                         {/* Estadísticas desde BD */}
