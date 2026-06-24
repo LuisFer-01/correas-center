@@ -3,18 +3,20 @@
 namespace App\Filament\Resources\Heroes\Pages;
 
 use App\Filament\Resources\Heroes\HeroResource;
+use App\Filament\Traits\ToggleEstadoTrait;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditHero extends EditRecord
 {
+    use ToggleEstadoTrait;
+
     protected static string $resource = HeroResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make()
-                ->label('Eliminar'),
+            $this->getToggleEstadoAction(),
         ];
     }
 

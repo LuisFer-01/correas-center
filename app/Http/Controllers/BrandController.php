@@ -13,13 +13,13 @@ class BrandController extends Controller
     public function index()
     {
         $marcas = Marca::where('estado', 'activo')
-            ->orderBy('nombre')
+            ->orderBy('orden')
             ->get()
             ->map(function ($marca) {
                 return [
                     'id' => $marca->id,
                     'nombre' => $marca->nombre,
-                    'logo' => $marca->logo,
+                    'logo' => $marca->logo_url,
                 ];
             });
 

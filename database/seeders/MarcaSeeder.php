@@ -15,38 +15,42 @@ class MarcaSeeder extends Seeder
     public function run(): void
     {
         $marcas = [
-            ['nombre' => 'ABIX','logo'=> 'storage/marca/ABIX.png'],
-            ['nombre' => 'APC','logo'=> 'storage/marca/APC.png'],
-            ['nombre' => 'ARCA','logo'=> 'storage/marca/ARCA.png'],
-            ['nombre' => 'F&D','logo'=> 'storage/marca/F&D.png'],
-            ['nombre' => 'FAG','logo'=> 'storage/marca/FAG-2.png'],
-            ['nombre' => 'FBJ', 'logo' => 'storage/marca/FBJ.png'],
-            ['nombre' => 'GATES', 'logo' => 'storage/marca/GATES.png'],
-            ['nombre' => 'GMORS', 'logo' => 'storage/marca/GMORS.jpg'],
-            ['nombre' => 'HERCULES', 'logo' => 'storage/marca/HERCULES.jpg'],
-            ['nombre' => 'INA', 'logo' => 'storage/marca/INA.jpg'],
-            ['nombre' => 'JASON MEGADYNE', 'logo' => 'storage/marca/JASON_MEGADYNE.jpg'],
-            ['nombre' => 'KFB', 'logo' => 'storage/marca/KFB.png'],
-            ['nombre' => 'MITSUBA', 'logo' => 'storage/marca/mitsuba.jpg'],
-            ['nombre' => 'NSK', 'logo' => 'storage/marca/NSK.png'],
-            ['nombre' => 'NTN', 'logo' => 'storage/marca/NTN.png'],
-            ['nombre' => 'PABOVI', 'logo' => 'storage/marca/Pabovi.png'],
-            ['nombre' => 'PERFECT POWER', 'logo' => 'storage/marca/Perfect Power.png'],
-            ['nombre' => 'PIX', 'logo' => 'storage/marca/PIX.jpg'],
-            ['nombre' => 'SAV', 'logo' => 'storage/marca/SAV.png'],
-            ['nombre' => 'SKF', 'logo' => 'storage/marca/SKF-DISTRIBUIDOR-ESPECIALISTA-EN-SELLOS-VERTICAL.png'],
-            ['nombre' => 'TOP-Q', 'logo' => 'storage/marca/TOP-Q.jpg'],
-            ['nombre' => 'WORLD GASKET', 'logo' => 'storage/marca/WORLD GASKET.png'],
-            ['nombre' => 'ZMTE', 'logo' => 'storage/marca/ZMTE.png'],
+            ['nombre' => 'PERFECT POWER', 'logo' => 'marca/Perfect Power.png'],
+            ['nombre' => 'SKF', 'logo' => 'marca/SKF-DISTRIBUIDOR-ESPECIALISTA-EN-SELLOS-VERTICAL.png'],
+            ['nombre' => 'SAV', 'logo' => 'marca/SAV.png'],
+            ['nombre' => 'ARCA', 'logo' => 'marca/ARCA.png'],
+            ['nombre' => 'FAG', 'logo' => 'marca/FAG-2.png'],
+            ['nombre' => 'INA', 'logo' => 'marca/INA.jpg'],
+            ['nombre' => 'NSK', 'logo' => 'marca/NSK.png'],
+            ['nombre' => 'NTN', 'logo' => 'marca/NTN.png'],
+            ['nombre' => 'JASON MEGADYNE', 'logo' => 'marca/JASON_MEGADYNE.jpg'],
+            ['nombre' => 'MITSUBA', 'logo' => 'marca/mitsuba.jpg'],
+            ['nombre' => 'GATES', 'logo' => 'marca/GATES.png'],
+            ['nombre' => 'ABIX', 'logo' => 'marca/ABIX.png'],
+            ['nombre' => 'PIX', 'logo' => 'marca/PIX.jpg'],
+            ['nombre' => 'ZMTE', 'logo' => 'marca/ZMTE.png'],
+            ['nombre' => 'PABOVI', 'logo' => 'marca/Pabovi.png'],
+            ['nombre' => 'APC', 'logo' => 'marca/APC.png'],
+            ['nombre' => 'GMORS', 'logo' => 'marca/GMORS.jpg'],
+            ['nombre' => 'HERCULES', 'logo' => 'marca/HERCULES.jpg'],
+            ['nombre' => 'WORLD GASKET', 'logo' => 'marca/WORLD GASKET.png'],
+            ['nombre' => 'F&D', 'logo' => 'marca/F&D.png'],
+            ['nombre' => 'FBJ', 'logo' => 'marca/FBJ.png'],
+            ['nombre' => 'KFB', 'logo' => 'marca/KFB.png'],
+            ['nombre' => 'TOP-Q', 'logo' => 'marca/TOP-Q.jpg'],
         ];
 
+        $orden = 1;
         foreach ($marcas as $marca) {
             Marca::create([
                 'nombre' => $marca['nombre'],
                 'slug' => Str::slug($marca['nombre']),
                 'logo' => $marca['logo'],
+                'orden' => $orden++,
                 'estado' => 'activo',
             ]);
         }
+
+        $this->command->info("✅ " . count($marcas) . " marcas creadas");
     }
 }

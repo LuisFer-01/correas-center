@@ -104,7 +104,7 @@ class HandleInertiaRequests extends Middleware
                     return [
                         'id' => $marca->id,
                         'nombre' => $marca->nombre,
-                        'logo' => $marca->logo_url,
+                        'logo' => $marca->logo_url, // ✅ Usar accessor
                     ];
                 }),
                 'uso' => $primeraCategoria?->uso ?? '',
@@ -128,13 +128,13 @@ class HandleInertiaRequests extends Middleware
             });
 
         $todasLasMarcas = Marca::where('estado', 'activo')
-            ->orderBy('nombre')
+            ->orderBy('orden') // ✅ Ordenar por campo orden
             ->get()
             ->map(function ($marca) {
                 return [
                     'id' => $marca->id,
                     'nombre' => $marca->nombre,
-                    'logo' => $marca->logo_url,
+                    'logo' => $marca->logo_url, // ✅ Usar accessor
                 ];
             });
 
