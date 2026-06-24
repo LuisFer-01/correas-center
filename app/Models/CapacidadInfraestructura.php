@@ -12,7 +12,18 @@ class CapacidadInfraestructura extends Model
 
     protected $casts = [
         'orden' => 'integer',
+        'estado' => 'string',
     ];
+
+    // EVENTO: Asignar orden automáticamente al crear
+    protected static function booted(): void
+    {
+        static::creating(function (CapacidadInfraestructura $registro) {
+            if (empty($registro->orden) || $registro->orden === 0) {
+                $registro->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
 
     public function scopeActivos($query)
     {
