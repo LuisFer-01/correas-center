@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Menus\Schemas;
 
+use App\Filament\Traits\HasFontAwesomeIcons;
 use App\Models\Industria;
 use App\Models\Menu;
 use App\Models\Producto;
@@ -13,9 +14,12 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Str;
 
 class MenuForm
 {
+    use HasFontAwesomeIcons;
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -59,7 +63,6 @@ class MenuForm
                             ->live()
                             ->options(function (Get $get) {
                                 $grupo = $get('grupo');
-
                                 return match($grupo) {
                                     'Producto' => Producto::where('estado', 'activo')
                                         ->orderBy('orden')
@@ -76,17 +79,14 @@ class MenuForm
                             ->searchable()
                             ->afterStateUpdated(function (Set $set, Get $get, $state) {
                                 if (!$state) return;
-
                                 $grupo = $get('grupo');
-
                                 // Generar ruta automática según el grupo y el elemento seleccionado
                                 $ruta = match($grupo) {
                                     'Producto' => '/products/' . Producto::find($state)?->slug,
                                     'Aplicacion' => '/applications/' . Industria::find($state)?->slug,
-                                    'Servicio' => '/services/' . \Illuminate\Support\Str::slug(Servicio::find($state)?->nombre),
+                                    'Servicio' => '/services/' . Str::slug(Servicio::find($state)?->nombre),
                                     default => '',
                                 };
-
                                 $set('ruta', $ruta);
                             })
                             ->helperText('Selecciona el elemento específico que se mostrará en este menú')
@@ -108,87 +108,12 @@ class MenuForm
                             ->placeholder('Ej: /products/correas')
                             ->helperText('Ruta que se usará para navegar a este elemento (se genera automáticamente)'),
 
+                        // ✅ AHORA USA EL TRAIT CON 500 ICONOS DE FONT AWESOME
                         Select::make('icon')
                             ->label('Icono')
-                            ->options([
-                                'fa-box' => '📦 Caja (Producto)',
-                                'fa-industry' => '🏭 Industria (Aplicación)',
-                                'fa-wrench' => '🔧 Llave (Servicio)',
-                                'fa-cog' => '⚙️ Engranaje',
-                                'fa-star' => '⭐ Estrella',
-                                'fa-tools' => '🛠️ Herramientas',
-                                'fa-cogs' => '⚙️ Engranajes',
-                                'fa-truck' => '🚚 Camión',
-                                'fa-users' => '👥 Usuarios',
-                                'fa-building' => '🏢 Edificio',
-                                'fa-home' => '🏠 Inicio',
-                                'fa-phone' => '📞 Teléfono',
-                                'fa-envelope' => '✉️ Email',
-                                'fa-map-marker-alt' => '📍 Ubicación',
-                                'fa-clock' => '🕐 Reloj',
-                                'fa-search' => '🔍 Búsqueda',
-                                'fa-check' => '✓ Check',
-                                'fa-check-circle' => '✓ Círculo Check',
-                                'fa-info-circle' => 'ℹ️ Info',
-                                'fa-exclamation-circle' => '⚠️ Advertencia',
-                                'fa-question-circle' => '❓ Pregunta',
-                                'fa-plus' => '➕ Más',
-                                'fa-minus' => '➖ Menos',
-                                'fa-edit' => '✏️ Editar',
-                                'fa-trash' => '🗑️ Basura',
-                                'fa-save' => '💾 Guardar',
-                                'fa-download' => '⬇️ Descargar',
-                                'fa-upload' => '⬆️ Subir',
-                                'fa-file' => '📄 Archivo',
-                                'fa-file-pdf' => '📕 PDF',
-                                'fa-image' => '🖼️ Imagen',
-                                'fa-link' => '🔗 Enlace',
-                                'fa-lock' => '🔒 Candado',
-                                'fa-unlock' => '🔓 Desbloqueado',
-                                'fa-key' => '🔑 Llave',
-                                'fa-shield' => '🛡️ Escudo',
-                                'fa-user' => '👤 Usuario',
-                                'fa-chart-bar' => '📊 Gráfico',
-                                'fa-table' => '📋 Tabla',
-                                'fa-list' => '📝 Lista',
-                                'fa-filter' => '🔽 Filtro',
-                                'fa-sort' => '↕️ Ordenar',
-                                'fa-sync' => '🔄 Sincronizar',
-                                'fa-history' => '📜 Historial',
-                                'fa-calendar' => '📅 Calendario',
-                                'fa-bell' => '🔔 Campana',
-                                'fa-comment' => '💬 Comentario',
-                                'fa-share' => '📤 Compartir',
-                                'fa-heart' => '❤️ Corazón',
-                                'fa-thumbs-up' => '👍 Like',
-                                'fa-flag' => '🚩 Bandera',
-                                'fa-bookmark' => '🔖 Marcador',
-                                'fa-tag' => '🏷️ Etiqueta',
-                                'fa-credit-card' => '💳 Tarjeta',
-                                'fa-shopping-cart' => '🛒 Carrito',
-                                'fa-store' => '🏪 Tienda',
-                                'fa-warehouse' => '🏭 Almacén',
-                                'fa-gift' => '🎁 Regalo',
-                                'fa-award' => '🏆 Premio',
-                                'fa-medal' => '🏅 Medalla',
-                                'fa-trophy' => '🏆 Trofeo',
-                                'fa-fire' => '🔥 Fuego',
-                                'fa-bolt' => '⚡ Rayo',
-                                'fa-car' => '🚗 Auto',
-                                'fa-bus' => '🚌 Bus',
-                                'fa-motorcycle' => '🏍️ Moto',
-                                'fa-plane' => '✈️ Avión',
-                                'fa-ship' => '🚢 Barco',
-                                'fa-rocket' => '🚀 Cohete',
-                                'fa-flask' => '🧪 Frasco',
-                                'fa-book' => '📖 Libro',
-                                'fa-graduation-cap' => '🎓 Graduación',
-                                'fa-music' => '🎵 Música',
-                                'fa-camera' => '📷 Cámara',
-                                'fa-video' => '🎥 Video',
-                            ])
+                            ->options(self::getFontAwesomeIcons()) // ← Aquí se cargan los 500 iconos
                             ->searchable()
-                            ->helperText('Selecciona el icono que se mostrará en el menú (usa Font Awesome)'),
+                            ->helperText('Selecciona el icono que se mostrará en el menú (Font Awesome Free)'),
 
                         Select::make('estado')
                             ->label('Estado')

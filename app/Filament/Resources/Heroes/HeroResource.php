@@ -23,11 +23,11 @@ class HeroResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Configuración General';
+    protected static string|UnitEnum|null $navigationGroup = 'Landing Page';
 
     public static function getNavigationLabel(): string
     {
-        return 'Héroes del Landing';
+        return 'Héroes';
     }
 
     public static function getModelLabel(): string
