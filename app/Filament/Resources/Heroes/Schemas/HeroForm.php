@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Heroes\Schemas;
 
+use App\Models\Hero;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -103,11 +104,10 @@ class HeroForm
                             ->helperText('Solo los heroes activos se mostrarán en el landing'),
 
                         TextInput::make('orden')
-                            ->label('Orden de Visualización')
                             ->numeric()
-                            ->default(0)
-                            ->minValue(0)
-                            ->helperText('Los heroes se ordenan de menor a mayor (0, 1, 2...)'),
+                            ->required()
+                            ->default(fn () => (Hero::max('orden') ?? 0) + 1)
+                            ->helperText(fn () => 'Siguiente orden disponible: ' . ((Hero::max('orden') ?? 0) + 1)),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Menus\Schemas;
 
 use App\Models\Industria;
+use App\Models\Menu;
 use App\Models\Producto;
 use App\Models\Servicio;
 use Filament\Forms\Components\Select;
@@ -45,6 +46,12 @@ class MenuForm
                                 });
                             })
                             ->helperText('Selecciona el tipo de elemento que representará este menú'),
+
+                        TextInput::make('orden')
+                            ->numeric()
+                            ->required()
+                            ->default(fn () => (Menu::max('orden') ?? 0) + 1)
+                            ->helperText(fn () => 'Siguiente orden disponible: ' . ((Menu::max('orden') ?? 0) + 1)),
 
                         Select::make('campo_id')
                             ->label('Elemento Asociado')

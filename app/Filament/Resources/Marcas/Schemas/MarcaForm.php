@@ -64,7 +64,7 @@ class MarcaForm
                             ->numeric()
                             ->required()
                             ->minValue(0)
-                            // ✅ CALCULAR AUTOMÁTICAMENTE EL SIGUIENTE ORDEN
+                            // CALCULAR AUTOMÁTICAMENTE EL SIGUIENTE ORDEN
                             ->default(fn () => (Marca::max('orden') ?? 0) + 1)
                             ->helperText(fn () => 'Orden actual: se asignará automáticamente el siguiente número disponible (último: ' . (Marca::max('orden') ?? 0) . ')')
                             ->hint('Puedes modificarlo manualmente si deseas un orden específico')

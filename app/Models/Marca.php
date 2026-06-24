@@ -13,6 +13,7 @@ class Marca extends Model
     protected $table = 'marcas';
 
     protected $casts = [
+        'orden' => 'integer',
         'estado' => 'string',
     ];
 

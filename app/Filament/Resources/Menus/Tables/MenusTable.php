@@ -48,13 +48,13 @@ class MenusTable
                     ->searchable()
                     ->weight('bold'),
 
-                TextColumn::make('ruta')
+                /* TextColumn::make('ruta')
                     ->label('Ruta')
                     ->searchable()
                     ->sortable()
                     ->limit(40)
                     ->copyable()
-                    ->tooltip('Click para copiar la ruta'),
+                    ->tooltip('Click para copiar la ruta'), */
 
                 TextColumn::make('icon')
                     ->label('Icono')
@@ -68,6 +68,12 @@ class MenusTable
                     ->badge()
                     ->color('primary')
                     ->sortable(),
+
+                TextColumn::make('orden')
+                    ->label('Orden')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter(),
 
                 IconColumn::make('estado')
                     ->label('Estado')

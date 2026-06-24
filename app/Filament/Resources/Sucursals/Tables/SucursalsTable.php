@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Heroes\Tables;
+namespace App\Filament\Resources\Sucursals\Tables;
 
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -8,41 +8,61 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
-class HeroesTable
+class SucursalsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('orden', 'asc')
+            ->reorderable('orden')
             ->columns([
                 TextColumn::make('orden')
                     ->label('Orden')
                     ->numeric()
                     ->sortable()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->toggleable(),
 
-                ImageColumn::make('imagen')
-                    ->label('Imagen')
-                    ->circular(false)
-                    ->size(80)
-                    ->disk('public')
-                    ->defaultImageUrl(url('/images/placeholder.png')),
-
-                TextColumn::make('titulo')
-                    ->label('Título')
+                TextColumn::make('nombre')
+                    ->label('Nombre')
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
-                    ->limit(30),
+                    ->description(fn ($record) => $record->direccion),
 
-                /* TextColumn::make('badge_text')
-                    ->label('Badge')
+                /* TextColumn::make('telefono')
+                    ->label('Teléfono')
                     ->searchable()
-                    ->limit(30), */
+                    ->sortable()
+                    ->copyable()
+                    ->icon('heroicon-o-phone'), */
+
+                /* TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->sortable()
+                    ->copyable()
+                    ->icon('heroicon-o-envelope')
+                    ->toggleable(isToggledHiddenByDefault: true), */
+
+                /* TextColumn::make('horarios')
+                    ->label('Horarios')
+                    ->limit(40)
+                    ->tooltip(fn ($record) => $record->horarios)
+                    ->toggleable(), */
+
+                IconColumn::make('es_principal')
+                    ->label('Principal')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-star')
+                    ->falseIcon('heroicon-o-star')
+                    ->trueColor('warning')
+                    ->falseColor('gray')
+                    ->sortable(),
 
                 IconColumn::make('estado')
                     ->label('Estado')
@@ -71,8 +91,13 @@ class HeroesTable
                     ->options([
                         'activo' => 'Activo',
                         'inactivo' => 'Inactivo',
-                    ])
-                    ->placeholder('Todos los estados'),
+                    ]),
+                SelectFilter::make('es_principal')
+                    ->label('Tipo')
+                    ->options([
+                        '1' => 'Principal',
+                        '0' => 'Secundaria',
+                    ]),
             ])
             ->actions([
                 EditAction::make()
@@ -83,10 +108,10 @@ class HeroesTable
                     ->icon(fn ($record) => $record->estado === 'activo' ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
                     ->color(fn ($record) => $record->estado === 'activo' ? 'danger' : 'success')
                     ->requiresConfirmation()
-                    ->modalHeading(fn ($record) => $record->estado === 'activo' ? 'Desactivar Hero' : 'Activar Hero')
+                    ->modalHeading(fn ($record) => $record->estado === 'activo' ? 'Desactivar Sucursal' : 'Activar Sucursal')
                     ->modalDescription(fn ($record) => $record->estado === 'activo'
-                        ? '¿Estás seguro de desactivar este hero? No se mostrará en el landing.'
-                        : '¿Estás seguro de activar este hero? Se mostrará en el landing.'
+                        ? '¿Estás seguro de desactivar esta sucursal? No se mostrará en el sitio web.'
+                        : '¿Estás seguro de activar esta sucursal? Se mostrará en el sitio web.'
                     )
                     ->action(function ($record) {
                         $nuevoEstado = $record->estado === 'activo' ? 'inactivo' : 'activo';
@@ -100,8 +125,8 @@ class HeroesTable
                         ->icon('heroicon-o-x-circle')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading('Desactivar Heroes')
-                        ->modalDescription('¿Estás seguro de desactivar los heroes seleccionados?')
+                        ->modalHeading('Desactivar Sucursales')
+                        ->modalDescription('¿Estás seguro de desactivar las sucursales seleccionadas?')
                         ->action(function ($records) {
                             foreach ($records as $record) {
                                 $record->update(['estado' => 'inactivo']);
@@ -114,8 +139,8 @@ class HeroesTable
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->requiresConfirmation()
-                        ->modalHeading('Activar Heroes')
-                        ->modalDescription('¿Estás seguro de activar los heroes seleccionados?')
+                        ->modalHeading('Activar Sucursales')
+                        ->modalDescription('¿Estás seguro de activar las sucursales seleccionadas?')
                         ->action(function ($records) {
                             foreach ($records as $record) {
                                 $record->update(['estado' => 'activo']);
@@ -124,8 +149,8 @@ class HeroesTable
                         ->deselectRecordsAfterCompletion(),
                 ]),
             ])
-            ->emptyStateHeading('No hay heroes registrados')
-            ->emptyStateDescription('Crea el primer hero para el slider del landing page.')
-            ->emptyStateIcon('heroicon-o-photo');
+            ->emptyStateHeading('No hay sucursales registradas')
+            ->emptyStateDescription('Crea la primera sucursal para mostrar en el sitio web.')
+            ->emptyStateIcon('heroicon-o-map-pin');
     }
 }

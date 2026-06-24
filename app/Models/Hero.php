@@ -15,6 +15,15 @@ class Hero extends Model
         'estado' => 'string',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Hero $registro) {
+            if (empty($registro->orden) || $registro->orden === 0) {
+                $registro->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
+
     // MUTATOR: Limpia la ruta antes de guardar
     public function setImagenAttribute($value)
     {

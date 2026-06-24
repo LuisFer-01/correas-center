@@ -15,6 +15,15 @@ class Menu extends Model
         'estado' => 'string',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Menu $registro) {
+            if (empty($registro->orden) || $registro->orden === 0) {
+                $registro->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
+
     // Relaciones
     public function detalleMenus(): HasMany
     {
