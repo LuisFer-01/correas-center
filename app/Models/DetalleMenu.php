@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable('menu_id', 'ruta', 'estado',)]
+#[Fillable('menu_id', 'ruta', 'orden', 'estado',)]
 class DetalleMenu extends Model
 {
     protected $table = 'detalle_menus';

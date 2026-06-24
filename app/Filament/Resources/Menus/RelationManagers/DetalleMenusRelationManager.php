@@ -33,6 +33,13 @@ class DetalleMenusRelationManager extends RelationManager
                     ->placeholder('Ej: /products/correas/correas-en-v')
                     ->helperText('Ruta específica del submenú'),
 
+                TextInput::make('orden')
+                    ->label('Orden')
+                    ->numeric()
+                    ->default(0)
+                    ->minValue(0)
+                    ->helperText('Orden de visualización (menor número = primero)'),
+
                 Select::make('estado')
                     ->label('Estado')
                     ->options([
@@ -49,6 +56,12 @@ class DetalleMenusRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('ruta')
             ->columns([
+                TextColumn::make('orden')
+                    ->label('Orden')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter(),
+
                 TextColumn::make('ruta')
                     ->label('Ruta')
                     ->searchable()

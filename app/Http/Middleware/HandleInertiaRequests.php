@@ -60,9 +60,12 @@ class HandleInertiaRequests extends Middleware
                 ->toArray();
         }
 
-        $menus = Menu::with(['detalleMenus'])
+        $menus = Menu::with(['detalleMenus' => function($query) {
+                $query->where('estado', 'activo')
+                      ->orderBy('orden', 'asc');
+            }])
             ->where('estado', 'activo')
-            ->orderBy('id')
+            ->orderBy('orden', 'asc')
             ->get()
             ->groupBy('grupo');
 

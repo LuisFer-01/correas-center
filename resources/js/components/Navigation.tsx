@@ -15,7 +15,7 @@ export default function Navigation() {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const searchContainerRef = useRef<HTMLDivElement>(null);
 
-    // Obtener menús agrupados desde globals.menus
+    // ✅ CORREGIDO: Obtener menús agrupados desde globals.menus (ya ordenados)
     const menusProductos = menus?.Producto || [];
     const menusAplicaciones = menus?.Aplicacion || [];
     const menusServicios = menus?.Servicio || [];
@@ -55,9 +55,7 @@ export default function Navigation() {
     // Función para generar la URL del logo
     const getLogoUrl = () => {
         if (!empresa?.logo) return null;
-        // Si es una URL absoluta, usarla directamente
         if (empresa.logo.startsWith('http')) return empresa.logo;
-        // Si es una ruta relativa, agregar el prefijo storage/
         if (empresa.logo.startsWith('storage/')) {
             return `/storage/${empresa.logo.replace('storage/', '')}`;
         }
@@ -66,11 +64,25 @@ export default function Navigation() {
 
     const logoUrl = getLogoUrl();
 
+    // ✅ NUEVA FUNCIÓN: Obtener submenús desde detalle_menus
+    const getSubmenusForMenu = (menu: any) => {
+        if (!menu.detalle_menus || menu.detalle_menus.length === 0) {
+            return [];
+        }
+
+        // Los submenús ya vienen ordenados y filtrados por estado desde el backend
+        return menu.detalle_menus.map((detalle: any) => ({
+            id: detalle.id,
+            ruta: detalle.ruta,
+            orden: detalle.orden,
+        }));
+    };
+
     return (
         <nav className="fixed top-0 left-0 right-0 bg-[#b1001b] z-50 shadow-lg">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16 sm:h-18 md:h-20">
-                    {/* LOGO - Ahora usa la imagen de la BD */}
+                    {/* LOGO */}
                     <Link href="/" className="flex items-center cursor-pointer group flex-shrink-0">
                         <div className="relative h-10 w-auto sm:h-12 md:h-14 flex-shrink-0">
                             {logoUrl ? (
@@ -80,7 +92,6 @@ export default function Navigation() {
                                     className="h-full w-auto object-contain group-hover:scale-110 transition-transform duration-500"
                                 />
                             ) : (
-                                // Fallback si no hay logo
                                 <div className="h-full w-full bg-white rounded-full flex items-center justify-center text-[#b1001b] font-bold text-xl">
                                     CC
                                 </div>
@@ -116,7 +127,6 @@ export default function Navigation() {
                                     {searchQuery.length === 0 ? (
                                         <>
                                             <p className="px-4 py-2 text-xs text-gray-500 font-semibold uppercase">Productos populares</p>
-                                            {/* Productos populares desde la BD */}
                                             {productos_populares && productos_populares.length > 0 ? (
                                                 productos_populares.map((product: any) => (
                                                     <button
@@ -140,7 +150,7 @@ export default function Navigation() {
                             )}
                         </div>
 
-                        {/* PRODUCTOS - MEGA MENÚ con iconos de la BD */}
+                        {/* ✅ CORREGIDO: PRODUCTOS - MEGA MENÚ usando detalle_menus */}
                         <div className="relative" onMouseEnter={() => setShowProducts(true)} onMouseLeave={() => { setShowProducts(false); setActiveCategory(null); }}>
                             <button className="flex items-center gap-1 text-white hover:text-gray-200 transition-colors py-2 font-medium">
                                 Productos
@@ -149,9 +159,11 @@ export default function Navigation() {
                             <div className={`absolute top-full left-0 w-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 p-6 -translate-x-1/4 transition-all duration-300 max-h-[85vh] overflow-y-auto ${showProducts ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2 pointer-events-none'}`}>
                                 <div className="grid grid-cols-2 gap-4">
                                     {menusProductos.map((menu: any, index: number) => {
-                                        // Buscar el producto correspondiente
                                         const producto = productos.find((p: any) => p.id === menu.campo_id);
                                         if (!producto) return null;
+
+                                        // ✅ Obtener submenús desde detalle_menus
+                                        const submenus = getSubmenusForMenu(menu);
 
                                         return (
                                             <div key={menu.id} className="relative">
@@ -160,30 +172,33 @@ export default function Navigation() {
                                                     onClick={() => setActiveCategory(activeCategory === index ? null : index)}
                                                 >
                                                     <Link href={menu.ruta} className="flex items-center gap-2 font-bold text-[#EA0A2A] text-sm uppercase tracking-wide hover:underline">
-                                                        {/* Icono del menú desde la BD */}
                                                         {menu.icon && <Icon name={menu.icon} size="sm" className="text-[#EA0A2A]" />}
                                                         {producto.nombre}
                                                     </Link>
-                                                    <ChevronDown size={16} className={`text-[#EA0A2A] transition-transform duration-300 ${activeCategory === index ? 'rotate-180' : ''}`} />
+                                                    {submenus.length > 0 && (
+                                                        <ChevronDown size={16} className={`text-[#EA0A2A] transition-transform duration-300 ${activeCategory === index ? 'rotate-180' : ''}`} />
+                                                    )}
                                                 </div>
-                                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeCategory === index ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}`}>
-                                                    <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
-                                                        <ul className="space-y-1">
-                                                            {producto.categorias?.map((categoria: any, subIndex: number) => (
-                                                                <li key={subIndex}>
-                                                                    <Link
-                                                                        href={`/products/${producto.slug}/${categoria.slug}`}
-                                                                        className="flex items-center gap-2 text-gray-700 hover:text-[#EA0A2A] text-sm block py-1.5 px-3 rounded hover:bg-white transition-all"
-                                                                    >
-                                                                        {/* Icono del menú padre o genérico */}
-                                                                        {menu.icon && <Icon name={menu.icon} size="xs" className="text-[#EA0A2A]/60" />}
-                                                                        {categoria.nombre}
-                                                                    </Link>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
+                                                {submenus.length > 0 && (
+                                                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeCategory === index ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}`}>
+                                                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
+                                                            <ul className="space-y-1">
+                                                                {submenus.map((submenu: any) => (
+                                                                    <li key={submenu.id}>
+                                                                        <Link
+                                                                            href={submenu.ruta}
+                                                                            className="flex items-center gap-2 text-gray-700 hover:text-[#EA0A2A] text-sm block py-1.5 px-3 rounded hover:bg-white transition-all"
+                                                                        >
+                                                                            {menu.icon && <Icon name={menu.icon} size="xs" className="text-[#EA0A2A]/60" />}
+                                                                            {/* Extraer nombre de la ruta */}
+                                                                            {submenu.ruta.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                                                        </Link>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                )}
                                             </div>
                                         );
                                     })}
@@ -191,7 +206,7 @@ export default function Navigation() {
                             </div>
                         </div>
 
-                        {/* APLICACIONES con iconos de la BD */}
+                        {/* ✅ CORREGIDO: APLICACIONES usando detalle_menus */}
                         <div className="relative group">
                             <button className="flex items-center gap-1 text-white hover:text-gray-200 transition-colors py-2 font-medium">
                                 Aplicaciones
@@ -208,7 +223,6 @@ export default function Navigation() {
                                             href={menu.ruta}
                                             className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#EA0A2A] transition-colors"
                                         >
-                                            {/* Icono del menú desde la BD */}
                                             {menu.icon && <Icon name={menu.icon} size="sm" className="text-[#EA0A2A]" />}
                                             <span>{industria.nombre}</span>
                                         </Link>
@@ -217,7 +231,7 @@ export default function Navigation() {
                             </div>
                         </div>
 
-                        {/* SERVICIOS con iconos de la BD */}
+                        {/* ✅ CORREGIDO: SERVICIOS usando detalle_menus */}
                         <div className="relative group">
                             <button className="flex items-center gap-1 text-white hover:text-gray-200 transition-colors py-2 font-medium">
                                 Servicios
@@ -234,7 +248,6 @@ export default function Navigation() {
                                             href={menu.ruta}
                                             className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#EA0A2A] transition-colors"
                                         >
-                                            {/* Icono del menú desde la BD */}
                                             {menu.icon && <Icon name={menu.icon} size="sm" className="text-[#EA0A2A]" />}
                                             <span>{servicio.nombre}</span>
                                         </Link>
@@ -275,12 +288,14 @@ export default function Navigation() {
                             </form>
                             <div className="border-t border-white/20"></div>
 
-                            {/* Productos acordeón con iconos */}
+                            {/* ✅ CORREGIDO: Productos acordeón usando detalle_menus */}
                             <div className="space-y-1">
                                 <p className="text-white font-bold text-xs uppercase tracking-wider px-2 py-2">Productos</p>
                                 {menusProductos.map((menu: any, index: number) => {
                                     const producto = productos.find((p: any) => p.id === menu.campo_id);
                                     if (!producto) return null;
+
+                                    const submenus = getSubmenusForMenu(menu);
 
                                     return (
                                         <div key={menu.id} className="rounded-md overflow-hidden">
@@ -292,37 +307,41 @@ export default function Navigation() {
                                                     {menu.icon && <Icon name={menu.icon} size="sm" />}
                                                     {producto.nombre}
                                                 </span>
-                                                <ChevronDown size={16} className={`text-white/80 transition-transform duration-300 ${mobileActiveCategory === index ? 'rotate-180' : ''}`} />
+                                                {submenus.length > 0 && (
+                                                    <ChevronDown size={16} className={`text-white/80 transition-transform duration-300 ${mobileActiveCategory === index ? 'rotate-180' : ''}`} />
+                                                )}
                                             </button>
-                                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveCategory === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                <div className="bg-black/20 pl-4 py-2 space-y-1">
-                                                    <Link
-                                                        href={menu.ruta}
-                                                        className="block text-white/90 hover:text-white hover:bg-white/10 py-2 px-3 text-sm rounded transition-all font-semibold"
-                                                        onClick={() => setIsOpen(false)}
-                                                    >
-                                                        Ver todo →
-                                                    </Link>
-                                                    {producto.categorias?.map((categoria: any, subIndex: number) => (
+                                            {submenus.length > 0 && (
+                                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveCategory === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                                    <div className="bg-black/20 pl-4 py-2 space-y-1">
                                                         <Link
-                                                            key={subIndex}
-                                                            href={`/products/${producto.slug}/${categoria.slug}`}
-                                                            className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 py-2 px-3 text-sm rounded transition-all"
+                                                            href={menu.ruta}
+                                                            className="block text-white/90 hover:text-white hover:bg-white/10 py-2 px-3 text-sm rounded transition-all font-semibold"
                                                             onClick={() => setIsOpen(false)}
                                                         >
-                                                            {menu.icon && <Icon name={menu.icon} size="xs" className="text-white/60" />}
-                                                            <span>• {categoria.nombre}</span>
+                                                            Ver todo →
                                                         </Link>
-                                                    ))}
+                                                        {submenus.map((submenu: any) => (
+                                                            <Link
+                                                                key={submenu.id}
+                                                                href={submenu.ruta}
+                                                                className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 py-2 px-3 text-sm rounded transition-all"
+                                                                onClick={() => setIsOpen(false)}
+                                                            >
+                                                                {menu.icon && <Icon name={menu.icon} size="xs" className="text-white/60" />}
+                                                                <span>• {submenu.ruta.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                                                            </Link>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
                                         </div>
                                     );
                                 })}
                             </div>
                             <div className="border-t border-white/20"></div>
 
-                            {/* Aplicaciones con iconos */}
+                            {/* ✅ CORRECTO: Aplicaciones (no necesitan submenús) */}
                             <div className="space-y-1">
                                 <p className="text-white font-bold text-xs uppercase tracking-wider px-2 py-2">Aplicaciones</p>
                                 {menusAplicaciones.map((menu: any) => {
@@ -344,7 +363,7 @@ export default function Navigation() {
                             </div>
                             <div className="border-t border-white/20"></div>
 
-                            {/* Servicios con iconos */}
+                            {/* ✅ CORRECTO: Servicios (no necesitan submenús) */}
                             <div className="space-y-1">
                                 <p className="text-white font-bold text-xs uppercase tracking-wider px-2 py-2">Servicios</p>
                                 {menusServicios.map((menu: any) => {
