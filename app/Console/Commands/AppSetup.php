@@ -16,7 +16,7 @@ class AppSetup extends Command
         $this->newLine();
 
         // Paso 1: Migrar y seedear
-        $this->info('📦 Paso 1/3: Ejecutando migrate:fresh --seed...');
+        $this->info('📦 Paso 1/4: Ejecutando migrate:fresh --seed...');
         $exitCode = Artisan::call('migrate:fresh', [
             '--seed' => true,
             '--force' => $this->option('force'),
@@ -32,7 +32,7 @@ class AppSetup extends Command
         $this->newLine();
 
         // Paso 2: Sincronizar diferenciales
-        $this->info('🔄 Paso 2/3: Sincronizando diferenciales hacia estadísticas...');
+        $this->info('🔄 Paso 2/4: Sincronizando diferenciales hacia estadísticas...');
         $exitCode = Artisan::call('diferencials:sync');
 
         if ($exitCode !== 0) {
@@ -43,8 +43,20 @@ class AppSetup extends Command
         $this->info(Artisan::output());
         $this->newLine();
 
+        // Paso 3: Sincronizar PorqueElegirnos
+        $this->info('🔄 Paso 3/4: Sincronizando PorqueElegirnos hacia porque_elegirnos...');
+        $exitCode = Artisan::call('porque-elegirnos:sync');
+
+        if ($exitCode !== 0) {
+            $this->error(' Error al sincronizar PorqueElegirnos');
+            $this->line(Artisan::output());
+            return Command::FAILURE;
+        }
+        $this->info(Artisan::output());
+        $this->newLine();
+
         // Paso 3: Limpiar caché
-        $this->info('🧹 Paso 3/3: Limpiando caché...');
+        $this->info('🧹 Paso 4/4: Limpiando caché...');
         Artisan::call('config:clear');
         Artisan::call('cache:clear');
         Artisan::call('view:clear');

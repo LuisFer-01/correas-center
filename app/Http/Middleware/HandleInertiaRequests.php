@@ -246,7 +246,7 @@ class HandleInertiaRequests extends Middleware
             ->get();
 
         // ✅ Eliminado: footer_estadisticas (ahora viene de registros_about)
-        $footerPorqueElegirnos = FooterPorqueElegirnos::activos()->ordenados()->get();
+        // $footerPorqueElegirnos = FooterPorqueElegirnos::activos()->ordenados()->get();
 
         return [
             ...parent::share($request),
@@ -277,7 +277,7 @@ class HandleInertiaRequests extends Middleware
                 'footer_industrias' => $footerIndustrias,
                 'footer_servicios' => $footerServicios,
                 'footer_redes_sociales' => $footerRedesSociales,
-                'footer_porque_elegirnos' => $footerPorqueElegirnos,
+                //'footer_porque_elegirnos' => $footerPorqueElegirnos,
                 'whatsapp' => [
                     'numero' => '59177306576',
                     'mensaje' => 'Hola, necesito información sobre sus productos y servicios',

@@ -10,9 +10,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use App\Models\Medida;
 use App\Models\Hero;
+use App\Models\PorqueElegirnos;
 use App\Observers\DiferencialObserver;
 use App\Observers\MedidaObserver;
 use App\Observers\HeroObserver;
+use App\Observers\PorqueElegirnosObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Medida::observe(MedidaObserver::class);
         Hero::observe(HeroObserver::class);
         Diferencial::observe(DiferencialObserver::class);
+        PorqueElegirnos::observe(PorqueElegirnosObserver::class);
         $this->configureDefaults();
     }
 

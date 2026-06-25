@@ -15,7 +15,7 @@ class DetalleRegistroSeeder extends Seeder
         $empresa = Empresa::first();
 
         if (!$empresa) {
-            $this->command->error(" No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
+            $this->command->error("❌ No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
             return;
         }
 
@@ -59,37 +59,14 @@ class DetalleRegistroSeeder extends Seeder
             }
         }
 
-        // Por Qué Elegirnos
-        $porque = Registro::where('identificador', 'porque_elegirnos')->first();
-        if ($porque) {
-            $porqueItems = [
-                ['titulo' => 'Calidad Garantizada', 'descripcion' => 'Productos de las mejores marcas internacionales con garantía de calidad', 'icono' => 'CheckCircle2', 'orden' => 1],
-                ['titulo' => 'Asesoría Técnica Especializada', 'descripcion' => 'Equipo técnico capacitado para brindarte la mejor solución', 'icono' => 'CheckCircle2', 'orden' => 2],
-                ['titulo' => 'Cobertura Nacional', 'descripcion' => '4 sucursales estratégicamente ubicadas para atenderte mejor', 'icono' => 'CheckCircle2', 'orden' => 3],
-                ['titulo' => 'Entregas Rápidas', 'descripcion' => 'Amplio inventario para entregas inmediatas en todo Bolivia', 'icono' => 'CheckCircle2', 'orden' => 4],
-                ['titulo' => 'Fabricante Autorizado SKF', 'descripcion' => 'Únicos autorizados para fabricar sellos SKF en Bolivia', 'icono' => 'CheckCircle2', 'orden' => 5],
-                ['titulo' => 'Servicio Personalizado', 'descripcion' => 'Soluciones a medida para cada cliente y cada industria', 'icono' => 'CheckCircle2', 'orden' => 6],
-            ];
-            foreach ($porqueItems as $item) {
-                DetalleRegistro::updateOrCreate(
-                    [
-                        'empresa_id' => $empresa->id,
-                        'registro_id' => $porque->id,
-                        'titulo' => $item['titulo'],
-                    ],
-                    [
-                        'descripcion' => $item['descripcion'],
-                        'icono' => $item['icono'],
-                        'orden' => $item['orden'],
-                        'estado' => 'activo',
-                    ]
-                );
-            }
-        }
-
-        // ✅ Estadísticas: Sincronizar desde Diferencial usando el comando artisan
+        // ✅ Estadísticas: Sincronizar desde Diferencial
         $this->command->info("🔄 Sincronizando estadísticas desde Diferencial...");
         Artisan::call('diferencials:sync');
+        $this->command->info(Artisan::output());
+
+        // ✅ Por Qué Elegirnos: Sincronizar desde PorqueElegirnos
+        $this->command->info("🔄 Sincronizando 'Por qué elegirnos'...");
+        Artisan::call('porque-elegirnos:sync');
         $this->command->info(Artisan::output());
 
         $this->command->info("✅ Detalles de registro creados/sincronizados correctamente");

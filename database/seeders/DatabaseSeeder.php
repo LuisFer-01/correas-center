@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             InfraestructuraSeeder::class,
             PasoWizardSeeder::class,
             FooterSeeder::class,
-            FooterPorqueElegirnosSeeder::class,
+            PorqueElegirnosSeeder::class,
         ]);
     }
 }
