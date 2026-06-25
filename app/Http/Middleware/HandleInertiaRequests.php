@@ -16,11 +16,10 @@ use App\Models\CaracteristicaInfraestructura;
 use App\Models\CapacidadInfraestructura;
 use App\Models\PasoWizard;
 use App\Models\Marca;
+use App\Models\Footer;
 use App\Models\FooterPorqueElegirnos;
-use App\Models\FooterEstadistica;
 use App\Models\Registro;
 use App\Models\DetalleRegistro;
-use App\Models\Footer;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,7 +39,7 @@ class HandleInertiaRequests extends Middleware
         if ($empresa) {
             $registrosAbout = Registro::with(['detalleRegistros' => function($query) {
                     $query->where('estado', 'activo')
-                        ->orderBy('orden', 'asc');
+                          ->orderBy('orden', 'asc');
                 }])
                 ->where('estado', 'activo')
                 ->orderBy('orden', 'asc')
@@ -78,47 +77,47 @@ class HandleInertiaRequests extends Middleware
             ->groupBy('grupo');
 
         $productos = Producto::with([
-            'categorias' => function($query) {
-                $query->where('categorias.estado', 'activo')
-                    ->orderBy('categorias.orden');
-            },
-            'marcas' => function($query) {
-                $query->where('marcas.estado', 'activo');
-            }
-        ])
-        ->where('estado', 'activo')
-        ->orderBy('orden')
-        ->get()
-        ->map(function ($producto) {
-            $primeraCategoria = $producto->categorias->first();
-            return [
-                'id' => $producto->id,
-                'nombre' => $producto->nombre,
-                'slug' => $producto->slug,
-                'imagen' => $producto->imagen_url,
-                'orden' => $producto->orden,
-                'categorias' => $producto->categorias->map(function ($categoria) {
-                    return [
-                        'id' => $categoria->id,
-                        'nombre' => $categoria->nombre,
-                        'slug' => $categoria->slug,
-                        'imagen' => $categoria->imagen_url,
-                        'uso' => $categoria->uso,
-                        'descripcion_corta' => $categoria->descripcion_corta,
-                        'descripcion' => $categoria->descripcion,
-                    ];
-                }),
-                'marcas' => $producto->marcas->map(function ($marca) {
-                    return [
-                        'id' => $marca->id,
-                        'nombre' => $marca->nombre,
-                        'logo' => $marca->logo_url, // ✅ Usar accessor
-                    ];
-                }),
-                'uso' => $primeraCategoria?->uso ?? '',
-                'descripcion_corta' => $primeraCategoria?->descripcion_corta ?? '',
-            ];
-        });
+                'categorias' => function($query) {
+                    $query->where('categorias.estado', 'activo')
+                          ->orderBy('categorias.orden');
+                },
+                'marcas' => function($query) {
+                    $query->where('marcas.estado', 'activo');
+                }
+            ])
+            ->where('estado', 'activo')
+            ->orderBy('orden')
+            ->get()
+            ->map(function ($producto) {
+                $primeraCategoria = $producto->categorias->first();
+                return [
+                    'id' => $producto->id,
+                    'nombre' => $producto->nombre,
+                    'slug' => $producto->slug,
+                    'imagen' => $producto->imagen_url,
+                    'orden' => $producto->orden,
+                    'categorias' => $producto->categorias->map(function ($categoria) {
+                        return [
+                            'id' => $categoria->id,
+                            'nombre' => $categoria->nombre,
+                            'slug' => $categoria->slug,
+                            'imagen' => $categoria->imagen_url,
+                            'uso' => $categoria->uso,
+                            'descripcion_corta' => $categoria->descripcion_corta,
+                            'descripcion' => $categoria->descripcion,
+                        ];
+                    }),
+                    'marcas' => $producto->marcas->map(function ($marca) {
+                        return [
+                            'id' => $marca->id,
+                            'nombre' => $marca->nombre,
+                            'logo' => $marca->logo_url,
+                        ];
+                    }),
+                    'uso' => $primeraCategoria?->uso ?? '',
+                    'descripcion_corta' => $primeraCategoria?->descripcion_corta ?? '',
+                ];
+            });
 
         $productosPopulares = Producto::with(['marcas' => function($query) {
                 $query->where('marcas.estado', 'activo');
@@ -136,13 +135,13 @@ class HandleInertiaRequests extends Middleware
             });
 
         $todasLasMarcas = Marca::where('estado', 'activo')
-            ->orderBy('orden') // ✅ Ordenar por campo orden
+            ->orderBy('orden')
             ->get()
             ->map(function ($marca) {
                 return [
                     'id' => $marca->id,
                     'nombre' => $marca->nombre,
-                    'logo' => $marca->logo_url, // ✅ Usar accessor
+                    'logo' => $marca->logo_url,
                 ];
             });
 
@@ -208,11 +207,17 @@ class HandleInertiaRequests extends Middleware
                 ];
             });
 
-        $diferenciales = Diferencial::activos()->ordenados()->get();
+        // ✅ Diferenciales filtrados por empresa
+        $diferenciales = Diferencial::where('empresa_id', $empresa?->id)
+            ->activos()
+            ->ordenados()
+            ->get();
+
         $caracteristicasInfraestructura = CaracteristicaInfraestructura::activos()->ordenados()->get();
         $capacidadesInfraestructura = CapacidadInfraestructura::activos()->ordenados()->get();
         $pasosWizard = PasoWizard::activos()->ordenados()->get();
 
+        // Footer
         $footerProductos = Footer::where('empresa_id', $empresa?->id)
             ->where('tipo', 'producto')
             ->activos()
@@ -240,8 +245,8 @@ class HandleInertiaRequests extends Middleware
             ->ordenados()
             ->get();
 
+        // ✅ Eliminado: footer_estadisticas (ahora viene de registros_about)
         $footerPorqueElegirnos = FooterPorqueElegirnos::activos()->ordenados()->get();
-        $footerEstadisticas = FooterEstadistica::activos()->ordenados()->get();
 
         return [
             ...parent::share($request),
@@ -273,13 +278,11 @@ class HandleInertiaRequests extends Middleware
                 'footer_servicios' => $footerServicios,
                 'footer_redes_sociales' => $footerRedesSociales,
                 'footer_porque_elegirnos' => $footerPorqueElegirnos,
-                'footer_estadisticas' => $footerEstadisticas,
                 'whatsapp' => [
                     'numero' => '59177306576',
                     'mensaje' => 'Hola, necesito información sobre sus productos y servicios',
                 ],
             ],
-            // NUEVO: Compartir registros específicamente para la página About
             'registros_about' => $registrosAbout,
         ];
     }

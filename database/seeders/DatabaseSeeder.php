@@ -44,7 +44,6 @@ class DatabaseSeeder extends Seeder
             PasoWizardSeeder::class,
             FooterSeeder::class,
             FooterPorqueElegirnosSeeder::class,
-            FooterEstadisticaSeeder::class,
         ]);
     }
 }

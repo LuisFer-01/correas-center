@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Diferencial;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use App\Models\Medida;
 use App\Models\Hero;
+use App\Observers\DiferencialObserver;
 use App\Observers\MedidaObserver;
 use App\Observers\HeroObserver;
 
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Medida::observe(MedidaObserver::class);
         Hero::observe(HeroObserver::class);
+        Diferencial::observe(DiferencialObserver::class);
         $this->configureDefaults();
     }
 

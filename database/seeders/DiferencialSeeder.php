@@ -2,13 +2,21 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Diferencial;
+use App\Models\Empresa;
+use Illuminate\Database\Seeder;
 
 class DiferencialSeeder extends Seeder
 {
     public function run(): void
     {
+        $empresa = Empresa::first();
+
+        if (!$empresa) {
+            $this->command->error("❌ No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
+            return;
+        }
+
         $diferenciales = [
             [
                 'titulo' => '+25 Años',
@@ -51,10 +59,13 @@ class DiferencialSeeder extends Seeder
         $orden = 1;
         foreach ($diferenciales as $diferencial) {
             Diferencial::create([
+                'empresa_id' => $empresa->id,
                 ...$diferencial,
                 'orden' => $orden++,
                 'estado' => 'activo',
             ]);
         }
+
+        $this->command->info("✅ " . count($diferenciales) . " diferenciales creados");
     }
 }

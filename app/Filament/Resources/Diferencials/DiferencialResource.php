@@ -21,9 +21,9 @@ class DiferencialResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 11;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Landing Page';
+    protected static string|UnitEnum|null $navigationGroup = 'Contenido y Comunicación';
 
     public static function getNavigationLabel(): string
     {

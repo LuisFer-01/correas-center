@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('titulo', 'subtitulo', 'descripcion', 'icon', 'orden', 'estado',)]
+#[Fillable('empresa_id', 'titulo', 'subtitulo', 'descripcion', 'icon', 'orden', 'estado')]
 class Diferencial extends Model
 {
     protected $table = 'diferenciales';
 
     protected $casts = [
         'orden' => 'integer',
+        'estado' => 'string',
     ];
 
     public function scopeActivos($query)

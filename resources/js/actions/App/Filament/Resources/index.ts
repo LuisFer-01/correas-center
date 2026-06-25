@@ -2,6 +2,7 @@ import CapacidadInfraestructuras from './CapacidadInfraestructuras'
 import CaracteristicaInfraestructuras from './CaracteristicaInfraestructuras'
 import Diferencials from './Diferencials'
 import Empresas from './Empresas'
+import Footers from './Footers'
 import Heroes from './Heroes'
 import Marcas from './Marcas'
 import Menus from './Menus'
@@ -13,6 +14,7 @@ const Resources = {
 CaracteristicaInfraestructuras: Object.assign(CaracteristicaInfraestructuras, CaracteristicaInfraestructuras),
 Diferencials: Object.assign(Diferencials, Diferencials),
 Empresas: Object.assign(Empresas, Empresas),
+Footers: Object.assign(Footers, Footers),
 Heroes: Object.assign(Heroes, Heroes),
 Marcas: Object.assign(Marcas, Marcas),
 Menus: Object.assign(Menus, Menus),

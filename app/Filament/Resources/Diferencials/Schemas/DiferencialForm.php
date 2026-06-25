@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Diferencials\Schemas;
 
 use App\Filament\Traits\HasLucideIcons;
 use App\Models\Diferencial;
+use App\Models\Empresa;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -18,8 +19,16 @@ class DiferencialForm
         return $schema
             ->components([
                 Section::make('Información del Diferencial')
-                    ->description('Datos que se mostrarán en la sección "Por qué elegirnos"')
+                    ->description('Datos que se mostrarán en la sección de diferenciales')
                     ->schema([
+                        Select::make('empresa_id')
+                            ->label('Empresa')
+                            ->options(Empresa::pluck('nombre', 'id'))
+                            ->default(Empresa::first()?->id)
+                            ->required()
+                            ->searchable()
+                            ->helperText('Selecciona la empresa a la que pertenece este diferencial'),
+
                         TextInput::make('titulo')
                             ->label('Título')
                             ->required()
@@ -42,13 +51,14 @@ class DiferencialForm
                             ->placeholder('Descripción detallada del diferencial')
                             ->helperText('Descripción que aparecerá debajo del título y subtítulo'),
 
-                        Select::make('icon')
+                        TextInput::make('icon')
                             ->label('Icono')
-                            ->options(self::getLucideIcons())
-                            ->searchable()
                             ->required()
-                            ->default('CheckCircle2')
-                            ->helperText('Selecciona el icono que se mostrará en el diferencial'),
+                            ->maxLength(100)
+                            ->placeholder('Ej: Clock, Award, Package')
+                            ->helperText('Nombre del icono de Lucide (ej: Clock, Award, Package)')
+                            ->hint('Usa nombres de iconos de Lucide React')
+                            ->hintIcon('heroicon-o-information-circle'),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),

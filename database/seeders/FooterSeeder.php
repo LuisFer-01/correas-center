@@ -63,8 +63,8 @@ class FooterSeeder extends Seeder
         $redesSociales = [
             ['titulo' => 'Facebook', 'url' => 'https://www.facebook.com/CorreasCenterLtda', 'icono' => 'faFacebookF', 'orden' => 1],
             ['titulo' => 'Instagram', 'url' => 'https://www.instagram.com/correascenterltda', 'icono' => 'faInstagram', 'orden' => 2],
-            ['titulo' => 'TikTok', 'url' => '#', 'icono' => 'faTiktok', 'orden' => 3],
-            ['titulo' => 'YouTube', 'url' => '#', 'icono' => 'faYoutube', 'orden' => 4],
+            ['titulo' => 'TikTok', 'url' => 'https://www.tiktok.com/@correas.center.ltda', 'icono' => 'faTiktok', 'orden' => 3],
+            ['titulo' => 'YouTube', 'url' => 'https://www.youtube.com/@CorreasCenterLtda', 'icono' => 'faYoutube', 'orden' => 4],
         ];
 
         foreach ($redesSociales as $red) {

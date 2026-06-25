@@ -6,6 +6,7 @@ use App\Models\DetalleRegistro;
 use App\Models\Empresa;
 use App\Models\Registro;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DetalleRegistroSeeder extends Seeder
 {
@@ -14,26 +15,8 @@ class DetalleRegistroSeeder extends Seeder
         $empresa = Empresa::first();
 
         if (!$empresa) {
-            $this->command->error("❌ No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
+            $this->command->error(" No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
             return;
-        }
-
-        // Estadísticas
-        $estadisticas = Registro::where('identificador', 'estadisticas')->first();
-        if ($estadisticas) {
-            $stats = [
-                ['titulo' => '+25 Años', 'subtitulo' => 'De experiencia en el mercado boliviano', 'icono' => 'Clock', 'orden' => 1],
-                ['titulo' => '1000+', 'subtitulo' => 'Clientes satisfechos en todo el país', 'icono' => 'Users', 'orden' => 2],
-                ['titulo' => 'SKF', 'subtitulo' => 'Fabricante autorizado exclusivo', 'icono' => 'Award', 'orden' => 3],
-            ];
-            foreach ($stats as $stat) {
-                DetalleRegistro::create([
-                    'empresa_id' => $empresa->id,
-                    'registro_id' => $estadisticas->id,
-                    ...$stat,
-                    'estado' => 'activo',
-                ]);
-            }
         }
 
         // Filosofía Corporativa (Visión, Misión, Valores)
@@ -60,12 +43,19 @@ class DetalleRegistroSeeder extends Seeder
                 ],
             ];
             foreach ($filosofiaItems as $item) {
-                DetalleRegistro::create([
-                    'empresa_id' => $empresa->id,
-                    'registro_id' => $filosofia->id,
-                    ...$item,
-                    'estado' => 'activo',
-                ]);
+                DetalleRegistro::updateOrCreate(
+                    [
+                        'empresa_id' => $empresa->id,
+                        'registro_id' => $filosofia->id,
+                        'titulo' => $item['titulo'],
+                    ],
+                    [
+                        'descripcion' => $item['descripcion'],
+                        'icono' => $item['icono'],
+                        'orden' => $item['orden'],
+                        'estado' => 'activo',
+                    ]
+                );
             }
         }
 
@@ -81,15 +71,27 @@ class DetalleRegistroSeeder extends Seeder
                 ['titulo' => 'Servicio Personalizado', 'descripcion' => 'Soluciones a medida para cada cliente y cada industria', 'icono' => 'CheckCircle2', 'orden' => 6],
             ];
             foreach ($porqueItems as $item) {
-                DetalleRegistro::create([
-                    'empresa_id' => $empresa->id,
-                    'registro_id' => $porque->id,
-                    ...$item,
-                    'estado' => 'activo',
-                ]);
+                DetalleRegistro::updateOrCreate(
+                    [
+                        'empresa_id' => $empresa->id,
+                        'registro_id' => $porque->id,
+                        'titulo' => $item['titulo'],
+                    ],
+                    [
+                        'descripcion' => $item['descripcion'],
+                        'icono' => $item['icono'],
+                        'orden' => $item['orden'],
+                        'estado' => 'activo',
+                    ]
+                );
             }
         }
 
-        $this->command->info("✅ Detalles de registro creados correctamente");
+        // ✅ Estadísticas: Sincronizar desde Diferencial usando el comando artisan
+        $this->command->info("🔄 Sincronizando estadísticas desde Diferencial...");
+        Artisan::call('diferencials:sync');
+        $this->command->info(Artisan::output());
+
+        $this->command->info("✅ Detalles de registro creados/sincronizados correctamente");
     }
 }
