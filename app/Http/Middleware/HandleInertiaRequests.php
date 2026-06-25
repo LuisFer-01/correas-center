@@ -16,11 +16,11 @@ use App\Models\CaracteristicaInfraestructura;
 use App\Models\CapacidadInfraestructura;
 use App\Models\PasoWizard;
 use App\Models\Marca;
-use App\Models\FooterConfiguracion;
 use App\Models\FooterPorqueElegirnos;
 use App\Models\FooterEstadistica;
 use App\Models\Registro;
 use App\Models\DetalleRegistro;
+use App\Models\Footer;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -213,25 +213,29 @@ class HandleInertiaRequests extends Middleware
         $capacidadesInfraestructura = CapacidadInfraestructura::activos()->ordenados()->get();
         $pasosWizard = PasoWizard::activos()->ordenados()->get();
 
-        $footerProductos = FooterConfiguracion::where('tipo', 'producto')
+        $footerProductos = Footer::where('empresa_id', $empresa?->id)
+            ->where('tipo', 'producto')
             ->activos()
             ->ordenados()
             ->with('producto')
             ->get();
 
-        $footerIndustrias = FooterConfiguracion::where('tipo', 'industria')
+        $footerIndustrias = Footer::where('empresa_id', $empresa?->id)
+            ->where('tipo', 'industria')
             ->activos()
             ->ordenados()
             ->with('industria')
             ->get();
 
-        $footerServicios = FooterConfiguracion::where('tipo', 'servicio')
+        $footerServicios = Footer::where('empresa_id', $empresa?->id)
+            ->where('tipo', 'servicio')
             ->activos()
             ->ordenados()
             ->with('servicio')
             ->get();
 
-        $footerRedesSociales = FooterConfiguracion::where('tipo', 'red_social')
+        $footerRedesSociales = Footer::where('empresa_id', $empresa?->id)
+            ->where('tipo', 'red_social')
             ->activos()
             ->ordenados()
             ->get();

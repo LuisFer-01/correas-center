@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -43,7 +42,7 @@ class DatabaseSeeder extends Seeder
             DiferencialSeeder::class,
             InfraestructuraSeeder::class,
             PasoWizardSeeder::class,
-            FooterConfiguracionSeeder::class,
+            FooterSeeder::class,
             FooterPorqueElegirnosSeeder::class,
             FooterEstadisticaSeeder::class,
         ]);

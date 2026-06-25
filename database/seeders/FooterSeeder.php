@@ -2,17 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Models\FooterConfiguracion;
+use App\Models\Empresa;
+use App\Models\Footer;
+use App\Models\Industria;
+use App\Models\Producto;
+use App\Models\Servicio;
 use Illuminate\Database\Seeder;
 
-class FooterConfiguracionSeeder extends Seeder
+class FooterSeeder extends Seeder
 {
     public function run(): void
     {
+        $empresa = Empresa::first();
+
+        if (!$empresa) {
+            $this->command->error(" No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
+            return;
+        }
+
         // Productos (primeros 7)
-        $productos = \App\Models\Producto::where('estado', 'activo')->orderBy('orden')->limit(7)->get();
+        $productos = Producto::where('estado', 'activo')->orderBy('orden')->limit(7)->get();
         foreach ($productos as $index => $producto) {
-            FooterConfiguracion::create([
+            Footer::create([
+                'empresa_id' => $empresa->id,
                 'tipo' => 'producto',
                 'campo_id' => $producto->id,
                 'orden' => $index + 1,
@@ -22,9 +34,10 @@ class FooterConfiguracionSeeder extends Seeder
         }
 
         // Industrias (primeras 5)
-        $industrias = \App\Models\Industria::where('estado', 'activo')->orderBy('orden')->limit(5)->get();
+        $industrias = Industria::where('estado', 'activo')->orderBy('orden')->limit(5)->get();
         foreach ($industrias as $index => $industria) {
-            FooterConfiguracion::create([
+            Footer::create([
+                'empresa_id' => $empresa->id,
                 'tipo' => 'industria',
                 'campo_id' => $industria->id,
                 'orden' => $index + 1,
@@ -34,9 +47,10 @@ class FooterConfiguracionSeeder extends Seeder
         }
 
         // Servicios (primeros 4)
-        $servicios = \App\Models\Servicio::where('estado', 'activo')->limit(4)->get();
+        $servicios = Servicio::where('estado', 'activo')->limit(4)->get();
         foreach ($servicios as $index => $servicio) {
-            FooterConfiguracion::create([
+            Footer::create([
+                'empresa_id' => $empresa->id,
                 'tipo' => 'servicio',
                 'campo_id' => $servicio->id,
                 'orden' => $index + 1,
@@ -53,8 +67,9 @@ class FooterConfiguracionSeeder extends Seeder
             ['titulo' => 'YouTube', 'url' => '#', 'icono' => 'faYoutube', 'orden' => 4],
         ];
 
-        foreach ($redesSociales as $index => $red) {
-            FooterConfiguracion::create([
+        foreach ($redesSociales as $red) {
+            Footer::create([
+                'empresa_id' => $empresa->id,
                 'tipo' => 'red_social',
                 'titulo' => $red['titulo'],
                 'url' => $red['url'],
@@ -64,5 +79,7 @@ class FooterConfiguracionSeeder extends Seeder
                 'estado' => 'activo',
             ]);
         }
+
+        $this->command->info("✅ Footer creado correctamente con " . Footer::count() . " elementos");
     }
 }
