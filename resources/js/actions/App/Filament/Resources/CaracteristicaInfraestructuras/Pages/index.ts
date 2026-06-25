@@ -1,0 +1,10 @@
+import ListCaracteristicaInfraestructuras from './ListCaracteristicaInfraestructuras'
+import CreateCaracteristicaInfraestructura from './CreateCaracteristicaInfraestructura'
+import EditCaracteristicaInfraestructura from './EditCaracteristicaInfraestructura'
+const Pages = {
+    ListCaracteristicaInfraestructuras: Object.assign(ListCaracteristicaInfraestructuras, ListCaracteristicaInfraestructuras),
+CreateCaracteristicaInfraestructura: Object.assign(CreateCaracteristicaInfraestructura, CreateCaracteristicaInfraestructura),
+EditCaracteristicaInfraestructura: Object.assign(EditCaracteristicaInfraestructura, EditCaracteristicaInfraestructura),
+}
+
+export default Pages

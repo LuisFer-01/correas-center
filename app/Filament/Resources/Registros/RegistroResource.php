@@ -28,17 +28,17 @@ class RegistroResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Registros Corporativos';
+        return 'Secciones del About';
     }
 
     public static function getModelLabel(): string
     {
-        return 'Registro';
+        return 'Sección';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Registros';
+        return 'Secciones';
     }
 
     public static function form(Schema $schema): Schema

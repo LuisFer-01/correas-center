@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Registros\Schemas;
 
+use App\Models\Registro;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -14,23 +15,42 @@ class RegistroForm
     {
         return $schema
             ->components([
-                Section::make('Información del Registro')
-                    ->description('Datos que se mostrarán en la página About (Visión, Misión, Valores)')
+                Section::make('Configuración de la Sección')
+                    ->description('Define la sección de la página "Acerca de"')
                     ->schema([
+                        Select::make('identificador')
+                            ->label('Identificador de Sección')
+                            ->options([
+                                'header' => 'Header (Título principal y badge)',
+                                'introduccion' => 'Introducción (Texto principal)',
+                                'estadisticas' => 'Estadísticas (Números destacados)',
+                                'filosofia' => 'Filosofía Corporativa (Visión, Misión, Valores)',
+                                'porque_elegirnos' => '¿Por qué elegirnos? (Lista de beneficios)',
+                            ])
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->helperText('Este identificador conecta la sección con el diseño del frontend.'),
+
                         TextInput::make('nombre')
-                            ->label('Nombre del Registro')
+                            ->label('Título de la Sección')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Ej: Visión, Misión, Valores')
-                            ->helperText('Nombre que identificará este registro corporativo'),
+                            ->placeholder('Ej: Nuestra Filosofía Corporativa')
+                            ->helperText('Título visible en la página (ej. "Nuestra Filosofía")'),
 
                         Textarea::make('descripcion')
-                            ->label('Descripción')
+                            ->label('Descripción / Subtítulo')
+                            ->rows(3)
+                            ->maxLength(500)
+                            ->placeholder('Descripción breve que aparece debajo del título...')
+                            ->helperText('Texto secundario o descripción general de la sección.'),
+
+                        TextInput::make('orden')
+                            ->label('Orden de Visualización')
+                            ->numeric()
                             ->required()
-                            ->rows(5)
-                            ->maxLength(1000)
-                            ->placeholder('Describe la visión, misión o valores de la empresa...')
-                            ->helperText('Contenido detallado que se mostrará en la página About'),
+                            ->default(fn () => (Registro::max('orden') ?? 0) + 1)
+                            ->helperText('Orden en el que aparece la sección en la página.'),
 
                         Select::make('estado')
                             ->label('Estado')
@@ -39,10 +59,9 @@ class RegistroForm
                                 'inactivo' => 'Inactivo',
                             ])
                             ->default('activo')
-                            ->required()
-                            ->helperText('Solo los registros activos se mostrarán en el sitio web'),
+                            ->required(),
                     ])
-                    ->columns(1)
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }

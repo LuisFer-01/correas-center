@@ -16,23 +16,33 @@ class RegistrosTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('orden', 'asc')
+            ->reorderable('orden')
             ->columns([
+                TextColumn::make('orden')
+                    ->label('Orden')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter()
+                    ->toggleable(),
+
+                TextColumn::make('identificador')
+                    ->label('ID Sección')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->formatStateUsing(fn (string $state) => ucfirst($state)),
+
                 TextColumn::make('nombre')
-                    ->label('Nombre')
+                    ->label('Título')
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
-                    ->badge()
-                    ->color('info'),
-
-                TextColumn::make('descripcion')
-                    ->label('Descripción')
-                    ->searchable()
-                    ->limit(80)
-                    ->tooltip(fn ($record) => $record->descripcion),
+                    ->limit(40),
 
                 TextColumn::make('detalle_registros_count')
-                    ->label('Asignaciones')
+                    ->label('Elementos')
                     ->counts('detalleRegistros')
                     ->badge()
                     ->color('primary')
@@ -46,18 +56,6 @@ class RegistrosTable
                     ->trueColor('success')
                     ->falseColor('danger')
                     ->sortable(),
-
-                TextColumn::make('created_at')
-                    ->label('Creado')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('updated_at')
-                    ->label('Actualizado')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('estado')
@@ -68,57 +66,25 @@ class RegistrosTable
                     ]),
             ])
             ->actions([
-                EditAction::make()
-                    ->label('Editar'),
-
+                EditAction::make()->label('Editar'),
                 Action::make('cambiarEstado')
                     ->label(fn ($record) => $record->estado === 'activo' ? 'Desactivar' : 'Activar')
                     ->icon(fn ($record) => $record->estado === 'activo' ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
                     ->color(fn ($record) => $record->estado === 'activo' ? 'danger' : 'success')
                     ->requiresConfirmation()
-                    ->modalHeading(fn ($record) => $record->estado === 'activo' ? 'Desactivar Registro' : 'Activar Registro')
-                    ->modalDescription(fn ($record) => $record->estado === 'activo'
-                        ? '¿Estás seguro de desactivar este registro? No se mostrará en el sitio web.'
-                        : '¿Estás seguro de activar este registro? Se mostrará en el sitio web.'
-                    )
                     ->action(function ($record) {
-                        $nuevoEstado = $record->estado === 'activo' ? 'inactivo' : 'activo';
-                        $record->update(['estado' => $nuevoEstado]);
+                        $record->update(['estado' => $record->estado === 'activo' ? 'inactivo' : 'activo']);
                     }),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
                     BulkAction::make('desactivarSeleccionados')
                         ->label('Desactivar Seleccionados')
-                        ->icon('heroicon-o-x-circle')
-                        ->color('danger')
-                        ->requiresConfirmation()
-                        ->modalHeading('Desactivar Registros')
-                        ->modalDescription('¿Estás seguro de desactivar los registros seleccionados?')
-                        ->action(function ($records) {
-                            foreach ($records as $record) {
-                                $record->update(['estado' => 'inactivo']);
-                            }
-                        })
-                        ->deselectRecordsAfterCompletion(),
-
+                        ->action(fn ($records) => $records->each->update(['estado' => 'inactivo'])),
                     BulkAction::make('activarSeleccionados')
                         ->label('Activar Seleccionados')
-                        ->icon('heroicon-o-check-circle')
-                        ->color('success')
-                        ->requiresConfirmation()
-                        ->modalHeading('Activar Registros')
-                        ->modalDescription('¿Estás seguro de activar los registros seleccionados?')
-                        ->action(function ($records) {
-                            foreach ($records as $record) {
-                                $record->update(['estado' => 'activo']);
-                            }
-                        })
-                        ->deselectRecordsAfterCompletion(),
+                        ->action(fn ($records) => $records->each->update(['estado' => 'activo'])),
                 ]),
-            ])
-            ->emptyStateHeading('No hay registros corporativos')
-            ->emptyStateDescription('Crea el primer registro (Visión, Misión o Valores) para mostrar en la página About.')
-            ->emptyStateIcon('heroicon-o-document-text');
+            ]);
     }
 }

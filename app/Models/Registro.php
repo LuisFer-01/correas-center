@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable('nombre', 'descripcion', 'estado',)]
+#[Fillable('identificador', 'nombre', 'descripcion', 'orden', 'estado')]
 class Registro extends Model
 {
     protected $table = 'registros';
 
     protected $casts = [
+        'orden' => 'integer',
         'estado' => 'string',
     ];
 

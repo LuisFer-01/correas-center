@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('detalle_registros', function (Blueprint $table) {
             $table->id();
             $table->foreignId('empresa_id')->constrained('empresas')->onDelete('cascade');
-            $table->string('grupo');
             $table->foreignId('registro_id')->constrained('registros')->onDelete('cascade');
             $table->integer('orden')->default(0);
             $table->enum('estado', ['activo', 'inactivo'])->default('activo');

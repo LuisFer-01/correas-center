@@ -3,37 +3,54 @@
 namespace Database\Seeders;
 
 use App\Models\Registro;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RegistroSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $registros = [
             [
-                'nombre' => 'Visión',
-                'descripcion' => 'Ser la empresa líder en soluciones industriales, hidráulicas y neumáticas en Bolivia, reconocida por nuestra calidad, servicio técnico especializado y compromiso con el desarrollo industrial del país.',
+                'identificador' => 'header',
+                'nombre' => 'Sobre Nosotros',
+                'descripcion' => 'Líderes en soluciones industriales, hidráulicas, neumáticas y transmisión de potencia en Bolivia',
+                'orden' => 1,
+                'estado' => 'activo',
             ],
             [
-                'nombre' => 'Misión',
-                'descripcion' => 'Proveer soluciones integrales de transmisión de potencia, sistemas hidráulicos y neumáticos con los más altos estándares de calidad, brindando asesoría técnica especializada y servicio personalizado a nuestros clientes.',
+                'identificador' => 'introduccion',
+                'nombre' => 'Más de 25 Años de Experiencia',
+                'descripcion' => 'En <span class="font-semibold text-[#EA0A2A]">Correas Center</span>, nos dedicamos a proveer soluciones integrales de transmisión de potencia, sistemas hidráulicos y neumáticos con los más altos estándares de calidad. Contamos con asesoría técnica especializada y servicio personalizado para nuestros clientes en todo Bolivia.',
+                'orden' => 2,
+                'estado' => 'activo',
             ],
             [
-                'nombre' => 'Valores',
-                'descripcion' => 'Ética decidida, integridad, compromiso, calidad, innovación, servicio al cliente, responsabilidad social y trabajo en equipo.',
+                'identificador' => 'estadisticas',
+                'nombre' => 'Nuestras Estadísticas',
+                'descripcion' => 'Cifras que respaldan nuestra trayectoria',
+                'orden' => 3,
+                'estado' => 'activo',
+            ],
+            [
+                'identificador' => 'filosofia',
+                'nombre' => 'Nuestra Filosofía Corporativa',
+                'descripcion' => 'Los principios que guían nuestro trabajo diario',
+                'orden' => 4,
+                'estado' => 'activo',
+            ],
+            [
+                'identificador' => 'porque_elegirnos',
+                'nombre' => '¿Por Qué Elegirnos?',
+                'descripcion' => 'Compromiso, calidad y experiencia al servicio de tu industria',
+                'orden' => 5,
+                'estado' => 'activo',
             ],
         ];
 
         foreach ($registros as $registro) {
-            Registro::create([
-                'nombre' => $registro['nombre'],
-                'descripcion' => $registro['descripcion'],
-                'estado' => 'activo',
-            ]);
+            Registro::create($registro);
         }
+
+        $this->command->info("✅ " . count($registros) . " registros creados");
     }
 }

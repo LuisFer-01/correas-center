@@ -35,26 +35,34 @@ class HandleInertiaRequests extends Middleware
     {
         $empresa = Empresa::where('estado', 'activo')->first();
 
-        // NUEVO: Cargar registros (Visión, Misión, Valores) para About
-        $registros = [];
+        // Cargar registros del About con sus detalles
+        $registrosAbout = [];
         if ($empresa) {
-            $registros = DetalleRegistro::with(['registro' => function($query) {
-                    $query->where('estado', 'activo');
+            $registrosAbout = Registro::with(['detalleRegistros' => function($query) {
+                    $query->where('estado', 'activo')
+                        ->orderBy('orden', 'asc');
                 }])
-                ->where('empresa_id', $empresa->id)
                 ->where('estado', 'activo')
-                ->orderBy('orden')
+                ->orderBy('orden', 'asc')
                 ->get()
-                ->map(function ($detalle) {
+                ->map(function ($registro) {
                     return [
-                        'id' => $detalle->id,
-                        'grupo' => $detalle->grupo,
-                        'orden' => $detalle->orden,
-                        'registro' => $detalle->registro ? [
-                            'id' => $detalle->registro->id,
-                            'nombre' => $detalle->registro->nombre,
-                            'descripcion' => $detalle->registro->descripcion,
-                        ] : null,
+                        'id' => $registro->id,
+                        'identificador' => $registro->identificador,
+                        'nombre' => $registro->nombre,
+                        'descripcion' => $registro->descripcion,
+                        'orden' => $registro->orden,
+                        'detalles' => $registro->detalleRegistros->map(function ($detalle) {
+                            return [
+                                'id' => $detalle->id,
+                                'titulo' => $detalle->titulo,
+                                'descripcion' => $detalle->descripcion,
+                                'icono' => $detalle->icono,
+                                'stats' => $detalle->stats,
+                                'subtitulo' => $detalle->subtitulo,
+                                'orden' => $detalle->orden,
+                            ];
+                        }),
                     ];
                 })
                 ->toArray();
@@ -268,7 +276,7 @@ class HandleInertiaRequests extends Middleware
                 ],
             ],
             // NUEVO: Compartir registros específicamente para la página About
-            'registros' => $registros,
+            'registros_about' => $registrosAbout,
         ];
     }
 }
