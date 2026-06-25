@@ -283,7 +283,7 @@ about.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     about.form = aboutForm
 /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
 export const contact = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -298,7 +298,7 @@ contact.definition = {
 
 /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
 contact.url = (options?: RouteQueryOptions) => {
@@ -307,7 +307,7 @@ contact.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
 contact.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -316,7 +316,7 @@ contact.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
 contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -326,7 +326,7 @@ contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
     const contactForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -336,7 +336,7 @@ contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
         contactForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -345,7 +345,7 @@ contact.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ContactController::contact
- * @see app/Http/Controllers/ContactController.php:19
+ * @see app/Http/Controllers/ContactController.php:20
  * @route '/contact'
  */
         contactForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
