@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Contactos\Tables;
 
+use App\Filament\Resources\Contactos\ContactoResource;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -37,7 +38,7 @@ class ContactosTable
                     })
                     ->sortable(),
 
-                TextColumn::make('nombre')
+                /* TextColumn::make('nombre')
                     ->label('Nombre')
                     ->searchable()
                     ->sortable()
@@ -50,7 +51,7 @@ class ContactosTable
                     ->sortable()
                     ->placeholder('N/A')
                     ->limit(20)
-                    ->toggleable(),
+                    ->toggleable(), */
 
                 TextColumn::make('email')
                     ->label('Email')
@@ -91,12 +92,12 @@ class ContactosTable
                     ]),
             ])
             ->actions([
-                // Ver detalle
+                // ✅ CORREGIDO: Usar ContactoResource::getUrl() en lugar de static::class::getUrl()
                 Action::make('ver')
                     ->label('Ver')
                     ->icon('heroicon-o-eye')
                     ->color('info')
-                    ->url(fn ($record) => static::class::getUrl('view', ['record' => $record])),
+                    ->url(fn ($record) => ContactoResource::getUrl('view', ['record' => $record])),
 
                 // Marcar como leído
                 Action::make('marcarLeido')
