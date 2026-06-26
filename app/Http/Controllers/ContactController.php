@@ -31,6 +31,7 @@ class ContactController extends Controller
         try {
             // Guardar en base de datos
             $contacto = Contacto::create([
+                'empresa_id' => 1,
                 'nombre' => $request->nombre,
                 'empresa' => $request->empresa,
                 'telefono' => $request->telefono,

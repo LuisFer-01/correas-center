@@ -11,6 +11,7 @@ import Menus from './Menus'
 import PasoWizards from './PasoWizards'
 import PorqueElegirnos from './PorqueElegirnos'
 import Registros from './Registros'
+import Servicios from './Servicios'
 import Sucursals from './Sucursals'
 const Resources = {
     CapacidadInfraestructuras: Object.assign(CapacidadInfraestructuras, CapacidadInfraestructuras),
@@ -26,6 +27,7 @@ Menus: Object.assign(Menus, Menus),
 PasoWizards: Object.assign(PasoWizards, PasoWizards),
 PorqueElegirnos: Object.assign(PorqueElegirnos, PorqueElegirnos),
 Registros: Object.assign(Registros, Registros),
+Servicios: Object.assign(Servicios, Servicios),
 Sucursals: Object.assign(Sucursals, Sucursals),
 }
 

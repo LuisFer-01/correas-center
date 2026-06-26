@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('nombre', 'empresa', 'telefono', 'email', 'mensaje', 'estado',)]
+#[Fillable('empresa_id', 'nombre', 'empresa', 'telefono', 'email', 'mensaje', 'estado',)]
 class Contacto extends Model
 {
     protected $casts = [

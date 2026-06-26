@@ -38,7 +38,6 @@ Route::get('/api/sucursales/{id}', [SucursalController::class, 'show']);
 
 // Páginas secundarias
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/branches', [PageController::class, 'branches'])->name('branches');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');

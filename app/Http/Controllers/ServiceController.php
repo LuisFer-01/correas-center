@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Servicio;
 use App\Models\Industria;
 use App\Models\DetalleIndustria;
+use App\Models\Registro;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,8 +19,9 @@ class ServiceController extends Controller
      */
     public function index(): Response
     {
+        // ✅ CORREGIDO: Ordenar por 'orden' en lugar de 'nombre'
         $servicios = Servicio::where('estado', 'activo')
-            ->orderBy('nombre')
+            ->orderBy('orden', 'asc')
             ->get()
             ->map(function ($servicio) {
                 return [
@@ -27,12 +29,36 @@ class ServiceController extends Controller
                     'nombre' => $servicio->nombre,
                     'slug' => Str::slug($servicio->nombre),
                     'descripcion' => $servicio->descripcion,
-                    'imagen' => $servicio->imagen_url, // Usar accessor
+                    'imagen' => $servicio->imagen_url,
+                    'orden' => $servicio->orden,
                 ];
             });
 
+        // ✅ NUEVO: Cargar "Por qué elegirnos" desde la BD
+        $porqueElegirnos = [];
+        $registro = Registro::where('identificador', 'porque_elegirnos')
+            ->where('estado', 'activo')
+            ->first();
+
+        if ($registro) {
+            $porqueElegirnos = $registro->detalleRegistros()
+                ->where('estado', 'activo')
+                ->orderBy('orden', 'asc')
+                ->get()
+                ->map(function ($detalle) {
+                    return [
+                        'id' => $detalle->id,
+                        'titulo' => $detalle->titulo,
+                        'descripcion' => $detalle->descripcion,
+                        'icono' => $detalle->icono,
+                    ];
+                })
+                ->toArray();
+        }
+
         return Inertia::render('Services/Index', [
             'servicios' => $servicios,
+            'porque_elegirnos' => $porqueElegirnos,
         ]);
     }
 
@@ -67,7 +93,7 @@ class ServiceController extends Controller
                     'id' => $industria->id,
                     'nombre' => $industria->nombre,
                     'slug' => $industria->slug,
-                    'imagen' => $industria->imagen_url, // Usar accessor
+                    'imagen' => $industria->imagen_url,
                 ];
             });
 
@@ -77,7 +103,7 @@ class ServiceController extends Controller
                 'nombre' => $servicio->nombre,
                 'slug' => Str::slug($servicio->nombre),
                 'descripcion' => $servicio->descripcion,
-                'imagen' => $servicio->imagen_url, // Usar accessor
+                'imagen' => $servicio->imagen_url,
                 'industrias' => $industrias,
             ],
         ]);

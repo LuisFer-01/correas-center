@@ -1,9 +1,47 @@
 import AppLayout from '@/layouts/AppLayout';
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2, Wrench } from 'lucide-react';
+// ✅ IMPORTAR TODOS LOS ICONOS NECESARIOS
+import {
+    ArrowRight,
+    Award,
+    CheckCircle2,
+    Clock,
+    Eye,
+    HeadphonesIcon,
+    Heart,
+    MapPin,
+    Package,
+    Shield,
+    Star,
+    Target,
+    ThumbsUp,
+    Truck,
+    Users,
+    Wrench,
+    Zap,
+} from 'lucide-react';
+
+// Mapeo de iconos de Lucide
+const lucideIconMap: Record<string, any> = {
+    'CheckCircle2': CheckCircle2,
+    'Award': Award,
+    'Users': Users,
+    'Clock': Clock,
+    'Target': Target,
+    'Heart': Heart,
+    'Eye': Eye,
+    'Star': Star,
+    'Shield': Shield,
+    'Zap': Zap,
+    'ThumbsUp': ThumbsUp,
+    'Package': Package,
+    'Truck': Truck,
+    'HeadphonesIcon': HeadphonesIcon,
+    'MapPin': MapPin,
+};
 
 export default function ServicesIndex() {
-    const { servicios } = usePage<any>().props;
+    const { servicios, porque_elegirnos = [] } = usePage<any>().props;
 
     return (
         <AppLayout>
@@ -23,7 +61,7 @@ export default function ServicesIndex() {
                 </div>
             </section>
 
-            {/* Grid de servicios - AHORA CON IMÁGENES */}
+            {/* Grid de servicios - Ordenados por 'orden' desde la BD */}
             <section className="py-12 md:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -76,30 +114,56 @@ export default function ServicesIndex() {
                 </div>
             </section>
 
-            {/* Características */}
+            {/* ✅ Características - Ahora cargadas desde la BD (Por qué elegirnos) */}
             <section className="py-12 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                             ¿Por qué elegir nuestros servicios?
                         </h2>
+                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                            Compromiso, calidad y experiencia al servicio de tu industria
+                        </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { title: 'Técnicos Certificados', desc: 'Personal altamente capacitado' },
-                            { title: 'Respuesta Rápida', desc: 'Atención inmediata a emergencias' },
-                            { title: 'Garantía de Calidad', desc: 'Trabajos con garantía escrita' },
-                            { title: 'Cobertura Nacional', desc: 'Servicio en todo Bolivia' },
-                        ].map((item, index) => (
-                            <div key={index} className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
-                                <div className="bg-[#EA0A2A]/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                                    <CheckCircle2 size={24} className="text-[#EA0A2A]" />
+
+                    {porque_elegirnos.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {porque_elegirnos.map((item: any) => {
+                                const IconComponent = lucideIconMap[item.icono] || CheckCircle2;
+                                return (
+                                    <div key={item.id} className="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:border-[#EA0A2A]/30 transition-all">
+                                        <div className="bg-[#EA0A2A]/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                                            <IconComponent size={24} className="text-[#EA0A2A]" />
+                                        </div>
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                                            {item.titulo}
+                                        </h3>
+                                        <p className="text-sm text-gray-600">
+                                            {item.descripcion}
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        // Fallback si no hay datos en la BD
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[
+                                { title: 'Técnicos Certificados', desc: 'Personal altamente capacitado' },
+                                { title: 'Respuesta Rápida', desc: 'Atención inmediata a emergencias' },
+                                { title: 'Garantía de Calidad', desc: 'Trabajos con garantía escrita' },
+                                { title: 'Cobertura Nacional', desc: 'Servicio en todo Bolivia' },
+                            ].map((item, index) => (
+                                <div key={index} className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+                                    <div className="bg-[#EA0A2A]/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                                        <CheckCircle2 size={24} className="text-[#EA0A2A]" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                                    <p className="text-sm text-gray-600">{item.desc}</p>
                                 </div>
-                                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-                                <p className="text-sm text-gray-600">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
         </AppLayout>

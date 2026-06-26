@@ -158,15 +158,17 @@ class HandleInertiaRequests extends Middleware
                 ];
             });
 
-        $servicios = Servicio::where('estado', 'activo')
-            ->orderBy('nombre')
+        $servicios = Servicio::where('empresa_id', $empresa?->id)
+            ->where('estado', 'activo')
+            ->orderBy('orden')
             ->get()
             ->map(function ($servicio) {
                 return [
                     'id' => $servicio->id,
                     'nombre' => $servicio->nombre,
                     'descripcion' => $servicio->descripcion,
-                    'imagen' => $servicio->imagen_url,
+                    'imagen' => $servicio->imagen_url, // ✅ Usar accessor
+                    'orden' => $servicio->orden,
                 ];
             });
 
