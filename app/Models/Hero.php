@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('imagen', 'titulo', 'subtitulo', 'badge_text', 'cta_primary_text', 'cta_primary_href', 'cta_secondary_text', 'cta_secondary_href', 'orden', 'estado',)]
+#[Fillable('empresa_id', 'imagen', 'titulo', 'subtitulo', 'badge_text', 'cta_primary_text', 'cta_primary_href', 'cta_secondary_text', 'cta_secondary_href', 'orden', 'estado',)]
 class Hero extends Model
 {
     protected $table = 'heroes';
@@ -18,6 +18,10 @@ class Hero extends Model
     protected static function booted(): void
     {
         static::creating(function (Hero $registro) {
+            if (empty($registro->empresa_id)) {
+                $registro->empresa_id = 1; // TODO: Cambiar por lógica dinámica más adelante
+            }
+
             if (empty($registro->orden) || $registro->orden === 0) {
                 $registro->orden = (self::max('orden') ?? 0) + 1;
             }

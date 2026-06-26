@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('titulo', 'descripcion', 'stats', 'icon', 'orden', 'estado',)]
+#[Fillable('empresa_id', 'titulo', 'descripcion', 'stats', 'icon', 'orden', 'estado',)]
 class CaracteristicaInfraestructura extends Model
 {
     protected $table = 'caracteristicas_infraestructura';
@@ -19,6 +19,10 @@ class CaracteristicaInfraestructura extends Model
     protected static function booted(): void
     {
         static::creating(function (CaracteristicaInfraestructura $registro) {
+            if (empty($registro->empresa_id)) {
+                $registro->empresa_id = 1; // TODO: Cambiar por lógica dinámica más adelante
+            }
+
             if (empty($registro->orden) || $registro->orden === 0) {
                 $registro->orden = (self::max('orden') ?? 0) + 1;
             }

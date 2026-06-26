@@ -65,6 +65,7 @@ class HeroSeeder extends Seeder
         $orden = 1;
         foreach ($heroes as $hero) {
             Hero::create([
+                'empresa_id'=> 1,
                 ...$hero,
                 'orden' => $orden++,
                 'estado' => 'activo',

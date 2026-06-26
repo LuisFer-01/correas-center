@@ -29,6 +29,7 @@ class IndustriaSeeder extends Seeder
         $orden = 1;
         foreach ($industrias as $industria) {
             Industria::create([
+                'empresa_id' => 1,
                 'nombre' => $industria['nombre'],
                 'slug' => Str::slug($industria['nombre']),
                 'imagen' => $industria['imagen'],

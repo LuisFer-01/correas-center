@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('empresa_id')->constrained('Empresas')->onDelete('cascade');
             $table->string('grupo'); // 'Producto', 'Aplicacion', 'Servicio', etc.
             $table->unsignedBigInteger('campo_id')->nullable(); // ID de producto, aplicacion, servicio, etc.
             $table->string('ruta');

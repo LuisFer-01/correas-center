@@ -36,6 +36,7 @@ class PasoWizardSeeder extends Seeder
         $orden = 1;
         foreach ($pasos as $paso) {
             PasoWizard::create([
+                'empresa_id' => 1,
                 ...$paso,
                 'orden' => $orden++,
                 'estado' => 'activo',

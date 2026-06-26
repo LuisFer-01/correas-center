@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('capacidades_infraestructura', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('empresa_id')->constrained('Empresas')->onDelete('cascade');
             $table->string('nombre');
             $table->string('icon')->nullable();
             $table->integer('orden')->default(0);

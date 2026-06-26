@@ -41,6 +41,7 @@ class InfraestructuraSeeder extends Seeder
         $orden = 1;
         foreach ($caracteristicas as $caracteristica) {
             CaracteristicaInfraestructura::create([
+                'empresa_id'=> 1,
                 ...$caracteristica,
                 'orden' => $orden++,
                 'estado' => 'activo',
@@ -60,6 +61,7 @@ class InfraestructuraSeeder extends Seeder
         $orden = 1;
         foreach ($capacidades as $capacidad) {
             CapacidadInfraestructura::create([
+                'empresa_id'=> 1,
                 ...$capacidad,
                 'orden' => $orden++,
                 'estado' => 'activo',

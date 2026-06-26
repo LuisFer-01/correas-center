@@ -26,6 +26,23 @@ class Empresa extends Model
         return $this->hasMany(DetalleRegistro::class);
     }
 
+    public function footers(): HasMany
+    {
+        return $this->hasMany(Footer::class);
+    }
+
+
+    public function contactos(): HasMany
+    {
+        return $this->hasMany(Contacto::class);
+    }
+
+
+    public function diferenciales(): HasMany
+    {
+        return $this->hasMany(Diferencial::class);
+    }
+
     // MUTATOR: Limpia el prefijo 'storage/' antes de guardar en BD
     public function setLogoAttribute($value)
     {

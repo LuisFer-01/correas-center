@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('caracteristicas_infraestructura', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('empresa_id')->constrained('Empresas')->onDelete('cascade');
             $table->string('titulo');
             $table->text('descripcion');
             $table->string('stats'); // ej: "500m²", "10,000+ productos"

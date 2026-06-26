@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('pasos_wizard', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('empresa_id')->constrained('Empresas')->onDelete('cascade');
             $table->string('identificador'); // 'industria', 'producto', 'categoria'
             $table->string('titulo');
             $table->string('descripcion');

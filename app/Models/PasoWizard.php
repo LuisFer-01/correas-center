@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('identificador', 'titulo', 'descripcion', 'fuente_datos', 'campo_filtro', 'orden', 'estado',)]
+#[Fillable('empresa_id', 'identificador', 'titulo', 'descripcion', 'fuente_datos', 'campo_filtro', 'orden', 'estado',)]
 class PasoWizard extends Model
 {
     protected $table = 'pasos_wizard';
@@ -19,6 +19,10 @@ class PasoWizard extends Model
     protected static function booted(): void
     {
         static::creating(function (PasoWizard $paso) {
+            if (empty($paso->empresa_id)) {
+                $paso->empresa_id = 1; // TODO: Cambiar por lógica dinámica más adelante
+            }
+
             if (empty($paso->orden) || $paso->orden === 0) {
                 $paso->orden = (self::max('orden') ?? 0) + 1;
             }

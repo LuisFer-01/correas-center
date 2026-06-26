@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable('grupo', 'campo_id', 'ruta', 'icon', 'estado',)]
+#[Fillable('empresa_id', 'grupo', 'campo_id', 'ruta', 'icon', 'estado',)]
 class Menu extends Model
 {
     protected $table = 'menus';
@@ -18,6 +18,10 @@ class Menu extends Model
     protected static function booted(): void
     {
         static::creating(function (Menu $registro) {
+            if (empty($registro->empresa_id)) {
+                $registro->empresa_id = 1; // TODO: Cambiar por lógica dinámica más adelante
+            }
+
             if (empty($registro->orden) || $registro->orden === 0) {
                 $registro->orden = (self::max('orden') ?? 0) + 1;
             }

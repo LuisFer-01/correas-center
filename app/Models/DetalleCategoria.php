@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable('categoria_id', 'marca_id', 'gama_producto_id', 'caracteristica_id', 'medida_id', 'composicion_id', 'orden', 'estado',)]
+#[Fillable('categoria_id', 'marca_id', 'gama_producto_id', 'caracteristica_id', 'medida_id', 'composicion_id', 'aplicacion_id', 'orden', 'estado',)]
 class DetalleCategoria extends Model
 {
     protected $table = 'detalle_categorias';
@@ -45,6 +45,11 @@ class DetalleCategoria extends Model
     public function composicion(): BelongsTo
     {
         return $this->belongsTo(Composicion::class);
+    }
+
+    public function aplicacion(): BelongsTo
+    {
+        return $this->belongsTo(Aplicacion::class);
     }
 
     // Scopes
