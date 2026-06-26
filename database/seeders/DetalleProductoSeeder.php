@@ -16,17 +16,24 @@ class DetalleProductoSeeder extends Seeder
     public function run(): void
     {
         $productos = Producto::all();
-        $marcas = Marca::all();
+        $marcas = Marca::where('estado', 'activo')->get();
 
         // Asociar marcas a productos (ejemplo simplificado)
         foreach ($productos as $producto) {
-            foreach ($marcas as $marca) {
-                DetalleProducto::create([
-                    'producto_id' => $producto->id,
-                    'marca_id' => $marca->id,
-                    'estado' => 'activo',
-                ]);
+
+            $marcasAleatorias = $marcas->random(min(5, $marcas->count()));
+
+            foreach ($marcasAleatorias as $marca) {
+                DetalleProducto::updateOrCreate(
+                    [
+                        'producto_id' => $producto->id,
+                        'marca_id' => $marca->id,
+                    ],
+                    ['estado' => 'activo']
+                );
             }
         }
+
+        $this->command->info("✅ DetalleProductos creados correctamente");
     }
 }

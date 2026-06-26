@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Empresa;
 use App\Models\Producto;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,27 +15,35 @@ class ProductoSeeder extends Seeder
      */
     public function run(): void
     {
+        $empresa = Empresa::first();
+
+        if (!$empresa) {
+            $this->command->error("❌ No se encontró la empresa. Ejecuta primero el EmpresaSeeder.");
+            return;
+        }
+
         $productos = [
-            ['nombre' => 'Correas', 'imagen' => 'storage/producto/Correas.jpg'],
-            ['nombre' => 'Mangueras', 'imagen' => 'storage/producto/Mangueras.jpg'],
-            ['nombre' => 'Rodamientos', 'imagen' => 'storage/producto/Rodamientos.jpg'],
-            ['nombre' => 'Retenes, Sellos y O-rings', 'imagen' => 'storage/producto/Retenes_Sellos_Cubetas.png'],
-            ['nombre' => 'Bandas Transportadoras Pesadas', 'imagen' => 'storage/producto/Bandas_Transportadoras_Pesadas.jpg'],
-            ['nombre' => 'Bandas Transportadoras Livianas', 'imagen' => 'storage/producto/Bandas_Transportadoras_Livianas.png'],
-            ['nombre' => 'Cadenas', 'imagen' => 'storage/producto/Cadenas.jpg'],
-            ['nombre' => 'Poleas', 'imagen' => 'storage/producto/Poleas.jpg'],
-            ['nombre' => 'Piñones', 'imagen' => 'storage/producto/Piñones.jpg'],
-            ['nombre' => 'Niples, Conexiones y Conectores', 'imagen' => 'storage/producto/Niples_Casquillos_ConectoresHidraulicos.png'],
-            ['nombre' => 'Cilindros', 'imagen' => 'storage/producto/Cilindro_Neumatico.jpg'],
-            ['nombre' => 'Cangilones', 'imagen' => 'storage/producto/Cangilon.jpg'],
-            ['nombre' => 'Cardanes', 'imagen' => 'storage/producto/Cardanes.jpg'],
-            ['nombre' => 'Cajas de Comandos', 'imagen' => 'storage/producto/Comandos.jpg'],
-            ['nombre' => 'Abrazaderas', 'imagen' => 'storage/producto/Abrazaderas.jpg'],
+            ['nombre' => 'Correas', 'imagen' => 'producto/Correas.jpg'],
+            ['nombre' => 'Mangueras', 'imagen' => 'producto/Mangueras.jpg'],
+            ['nombre' => 'Rodamientos', 'imagen' => 'producto/Rodamientos.jpg'],
+            ['nombre' => 'Retenes, Sellos y O-rings', 'imagen' => 'producto/Retenes_Sellos_Cubetas.png'],
+            ['nombre' => 'Bandas Transportadoras Pesadas', 'imagen' => 'producto/Bandas_Transportadoras_Pesadas.jpg'],
+            ['nombre' => 'Bandas Transportadoras Livianas', 'imagen' => 'producto/Bandas_Transportadoras_Livianas.png'],
+            ['nombre' => 'Cadenas', 'imagen' => 'producto/Cadenas.jpg'],
+            ['nombre' => 'Poleas', 'imagen' => 'producto/Poleas.jpg'],
+            ['nombre' => 'Piñones', 'imagen' => 'producto/Piñones.jpg'],
+            ['nombre' => 'Niples, Conexiones y Conectores', 'imagen' => 'producto/Niples_Casquillos_ConectoresHidraulicos.png'],
+            ['nombre' => 'Cilindros', 'imagen' => 'producto/Cilindro_Neumatico.jpg'],
+            ['nombre' => 'Cangilones', 'imagen' => 'producto/Cangilon.jpg'],
+            ['nombre' => 'Cardanes', 'imagen' => 'producto/Cardanes.jpg'],
+            ['nombre' => 'Cajas de Comandos', 'imagen' => 'producto/Comandos.jpg'],
+            ['nombre' => 'Abrazaderas', 'imagen' => 'producto/Abrazaderas.jpg'],
         ];
 
         $orden = 1;
         foreach ($productos as $producto) {
             Producto::create([
+                'empresa_id'=> $empresa->id,
                 'nombre' => $producto['nombre'],
                 'slug' => Str::slug($producto['nombre']),
                 'imagen' => $producto['imagen'],
@@ -42,5 +51,7 @@ class ProductoSeeder extends Seeder
                 'estado' => 'activo',
             ]);
         }
+
+        $this->command->info("✅ " . count($productos) . " productos creados");
     }
 }

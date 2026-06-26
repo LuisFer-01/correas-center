@@ -76,13 +76,15 @@ class HandleInertiaRequests extends Middleware
             ->get()
             ->groupBy('grupo');
 
-        $productos = Producto::with([
+        $productos = Producto::where('empresa_id', $empresa?->id)
+            ->with([
                 'categorias' => function($query) {
                     $query->where('categorias.estado', 'activo')
-                          ->orderBy('categorias.orden');
+                        ->orderBy('categorias.orden');
                 },
                 'marcas' => function($query) {
-                    $query->where('marcas.estado', 'activo');
+                    $query->where('marcas.estado', 'activo')
+                          ->wherePivot('estado', 'activo');
                 }
             ])
             ->where('estado', 'activo')
@@ -119,8 +121,10 @@ class HandleInertiaRequests extends Middleware
                 ];
             });
 
-        $productosPopulares = Producto::with(['marcas' => function($query) {
-                $query->where('marcas.estado', 'activo');
+        $productosPopulares = Producto::where('empresa_id', $empresa?->id)
+            ->with(['marcas' => function($query) {
+                $query->where('marcas.estado', 'activo')
+                          ->wherePivot('estado', 'activo');
             }])
             ->where('estado', 'activo')
             ->orderBy('orden')

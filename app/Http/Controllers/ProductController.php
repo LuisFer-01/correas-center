@@ -20,7 +20,8 @@ class ProductController extends Controller
                     $query->where('categorias.estado', 'activo');
                 },
                 'marcas' => function($query) {
-                    $query->where('marcas.estado', 'activo');
+                    $query->where('marcas.estado', 'activo')
+                            ->wherePivot('estado', 'activo');
                 }
             ])
             ->withCount(['categorias' => function($query) {
@@ -70,7 +71,8 @@ class ProductController extends Controller
                     $query->where('marcas.estado', 'activo');
                 },
                 'marcas' => function($query) {
-                    $query->where('marcas.estado', 'activo');
+                    $query->where('marcas.estado', 'activo')
+                          ->wherePivot('estado', 'activo');
                 }
             ])
             ->where('slug', $slug)

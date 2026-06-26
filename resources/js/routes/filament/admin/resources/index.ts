@@ -9,6 +9,7 @@ import marcas from './marcas'
 import menus from './menus'
 import pasoWizards from './paso-wizards'
 import porqueElegirnos from './porque-elegirnos'
+import productos from './productos'
 import registros from './registros'
 import servicios from './servicios'
 import sucursals from './sucursals'
@@ -24,6 +25,7 @@ marcas: Object.assign(marcas, marcas),
 menus: Object.assign(menus, menus),
 pasoWizards: Object.assign(pasoWizards, pasoWizards),
 porqueElegirnos: Object.assign(porqueElegirnos, porqueElegirnos),
+productos: Object.assign(productos, productos),
 registros: Object.assign(registros, registros),
 servicios: Object.assign(servicios, servicios),
 sucursals: Object.assign(sucursals, sucursals),
