@@ -17,6 +17,16 @@ class GamaProducto extends Model
         'estado' => 'string',
     ];
 
+    // EVENTO: Asignar orden automáticamente al crear
+    protected static function booted(): void
+    {
+        static::creating(function (GamaProducto $gama) {
+            if (empty($gama->orden) || $gama->orden === 0) {
+                $gama->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
+
     // Relaciones
     public function detalleCategorias(): HasMany
     {

@@ -23,7 +23,7 @@ class AplicacionResource extends Resource
 
     protected static ?int $navigationSort = 21;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catálogo de Productos';
+    protected static string|UnitEnum|null $navigationGroup = 'Aplicaciones y Servicios';
 
     public static function getNavigationLabel(): string
     {

@@ -16,6 +16,16 @@ class Caracteristica extends Model
         'estado' => 'string',
     ];
 
+    // EVENTO: Asignar orden automáticamente al crear
+    protected static function booted(): void
+    {
+        static::creating(function (Caracteristica $caracteristica) {
+            if (empty($caracteristica->orden) || $caracteristica->orden === 0) {
+                $caracteristica->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
+
     // Relaciones
     public function detalleCategorias(): HasMany
     {
