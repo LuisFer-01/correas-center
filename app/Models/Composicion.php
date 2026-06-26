@@ -16,6 +16,16 @@ class Composicion extends Model
         'estado' => 'string',
     ];
 
+    // EVENTO: Asignar orden automáticamente al crear
+    protected static function booted(): void
+    {
+        static::creating(function (Composicion $registro) {
+            if (empty($registro->orden) || $registro->orden === 0) {
+                $registro->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
+
     // Relaciones
     public function detalleCategorias(): HasMany
     {
