@@ -16,7 +16,18 @@ class Medida extends Model
     protected $casts = [
         'magnitud' => 'decimal:4',
         'orden' => 'integer',
+        'estado' => 'string',
     ];
+
+    // EVENTO: Asignar orden automáticamente al crear
+    protected static function booted(): void
+    {
+        static::creating(function (Medida $medida) {
+            if (empty($medida->orden) || $medida->orden === 0) {
+                $medida->orden = (self::max('orden') ?? 0) + 1;
+            }
+        });
+    }
 
     // Relaciones
     public function tipoMedida(): BelongsTo
