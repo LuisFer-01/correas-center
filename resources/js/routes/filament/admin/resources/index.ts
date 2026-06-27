@@ -2,6 +2,7 @@ import aplicacions from './aplicacions'
 import capacidadInfraestructuras from './capacidad-infraestructuras'
 import caracteristicaInfraestructuras from './caracteristica-infraestructuras'
 import caracteristicas from './caracteristicas'
+import categorias from './categorias'
 import composicions from './composicions'
 import contactos from './contactos'
 import diferencials from './diferencials'
@@ -24,6 +25,7 @@ const resources = {
 capacidadInfraestructuras: Object.assign(capacidadInfraestructuras, capacidadInfraestructuras),
 caracteristicaInfraestructuras: Object.assign(caracteristicaInfraestructuras, caracteristicaInfraestructuras),
 caracteristicas: Object.assign(caracteristicas, caracteristicas),
+categorias: Object.assign(categorias, categorias),
 composicions: Object.assign(composicions, composicions),
 contactos: Object.assign(contactos, contactos),
 diferencials: Object.assign(diferencials, diferencials),

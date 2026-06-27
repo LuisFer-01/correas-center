@@ -222,7 +222,8 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                                             <View key={idx} style={{ ...styles.row, marginLeft: 5 }}>
                                                 <Text style={{ ...styles.label, width: '40%' }}>{med.nombre}:</Text>
                                                 <Text style={{ ...styles.value, width: '60%' }}>
-                                                    {med.medida} {med.tipo_medida?.representacion || ''}
+                                                    {/* ✅ USAR MEDIDA_COMPLETA QUE YA VIENE PROCESADA DESDE EL BACKEND */}
+                                                    {med.medida_completa || `${med.medida} ${med.tipo_medida?.representacion || ''}`}
                                                 </Text>
                                             </View>
                                         ))}

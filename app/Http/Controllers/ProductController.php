@@ -159,7 +159,8 @@ class ProductController extends Controller
                         'medida' => $detalle->medida ? [
                             'id' => $detalle->medida->id,
                             'nombre' => $detalle->medida->nombre,
-                            'medida' => $detalle->medida->medida,
+                            'medida' => $detalle->medida->medida, // Magnitud original
+                            'medida_completa' => $detalle->medida_completa_final, // ✅ NUEVO: Usa el accessor con valor personalizado
                             'tipo_medida' => $detalle->medida->tipoMedida ? [
                                 'representacion' => $detalle->medida->tipoMedida->representacion,
                             ] : null,
@@ -169,7 +170,7 @@ class ProductController extends Controller
                             'nombre' => $detalle->composicion->nombre,
                             'descripcion' => $detalle->composicion->descripcion,
                         ] : null,
-                        'aplicacion' => $detalle->aplicacion ? [ // ✅ Agregado
+                        'aplicacion' => $detalle->aplicacion ? [
                             'id' => $detalle->aplicacion->id,
                             'nombre' => $detalle->aplicacion->nombre,
                         ] : null,

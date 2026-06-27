@@ -247,9 +247,10 @@ export default function CategoryDetail() {
                                                                     </div>
                                                                     <div>
                                                                         <h4 className="text-base font-semibold text-gray-900">{med.nombre}</h4>
-                                                                        {med.medida && (
-                                                                            <span className="text-sm text-[#EA0A2A] font-medium">
-                                                                                Valor: {med.medida} {med.tipo_medida?.representacion || ''}
+                                                                        {/* ✅ MOSTRAR MEDIDA COMPLETA AQUÍ */}
+                                                                        {med.medida_completa && (
+                                                                            <span className="text-sm text-[#EA0A2A] font-medium block mt-1">
+                                                                                {med.medida_completa}
                                                                             </span>
                                                                         )}
                                                                     </div>
