@@ -29,13 +29,6 @@ class Medida extends Model
         return $this->hasMany(DetalleCategoria::class);
     }
 
-    public function gamaProductos(): BelongsToMany
-    {
-        return $this->belongsToMany(GamaProducto::class, 'medida_gama_producto')
-                    ->withPivot('valor', 'orden', 'estado')
-                    ->withTimestamps();
-    }
-
     // Accessors
     public function getMedidaCompletaAttribute(): string
     {

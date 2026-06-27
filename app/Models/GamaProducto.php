@@ -33,14 +33,6 @@ class GamaProducto extends Model
         return $this->hasMany(DetalleCategoria::class);
     }
 
-    // Relacion Gama Medidas
-    public function medidas(): BelongsToMany
-    {
-        return $this->belongsToMany(Medida::class, 'medida_gama_producto')
-                    ->withPivot('valor', 'orden', 'estado')
-                    ->withTimestamps();
-    }
-
     // Scopes
     public function scopeActivos($query)
     {

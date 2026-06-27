@@ -1,41 +1,46 @@
 <?php
 
-namespace App\Filament\Resources\GamaProductos\Tables;
+namespace App\Filament\Resources\TipoMedidas\Tables;
 
-use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
-class GamaProductosTable
+class TipoMedidasTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('orden', 'asc')
-            ->reorderable('orden')
             ->columns([
-                TextColumn::make('orden')
-                    ->label('Orden')
-                    ->numeric()
-                    ->sortable()
-                    ->alignCenter()
-                    ->toggleable(),
-
                 TextColumn::make('nombre')
                     ->label('Nombre')
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
-                    ->limit(40),
+                    ->limit(30),
 
-                TextColumn::make('detalle_categorias_count')
-                    ->label('Usos')
-                    ->counts('detalleCategorias')
+                TextColumn::make('abreviatura')
+                    ->label('Abreviatura')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
+
+                TextColumn::make('representacion')
+                    ->label('Representación')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('warning'),
+
+                TextColumn::make('medidas_count')
+                    ->label('Medidas')
+                    ->counts('medidas')
                     ->badge()
                     ->color('primary')
                     ->sortable(),
@@ -86,8 +91,8 @@ class GamaProductosTable
                         ->action(fn ($records) => $records->each->update(['estado' => 'activo'])),
                 ]),
             ])
-            ->emptyStateHeading('No hay gamas registradas')
-            ->emptyStateDescription('Crea la primera gama para usar en los detalles de categorías.')
-            ->emptyStateIcon('heroicon-o-squares-2x2');
+            ->emptyStateHeading('No hay tipos de medida registrados')
+            ->emptyStateDescription('Crea el primer tipo de medida para usar en las medidas del catálogo.')
+            ->emptyStateIcon('heroicon-o-ruler');
     }
 }

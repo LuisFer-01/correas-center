@@ -11,11 +11,13 @@ class TipoMedida extends Model
 {
     protected $table = 'tipo_medidas';
 
+    // Relaciones
     public function medidas(): HasMany
     {
         return $this->hasMany(Medida::class);
     }
 
+    // Scopes
     public function scopeActivos($query)
     {
         return $query->where('estado', 'activo');
