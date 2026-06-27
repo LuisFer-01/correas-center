@@ -78,6 +78,43 @@ const styles = StyleSheet.create({
         borderTop: '1px solid #ddd',
         paddingTop: 10,
     },
+    // ✅ Nuevos estilos para aplicaciones y medidas agrupadas
+    appSection: {
+        marginBottom: 15,
+        backgroundColor: '#F0F9FF',
+        padding: 10,
+        borderRadius: 4,
+    },
+    appTitle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#0369A1',
+        marginBottom: 5,
+    },
+    appList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 5,
+    },
+    appItem: {
+        fontSize: 10,
+        color: '#0C4A6E',
+        backgroundColor: '#FFFFFF',
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#BAE6FD',
+    },
+    gamaSeparator: {
+        fontSize: 13,
+        fontWeight: 'bold',
+        color: '#EA0A2A',
+        marginTop: 10,
+        marginBottom: 5,
+        borderBottom: '1px solid #EA0A2A',
+        paddingBottom: 2,
+    },
 });
 
 interface TechnicalSheetProps {
@@ -87,6 +124,29 @@ interface TechnicalSheetProps {
 
 // Componente del documento PDF
 function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
+    // ✅ Extraer aplicaciones únicas
+    const aplicaciones = categoria.detalles
+        ?.filter((d: any) => d.aplicacion)
+        .map((d: any) => d.aplicacion)
+        .filter((a: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === a.id) === i) || [];
+
+    // ✅ Agrupar medidas por GamaProducto
+    const medidasAgrupadas: Record<string, any[]> = {};
+    categoria.detalles?.forEach((detalle: any) => {
+        if (detalle.medida) {
+            const gamaNombre = detalle.gama_producto?.nombre || 'Sin Gama';
+            if (!medidasAgrupadas[gamaNombre]) {
+                medidasAgrupadas[gamaNombre] = [];
+            }
+            const existe = medidasAgrupadas[gamaNombre].some(
+                (m: any) => m.id === detalle.medida.id
+            );
+            if (!existe) {
+                medidasAgrupadas[gamaNombre].push(detalle.medida);
+            }
+        }
+    });
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -115,31 +175,70 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                     )}
                 </View>
 
+                {/* ✅ Aplicaciones */}
+                {aplicaciones.length > 0 && (
+                    <View style={styles.appSection}>
+                        <Text style={styles.appTitle}>Aplicaciones</Text>
+                        <View style={styles.appList}>
+                            {aplicaciones.map((app: any, index: number) => (
+                                <Text key={index} style={styles.appItem}>
+                                    {app.nombre}
+                                </Text>
+                            ))}
+                        </View>
+                    </View>
+                )}
+
                 {/* Características Técnicas */}
                 {categoria.detalles && categoria.detalles.length > 0 && (
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Características Técnicas</Text>
-                        {categoria.detalles.map((detalle: any, index: number) => (
-                            <View key={index} style={{ marginBottom: 15 }}>
-                                {detalle.gama_producto && (
-                                    <View style={styles.row}>
-                                        <Text style={styles.label}>Gama/Serie:</Text>
-                                        <Text style={styles.value}>{detalle.gama_producto.nombre}</Text>
+
+                        {/* Gamas */}
+                        {(() => {
+                            const gamas = categoria.detalles
+                                .filter((d: any) => d.gama_producto)
+                                .map((d: any) => d.gama_producto)
+                                .filter((g: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === g.id) === i);
+
+                            return gamas.length > 0 && (
+                                <View style={{ marginBottom: 10 }}>
+                                    <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#333', marginBottom: 5 }}>Gamas Disponibles:</Text>
+                                    {gamas.map((gama: any, idx: number) => (
+                                        <Text key={idx} style={{ fontSize: 10, color: '#666', marginLeft: 10 }}>• {gama.nombre}</Text>
+                                    ))}
+                                </View>
+                            );
+                        })()}
+
+                        {/* ✅ Medidas agrupadas por Gama */}
+                        {Object.keys(medidasAgrupadas).length > 0 && (
+                            <View style={{ marginTop: 10 }}>
+                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#333', marginBottom: 5 }}>Medidas por Gama:</Text>
+                                {Object.entries(medidasAgrupadas).map(([gamaNombre, medidas]: [string, any[]]) => (
+                                    <View key={gamaNombre} style={{ marginBottom: 8 }}>
+                                        <Text style={styles.gamaSeparator}>{gamaNombre}</Text>
+                                        {medidas.map((med: any, idx: number) => (
+                                            <View key={idx} style={{ ...styles.row, marginLeft: 5 }}>
+                                                <Text style={{ ...styles.label, width: '40%' }}>{med.nombre}:</Text>
+                                                <Text style={{ ...styles.value, width: '60%' }}>
+                                                    {med.medida} {med.tipo_medida?.representacion || ''}
+                                                </Text>
+                                            </View>
+                                        ))}
                                     </View>
-                                )}
+                                ))}
+                            </View>
+                        )}
+
+                        {/* Características individuales */}
+                        {categoria.detalles.map((detalle: any, index: number) => (
+                            <View key={index} style={{ marginBottom: 10 }}>
                                 {detalle.caracteristica && (
                                     <View style={styles.row}>
                                         <Text style={styles.label}>Característica:</Text>
                                         <Text style={styles.value}>
                                             {detalle.caracteristica.nombre} - {detalle.caracteristica.descripcion}
-                                        </Text>
-                                    </View>
-                                )}
-                                {detalle.medida && (
-                                    <View style={styles.row}>
-                                        <Text style={styles.label}>Medida:</Text>
-                                        <Text style={styles.value}>
-                                            {detalle.medida.nombre}: {detalle.medida.medida}
                                         </Text>
                                     </View>
                                 )}
@@ -156,7 +255,7 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                     </View>
                 )}
 
-                {/* NUEVO: Advertencia en el PDF */}
+                {/* Advertencia */}
                 <View style={styles.warningBox}>
                     <Text style={styles.warningTitle}>⚠ Información Importante</Text>
                     <Text style={styles.warningText}>
@@ -177,7 +276,7 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
     );
 }
 
-// Componente de descarga - NUEVO: Texto cambiado
+// Componente de descarga
 interface DownloadButtonProps {
     producto: any;
     categoria: any;

@@ -120,8 +120,8 @@ class ProductController extends Controller
         $categoria = Categoria::with([
                 'detalleCategorias' => function($query) {
                     $query->where('detalle_categorias.estado', 'activo')
-                          ->with(['gamaProducto', 'caracteristica', 'medida', 'composicion'])
-                          ->orderBy('detalle_categorias.orden');
+                        ->with(['gamaProducto', 'caracteristica', 'medida', 'composicion', 'aplicacion']) // ✅ Agregado 'aplicacion'
+                        ->orderBy('detalle_categorias.orden');
                 }
             ])
             ->where('producto_id', $producto->id)
@@ -147,7 +147,6 @@ class ProductController extends Controller
                     return [
                         'id' => $detalle->id,
                         'orden' => $detalle->orden,
-                        // SIN MARCA - solo características generales
                         'gama_producto' => $detalle->gamaProducto ? [
                             'id' => $detalle->gamaProducto->id,
                             'nombre' => $detalle->gamaProducto->nombre,
@@ -161,11 +160,18 @@ class ProductController extends Controller
                             'id' => $detalle->medida->id,
                             'nombre' => $detalle->medida->nombre,
                             'medida' => $detalle->medida->medida,
+                            'tipo_medida' => $detalle->medida->tipoMedida ? [
+                                'representacion' => $detalle->medida->tipoMedida->representacion,
+                            ] : null,
                         ] : null,
                         'composicion' => $detalle->composicion ? [
                             'id' => $detalle->composicion->id,
                             'nombre' => $detalle->composicion->nombre,
                             'descripcion' => $detalle->composicion->descripcion,
+                        ] : null,
+                        'aplicacion' => $detalle->aplicacion ? [ // ✅ Agregado
+                            'id' => $detalle->aplicacion->id,
+                            'nombre' => $detalle->aplicacion->nombre,
                         ] : null,
                     ];
                 }),

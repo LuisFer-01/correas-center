@@ -1,14 +1,14 @@
 import TechnicalSheetDownload from '@/components/TechnicalSheet';
 import AppLayout from '@/layouts/AppLayout';
 import { Link, usePage } from '@inertiajs/react';
-import { AlertTriangle, ArrowRight, CheckCircle2, FlaskConical, Layers, Ruler, Wrench } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CheckCircle2, FlaskConical, Layers, Ruler, Tag, Wrench } from 'lucide-react';
 import { useState } from 'react';
 
 export default function CategoryDetail() {
     const { producto, categoria } = usePage<any>().props;
     const [activeTab, setActiveTab] = useState<'gamas' | 'caracteristicas' | 'composiciones' | 'medidas'>('gamas');
 
-    // Extraer datos únicos de los detalles (SIN MARCAS)
+    // Extraer datos únicos de los detalles
     const gamas = categoria.detalles
         .filter((d: any) => d.gama_producto)
         .map((d: any) => d.gama_producto)
@@ -24,16 +24,38 @@ export default function CategoryDetail() {
         .map((d: any) => d.composicion)
         .filter((c: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === c.id) === i);
 
-    const medidas = categoria.detalles
-        .filter((d: any) => d.medida)
-        .map((d: any) => d.medida)
-        .filter((m: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === m.id) === i);
+    // ✅ NUEVO: Extraer aplicaciones únicas
+    const aplicaciones = categoria.detalles
+        .filter((d: any) => d.aplicacion)
+        .map((d: any) => d.aplicacion)
+        .filter((a: any, i: number, arr: any[]) => arr.findIndex((t: any) => t.id === a.id) === i);
+
+    // ✅ NUEVO: Agrupar medidas por GamaProducto
+    const medidasAgrupadas: Record<string, any[]> = {};
+    categoria.detalles.forEach((detalle: any) => {
+        if (detalle.medida) {
+            const gamaNombre = detalle.gama_producto?.nombre || 'Sin Gama';
+            if (!medidasAgrupadas[gamaNombre]) {
+                medidasAgrupadas[gamaNombre] = [];
+            }
+            // Evitar duplicados dentro de la misma gama
+            const existe = medidasAgrupadas[gamaNombre].some(
+                (m: any) => m.id === detalle.medida.id
+            );
+            if (!existe) {
+                medidasAgrupadas[gamaNombre].push({
+                    ...detalle.medida,
+                    gama_producto: detalle.gama_producto,
+                });
+            }
+        }
+    });
 
     const tabs = [
         { id: 'gamas' as const, label: 'Gamas / Series', icon: Layers, count: gamas.length },
         { id: 'caracteristicas' as const, label: 'Características', icon: Wrench, count: caracteristicas.length },
         { id: 'composiciones' as const, label: 'Composición', icon: FlaskConical, count: composiciones.length },
-        { id: 'medidas' as const, label: 'Medidas', icon: Ruler, count: medidas.length },
+        { id: 'medidas' as const, label: 'Medidas', icon: Ruler, count: Object.keys(medidasAgrupadas).length > 0 ? Object.values(medidasAgrupadas).flat().length : 0 },
     ];
 
     return (
@@ -52,7 +74,7 @@ export default function CategoryDetail() {
                 )}
 
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Breadcrumb inline - usando descripcion_corta */}
+                    {/* Breadcrumb inline */}
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-6">
                         <Link href="/products" className="hover:text-white transition-colors">Productos</Link>
                         <span>/</span>
@@ -65,7 +87,6 @@ export default function CategoryDetail() {
                         {categoria.nombre}
                     </h1>
 
-                    {/* NUEVO: Mostrar descripcion_corta en lugar de descripcion */}
                     {categoria.descripcion_corta && (
                         <p className="text-lg text-gray-300 max-w-3xl">
                             {categoria.descripcion_corta}
@@ -95,7 +116,7 @@ export default function CategoryDetail() {
                         </div>
                     )}
 
-                    {/* NUEVO: Mostrar descripcion debajo de la imagen */}
+                    {/* Descripción */}
                     {categoria.descripcion && (
                         <div className="mb-8 bg-gray-50 rounded-xl p-6 border border-gray-100">
                             <h2 className="text-xl font-bold text-gray-900 mb-3">Descripción General</h2>
@@ -203,28 +224,75 @@ export default function CategoryDetail() {
                                 </div>
                             )}
 
-                            {/* Medidas */}
+                            {/* ✅ Medidas agrupadas por Gama */}
                             {activeTab === 'medidas' && (
-                                <div className="space-y-4">
-                                    {medidas.length > 0 ? medidas.map((med: any) => (
-                                        <div key={med.id} className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-[#EA0A2A]/20 transition-colors">
-                                            <div className="flex items-center gap-3">
-                                                <div className="bg-[#EA0A2A]/10 p-2 rounded-lg">
-                                                    <Ruler size={20} className="text-[#EA0A2A]" />
+                                <div className="space-y-6">
+                                    {Object.keys(medidasAgrupadas).length > 0 ? (
+                                        Object.entries(medidasAgrupadas).map(([gamaNombre, medidas]: [string, any[]]) => (
+                                            <div key={gamaNombre} className="space-y-3">
+                                                {/* Título separador de Gama */}
+                                                <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
+                                                    <Layers size={16} className="text-[#EA0A2A]" />
+                                                    <h3 className="text-md font-bold text-gray-900">{gamaNombre}</h3>
                                                 </div>
-                                                <div>
-                                                    <h3 className="text-lg font-bold text-gray-900">{med.nombre}</h3>
-                                                    <span className="text-sm text-[#EA0A2A] font-semibold">Unidad: {med.medida}</span>
+
+                                                {/* Lista de medidas de esta gama */}
+                                                <div className="space-y-3 pl-2">
+                                                    {medidas.map((med: any) => (
+                                                        <div key={med.id} className="bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-[#EA0A2A]/20 transition-colors">
+                                                            <div className="flex items-center justify-between">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="bg-[#EA0A2A]/10 p-2 rounded-lg">
+                                                                        <Ruler size={18} className="text-[#EA0A2A]" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <h4 className="text-base font-semibold text-gray-900">{med.nombre}</h4>
+                                                                        {med.medida && (
+                                                                            <span className="text-sm text-[#EA0A2A] font-medium">
+                                                                                Valor: {med.medida} {med.tipo_medida?.representacion || ''}
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
-                                        </div>
-                                    )) : (
+                                        ))
+                                    ) : (
                                         <p className="text-gray-500 text-center py-8">No hay medidas registradas.</p>
                                     )}
                                 </div>
                             )}
 
-                            {/* NUEVO: Advertencia fija debajo del tab */}
+                            {/* ✅ Aplicaciones - Debajo de los tabs, antes de la advertencia */}
+                            {aplicaciones.length > 0 && (
+                                <div className="mt-8 bg-blue-50 border-l-4 border-blue-500 rounded-lg p-5 shadow-sm">
+                                    <div className="flex items-start gap-3">
+                                        <div className="bg-blue-500 p-2 rounded-lg flex-shrink-0">
+                                            <Tag size={20} className="text-white" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <h4 className="text-base font-bold text-blue-900 mb-2">
+                                                Aplicaciones
+                                            </h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {aplicaciones.map((app: any) => (
+                                                    <span
+                                                        key={app.id}
+                                                        className="inline-block bg-white text-blue-700 text-sm font-medium px-3 py-1 rounded-full border border-blue-200"
+                                                    >
+                                                        {app.nombre}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Advertencia fija debajo del tab */}
                             <div className="mt-8 bg-red-50 border-l-4 border-red-500 rounded-lg p-5 shadow-sm">
                                 <div className="flex items-start gap-3">
                                     <div className="bg-red-500 p-2 rounded-lg flex-shrink-0">
@@ -262,7 +330,7 @@ export default function CategoryDetail() {
                                 </a>
                             </div>
 
-                            {/* NUEVO: Botón con texto cambiado */}
+                            {/* Botón de descarga */}
                             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
                                 <h3 className="text-lg font-bold text-gray-900 mb-4">Descargar Información</h3>
                                 <TechnicalSheetDownload producto={producto} categoria={categoria} />
