@@ -15,15 +15,15 @@ class IndustriaSeeder extends Seeder
     public function run(): void
     {
         $industrias = [
-            ['nombre' => 'Industria Alimenticia', 'imagen' => 'storage/industria/alimenticia.jpg'],
-            ['nombre' => 'Agroindustrial', 'imagen' => 'storage/industria/agroindustrial.jpg'],
-            ['nombre' => 'Industria Minera', 'imagen' => 'storage/industria/minera.jpg'],
-            ['nombre' => 'Industria Metalúrgica', 'imagen' => 'storage/industria/metalurgica.jpg'],
-            ['nombre' => 'Petróleo y Gas', 'imagen' => 'storage/industria/petroleo-gas.jpg'],
-            ['nombre' => 'Manufactura', 'imagen' => 'storage/industria/manufactura.jpg'],
-            ['nombre' => 'Construcción', 'imagen' => 'storage/industria/construccion.jpg'],
-            ['nombre' => 'Transporte', 'imagen' => 'storage/industria/transporte.jpg'],
-            ['nombre' => 'Logística', 'imagen' => 'storage/industria/logistica.jpg'],
+            ['nombre' => 'Industria Alimenticia', 'imagen' => '/industria/alimenticia.jpg'],
+            ['nombre' => 'Agroindustrial', 'imagen' => '/industria/agroindustrial.jpg'],
+            ['nombre' => 'Industria Minera', 'imagen' => '/industria/minera.jpg'],
+            ['nombre' => 'Industria Metalúrgica', 'imagen' => '/industria/metalurgica.jpg'],
+            ['nombre' => 'Petróleo y Gas', 'imagen' => '/industria/petroleo-gas.jpg'],
+            ['nombre' => 'Manufactura', 'imagen' => '/industria/manufactura.jpg'],
+            ['nombre' => 'Construcción', 'imagen' => '/industria/construccion.jpg'],
+            ['nombre' => 'Transporte', 'imagen' => '/industria/transporte.jpg'],
+            ['nombre' => 'Logística', 'imagen' => '/industria/logistica.jpg'],
         ];
 
         $orden = 1;

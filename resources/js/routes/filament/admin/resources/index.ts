@@ -10,6 +10,7 @@ import empresas from './empresas'
 import footers from './footers'
 import gamaProductos from './gama-productos'
 import heroes from './heroes'
+import industrias from './industrias'
 import marcas from './marcas'
 import medidas from './medidas'
 import menus from './menus'
@@ -33,6 +34,7 @@ empresas: Object.assign(empresas, empresas),
 footers: Object.assign(footers, footers),
 gamaProductos: Object.assign(gamaProductos, gamaProductos),
 heroes: Object.assign(heroes, heroes),
+industrias: Object.assign(industrias, industrias),
 marcas: Object.assign(marcas, marcas),
 medidas: Object.assign(medidas, medidas),
 menus: Object.assign(menus, menus),
