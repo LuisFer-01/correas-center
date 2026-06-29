@@ -42,7 +42,7 @@ class ContactController extends Controller
 
             // Enviar email a los administradores
             $emails = [
-                'luisfer.camacho.balli@gmail.com',
+                'luis.gallegos@correascenter.com',
                 'ventas@correascenter.com',
             ];
 

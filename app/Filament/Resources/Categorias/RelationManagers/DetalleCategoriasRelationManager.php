@@ -54,7 +54,22 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
-                            ->helperText('Gama o serie del producto (opcional)'),
+                            ->helperText('Gama o serie del producto (opcional)')
+                            ->createOptionForm([
+                                TextInput::make('nombre')
+                                    ->label('Nombre de la Gama')
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('orden')
+                                    ->label('Orden')
+                                    ->numeric()
+                                    ->default(0),
+                                Select::make('estado')
+                                    ->label('Estado')
+                                    ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
+                                    ->default('activo')
+                                    ->required(),
+                            ]),
                     ]),
 
                 Grid::make(2)
@@ -65,7 +80,26 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
-                            ->helperText('Característica técnica destacada (opcional)'),
+                            ->helperText('Característica técnica destacada (opcional)')
+                            ->createOptionForm([
+                                TextInput::make('nombre')
+                                    ->label('Nombre')
+                                    ->required()
+                                    ->maxLength(255),
+                                Textarea::make('descripcion')
+                                    ->label('Descripción')
+                                    ->rows(3)
+                                    ->maxLength(500),
+                                TextInput::make('orden')
+                                    ->label('Orden')
+                                    ->numeric()
+                                    ->default(0),
+                                Select::make('estado')
+                                    ->label('Estado')
+                                    ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
+                                    ->default('activo')
+                                    ->required(),
+                            ]),
 
                         Select::make('composicion_id')
                             ->label('Composición')
@@ -73,7 +107,26 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
-                            ->helperText('Composición del material (opcional)'),
+                            ->helperText('Composición del material (opcional)')
+                            ->createOptionForm([
+                                TextInput::make('nombre')
+                                    ->label('Nombre')
+                                    ->required()
+                                    ->maxLength(255),
+                                Textarea::make('descripcion')
+                                    ->label('Descripción')
+                                    ->rows(3)
+                                    ->maxLength(500),
+                                TextInput::make('orden')
+                                    ->label('Orden')
+                                    ->numeric()
+                                    ->default(0),
+                                Select::make('estado')
+                                    ->label('Estado')
+                                    ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
+                                    ->default('activo')
+                                    ->required(),
+                            ]),
                     ]),
 
                 Grid::make(2)
@@ -84,8 +137,53 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
-                            ->live() // Para reactividad si quisieras mostrar el valor por defecto
-                            ->helperText('Selecciona la medida técnica base'),
+                            ->live()
+                            ->helperText('Selecciona la medida técnica base')
+                            ->createOptionForm([
+                                TextInput::make('nombre')
+                                    ->label('Nombre de la Medida')
+                                    ->required()
+                                    ->maxLength(255),
+                                Select::make('tipo_medida_id')
+                                    ->label('Tipo de Medida')
+                                    ->relationship('tipoMedida', 'nombre')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->createOptionForm([
+                                        TextInput::make('nombre')
+                                            ->label('Nombre del Tipo')
+                                            ->required()
+                                            ->maxLength(255),
+                                        TextInput::make('abreviatura')
+                                            ->label('Abreviatura')
+                                            ->required()
+                                            ->maxLength(50),
+                                        TextInput::make('representacion')
+                                            ->label('Representación')
+                                            ->required()
+                                            ->maxLength(50),
+                                        Select::make('estado')
+                                            ->label('Estado')
+                                            ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
+                                            ->default('activo')
+                                            ->required(),
+                                    ]),
+                                TextInput::make('magnitud')
+                                    ->label('Magnitud / Valor')
+                                    ->numeric()
+                                    ->step(0.0001)
+                                    ->nullable(),
+                                TextInput::make('orden')
+                                    ->label('Orden')
+                                    ->numeric()
+                                    ->default(0),
+                                Select::make('estado')
+                                    ->label('Estado')
+                                    ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
+                                    ->default('activo')
+                                    ->required(),
+                            ]),
 
                         TextInput::make('valor_personalizado')
                             ->label('Valor Personalizado (Opcional)')
@@ -103,7 +201,22 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
-                            ->helperText('Aplicación o sector de uso (opcional)'),
+                            ->helperText('Aplicación o sector de uso (opcional)')
+                            ->createOptionForm([
+                                TextInput::make('nombre')
+                                    ->label('Nombre de la Aplicación')
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('orden')
+                                    ->label('Orden')
+                                    ->numeric()
+                                    ->default(0),
+                                Select::make('estado')
+                                    ->label('Estado')
+                                    ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
+                                    ->default('activo')
+                                    ->required(),
+                            ]),
 
                         TextInput::make('orden')
                             ->label('Orden')

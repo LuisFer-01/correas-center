@@ -81,7 +81,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             // Configuración de ancho máximo
             ->maxContentWidth(Width::Full)
+            ->userMenuItems([
+                'profile' => \Filament\Navigation\MenuItem::make()
+        ->label('Mi Perfil')
+        ->icon('heroicon-o-user-circle')
+        ->url('/admin/mi-perfil'),
+            ])
             // Nombre del panel
-            ->brandName(fn () => Empresa::where('estado', 'activo')->first()?->nombre ?? 'Correas Center');
+            ->brandName(fn () => Empresa::where('estado', 'activo')->first()?->nombre ?? 'Correas Center')
+            ->sidebarCollapsibleOnDesktop();
     }
 }
