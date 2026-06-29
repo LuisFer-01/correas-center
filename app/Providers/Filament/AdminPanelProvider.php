@@ -2,6 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\AccesosRapidosWidget;
+use App\Filament\Widgets\EstadoSistemaWidget;
+use App\Filament\Widgets\MensajesRecientesWidget;
+use App\Filament\Widgets\ProductosPorCategoriaChart;
+use App\Filament\Widgets\StatsOverview;
 use App\Models\Empresa;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
@@ -54,6 +59,11 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // AccountWidget::class,
                 // FilamentInfoWidget::class,
+                StatsOverview::class,
+                MensajesRecientesWidget::class,
+                AccesosRapidosWidget::class,
+                ProductosPorCategoriaChart::class,
+                EstadoSistemaWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
