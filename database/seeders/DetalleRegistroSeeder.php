@@ -69,6 +69,71 @@ class DetalleRegistroSeeder extends Seeder
         Artisan::call('porque-elegirnos:sync');
         $this->command->info(Artisan::output());
 
-        $this->command->info("✅ Detalles de registro creados/sincronizados correctamente");
+        // Timeline/Historia
+        $timeline = Registro::where('identificador', 'timeline')->first();
+        if ($timeline) {
+            $timelineItems = [
+                [
+                    'titulo' => '1998',
+                    'subtitulo' => 'Fundación',
+                    'descripcion' => 'Correas Center inicia operaciones en La Paz, Bolivia, enfocándose en la venta de correas industriales y servicios de asesoría técnica.',
+                    'icono' => 'Calendar',
+                    'orden' => 1,
+                ],
+                [
+                    'titulo' => '2005',
+                    'subtitulo' => 'Expansión Nacional',
+                    'descripcion' => 'Apertura de sucursales en Santa Cruz y Cochabamba, ampliando nuestra cobertura a las principales ciudades del país.',
+                    'icono' => 'MapPin',
+                    'orden' => 2,
+                ],
+                [
+                    'titulo' => '2010',
+                    'subtitulo' => 'Licencia SKF',
+                    'descripcion' => 'Obtención de la licencia exclusiva para fabricar sellos SKF en Bolivia, consolidándonos como líderes en el mercado.',
+                    'icono' => 'Award',
+                    'orden' => 3,
+                ],
+                [
+                    'titulo' => '2015',
+                    'subtitulo' => 'Diversificación',
+                    'descripcion' => 'Ampliación del catálogo para incluir sistemas hidráulicos, neumáticos y bandas transportadoras, ofreciendo soluciones integrales.',
+                    'icono' => 'Package',
+                    'orden' => 4,
+                ],
+                [
+                    'titulo' => '2020',
+                    'subtitulo' => 'Innovación Tecnológica',
+                    'descripcion' => 'Implementación de sistemas digitales para mejorar la atención al cliente y optimizar los procesos internos.',
+                    'icono' => 'Zap',
+                    'orden' => 5,
+                ],
+                [
+                    'titulo' => '2024',
+                    'subtitulo' => 'Líderes del Mercado',
+                    'descripcion' => 'Más de 25 años de experiencia, 4 sucursales y más de 1000 clientes satisfechos en todo Bolivia.',
+                    'icono' => 'Crown',
+                    'orden' => 6,
+                ],
+            ];
+            foreach ($timelineItems as $item) {
+                DetalleRegistro::updateOrCreate(
+                    [
+                        'empresa_id' => $empresa->id,
+                        'registro_id' => $timeline->id,
+                        'titulo' => $item['titulo'],
+                    ],
+                    [
+                        'subtitulo' => $item['subtitulo'],
+                        'descripcion' => $item['descripcion'],
+                        'icono' => $item['icono'],
+                        'orden' => $item['orden'],
+                        'estado' => 'activo',
+                    ]
+                );
+            }
+        }
+
+        $this->command->info("✅ Detalles de registro creados/actualizados correctamente");
     }
 }

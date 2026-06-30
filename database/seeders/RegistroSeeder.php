@@ -45,12 +45,19 @@ class RegistroSeeder extends Seeder
                 'orden' => 5,
                 'estado' => 'activo',
             ],
+            [
+                'identificador' => 'timeline',
+                'nombre' => 'Nuestra Historia',
+                'descripcion' => 'Un recorrido por los hitos más importantes de nuestra trayectoria',
+                'orden' => 6,
+                'estado' => 'activo',
+            ],
         ];
 
         foreach ($registros as $registro) {
             Registro::create($registro);
         }
 
-        $this->command->info("✅ " . count($registros) . " registros creados");
+        $this->command->info("✅ " . count($registros) . " registros creados/actualizados");
     }
 }
