@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Widgets\AccesosRapidosWidget;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use App\Filament\Widgets\EstadoSistemaWidget;
 use App\Filament\Widgets\MensajesRecientesWidget;
 use App\Filament\Widgets\ProductosPorCategoriaChart;
@@ -75,6 +76,9 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,

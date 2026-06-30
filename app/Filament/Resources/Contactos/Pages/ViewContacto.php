@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ContactoResource\Pages;
+namespace App\Filament\Resources\Contactos\Pages;
 
 use App\Filament\Resources\Contactos\ContactoResource;
 use Filament\Actions\Action;
