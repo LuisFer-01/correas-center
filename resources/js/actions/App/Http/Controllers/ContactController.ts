@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ContactController::index
- * @see app/Http/Controllers/ContactController.php:20
+ * @see app/Http/Controllers/ContactController.php:22
  * @route '/contact'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\ContactController::store
- * @see app/Http/Controllers/ContactController.php:29
+ * @see app/Http/Controllers/ContactController.php:31
  * @route '/contact'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -94,7 +94,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\ContactController::store
- * @see app/Http/Controllers/ContactController.php:29
+ * @see app/Http/Controllers/ContactController.php:31
  * @route '/contact'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ContactController::store
- * @see app/Http/Controllers/ContactController.php:29
+ * @see app/Http/Controllers/ContactController.php:31
  * @route '/contact'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\ContactController::store
- * @see app/Http/Controllers/ContactController.php:29
+ * @see app/Http/Controllers/ContactController.php:31
  * @route '/contact'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\ContactController::store
- * @see app/Http/Controllers/ContactController.php:29
+ * @see app/Http/Controllers/ContactController.php:31
  * @route '/contact'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -132,6 +132,61 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
         })
     
     store.form = storeForm
-const ContactController = { index, store }
+/**
+* @see \App\Http\Controllers\ContactController::subscribeNewsletter
+ * @see app/Http/Controllers/ContactController.php:71
+ * @route '/newsletter/subscribe'
+ */
+export const subscribeNewsletter = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: subscribeNewsletter.url(options),
+    method: 'post',
+})
+
+subscribeNewsletter.definition = {
+    methods: ["post"],
+    url: '/newsletter/subscribe',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\ContactController::subscribeNewsletter
+ * @see app/Http/Controllers/ContactController.php:71
+ * @route '/newsletter/subscribe'
+ */
+subscribeNewsletter.url = (options?: RouteQueryOptions) => {
+    return subscribeNewsletter.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\ContactController::subscribeNewsletter
+ * @see app/Http/Controllers/ContactController.php:71
+ * @route '/newsletter/subscribe'
+ */
+subscribeNewsletter.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: subscribeNewsletter.url(options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\ContactController::subscribeNewsletter
+ * @see app/Http/Controllers/ContactController.php:71
+ * @route '/newsletter/subscribe'
+ */
+    const subscribeNewsletterForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: subscribeNewsletter.url(options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ContactController::subscribeNewsletter
+ * @see app/Http/Controllers/ContactController.php:71
+ * @route '/newsletter/subscribe'
+ */
+        subscribeNewsletterForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: subscribeNewsletter.url(options),
+            method: 'post',
+        })
+    
+    subscribeNewsletter.form = subscribeNewsletterForm
+const ContactController = { index, store, subscribeNewsletter }
 
 export default ContactController

@@ -19,6 +19,21 @@ class ContactosTable
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
+                TextColumn::make('tipo')
+                    ->label('Tipo')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'contacto' => 'primary',
+                        'newsletter' => 'info',
+                        default => 'gray',
+                    })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'contacto' => 'heroicon-o-envelope',
+                        'newsletter' => 'heroicon-o-newspaper',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->sortable(),
+
                 TextColumn::make('estado')
                     ->label('Estado')
                     ->badge()
@@ -38,20 +53,12 @@ class ContactosTable
                     })
                     ->sortable(),
 
-                /* TextColumn::make('nombre')
+                TextColumn::make('nombre')
                     ->label('Nombre')
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
                     ->limit(25),
-
-                TextColumn::make('empresa')
-                    ->label('Empresa')
-                    ->searchable()
-                    ->sortable()
-                    ->placeholder('N/A')
-                    ->limit(20)
-                    ->toggleable(), */
 
                 TextColumn::make('email')
                     ->label('Email')
@@ -66,7 +73,8 @@ class ContactosTable
                     ->searchable()
                     ->sortable()
                     ->copyable()
-                    ->copyMessage('Teléfono copiado'),
+                    ->copyMessage('Teléfono copiado')
+                    ->toggleable(),
 
                 TextColumn::make('mensaje')
                     ->label('Mensaje')
@@ -82,6 +90,12 @@ class ContactosTable
                     ->since(),
             ])
             ->filters([
+                SelectFilter::make('tipo')
+                    ->label('Tipo')
+                    ->options([
+                        'contacto' => 'Mensaje de Contacto',
+                        'newsletter' => 'Suscripción Newsletter',
+                    ]),
                 SelectFilter::make('estado')
                     ->label('Estado')
                     ->options([
@@ -92,14 +106,12 @@ class ContactosTable
                     ]),
             ])
             ->actions([
-                // ✅ CORREGIDO: Usar ContactoResource::getUrl() en lugar de static::class::getUrl()
                 Action::make('ver')
                     ->label('Ver')
                     ->icon('heroicon-o-eye')
                     ->color('info')
                     ->url(fn ($record) => ContactoResource::getUrl('view', ['record' => $record])),
 
-                // Marcar como leído
                 Action::make('marcarLeido')
                     ->label('Marcar como Leído')
                     ->icon('heroicon-o-envelope-open')
@@ -112,7 +124,6 @@ class ContactosTable
                     })
                     ->visible(fn ($record) => $record->estado === 'nuevo'),
 
-                // Marcar como respondido
                 Action::make('marcarRespondido')
                     ->label('Marcar como Respondido')
                     ->icon('heroicon-o-check-circle')
@@ -125,7 +136,6 @@ class ContactosTable
                     })
                     ->visible(fn ($record) => in_array($record->estado, ['nuevo', 'leido'])),
 
-                // Archivar
                 Action::make('archivar')
                     ->label('Archivar')
                     ->icon('heroicon-o-archive-box')
@@ -138,7 +148,6 @@ class ContactosTable
                     })
                     ->visible(fn ($record) => $record->estado !== 'archivado'),
 
-                // Enviar email rápido
                 Action::make('enviarEmail')
                     ->label('Enviar Email')
                     ->icon('heroicon-o-envelope')
@@ -186,7 +195,7 @@ class ContactosTable
                 ]),
             ])
             ->emptyStateHeading('No hay mensajes de contacto')
-            ->emptyStateDescription('Los mensajes enviados desde el formulario de contacto aparecerán aquí.')
+            ->emptyStateDescription('Los mensajes enviados desde el formulario de contacto y las suscripciones al newsletter aparecerán aquí.')
             ->emptyStateIcon('heroicon-o-inbox-stack');
     }
 }

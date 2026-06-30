@@ -17,6 +17,13 @@ class ContactoForm
                 Section::make('Información del Contacto')
                     ->description('Datos proporcionados por el visitante')
                     ->schema([
+                        TextInput::make('tipo')
+                            ->label('Tipo')
+                            ->disabled()
+                            ->helperText(fn ($record) => $record?->tipo === 'newsletter'
+                                ? 'Suscripción al newsletter'
+                                : 'Mensaje de contacto'),
+
                         TextInput::make('nombre')
                             ->label('Nombre')
                             ->disabled(),
@@ -29,7 +36,8 @@ class ContactoForm
                         TextInput::make('telefono')
                             ->label('Teléfono')
                             ->disabled()
-                            ->tel(),
+                            ->tel()
+                            ->placeholder('No especificado'),
 
                         TextInput::make('email')
                             ->label('Email')

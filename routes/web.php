@@ -46,6 +46,9 @@ Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+// Newsletter
+Route::post('/newsletter/subscribe', [ContactController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
+
 // Búsqueda
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 //Route::inertia('/', 'welcome')->name('home');
