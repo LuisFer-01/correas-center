@@ -7,9 +7,13 @@ use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Spatie\Permission\Models\Role;
 
 class UsersTable
 {
@@ -31,6 +35,20 @@ class UsersTable
                     ->copyable()
                     ->copyMessage('Email copiado')
                     ->limit(30),
+
+                TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'super_admin' => 'danger',
+                        'admin' => 'warning',
+                        'editor' => 'info',
+                        'vendedor' => 'success',
+                        'viewer' => 'gray',
+                        default => 'gray',
+                    })
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('estado')
                     ->label('Estado')
@@ -72,10 +90,36 @@ class UsersTable
                         'activo' => 'Activo',
                         'inactivo' => 'Inactivo',
                     ]),
+                SelectFilter::make('roles')
+                    ->label('Rol')
+                    ->options(Role::pluck('name', 'id'))
+                    ->multiple()
+                    ->relationship('roles', 'name'),
             ])
             ->actions([
                 EditAction::make()
                     ->label('Editar'),
+
+                // ✅ NUEVA ACCIÓN: Asignar Rol
+                Action::make('asignarRol')
+                    ->label('Asignar Rol')
+                    ->icon('heroicon-o-shield-check')
+                    ->color('primary')
+                    ->form([
+                        Select::make('roles')
+                            ->label('Roles')
+                            ->options(Role::pluck('name', 'id'))
+                            ->preload()
+                            ->searchable()
+                            ->required()
+                            ->helperText('Selecciona los roles que tendrá este usuario'),
+                    ])
+                    ->action(function ($record, array $data): void {
+                        $record->syncRoles($data['roles']);
+                    })
+                    ->successNotificationTitle('Roles asignados correctamente')
+                    ->modalHeading('Asignar Roles')
+                    ->modalDescription('Selecciona los roles para este usuario. Los roles determinan qué recursos puede acceder.'),
 
                 Action::make('cambiarEstado')
                     ->label(fn ($record) => $record->estado === 'activo' ? 'Desactivar' : 'Activar')
@@ -122,6 +166,31 @@ class UsersTable
                                 $record->update(['estado' => 'activo']);
                             }
                         })
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('asignarRolMasivo')
+                        ->label('Asignar Rol Masivo')
+                        ->icon('heroicon-o-shield-check')
+                        ->color('primary')
+                        ->requiresConfirmation()
+                        ->form([
+                            Select::make('roles')
+                                ->label('Roles')
+                                ->options(Role::pluck('name', 'id'))
+                                ->multiple()
+                                ->preload()
+                                ->searchable()
+                                ->required()
+                                ->helperText('Selecciona los roles que tendrán los usuarios seleccionados'),
+                        ])
+                        ->modalHeading('Asignar Roles Masivamente')
+                        ->modalDescription('Esta acción reemplazará los roles actuales de los usuarios seleccionados.')
+                        ->action(function ($records, array $data) {
+                            foreach ($records as $record) {
+                                $record->syncRoles($data['roles']);
+                            }
+                        })
+                        ->successNotificationTitle('Roles asignados correctamente a los usuarios seleccionados')
                         ->deselectRecordsAfterCompletion(),
                 ]),
             ])

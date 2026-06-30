@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Spatie\Permission\Traits\HasRoles;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Filament\Panel;
 
 /**
  * @property int $id
@@ -47,18 +48,29 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope para usuarios activos
+     * Verificar si el usuario puede acceder al panel
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Solo usuarios activos pueden acceder
+        if ($this->estado !== 'activo') {
+            return false;
+        }
+
+        // Si tiene el rol super_admin, siempre puede acceder
+        if ($this->hasRole('super_admin')) {
+            return true;
+        }
+
+        // Si tiene algún rol asignado, puede acceder
+        return $this->roles()->count() > 0;
+    }
+
+    /**
+     * Scopes
      */
     public function scopeActivos($query)
     {
         return $query->where('estado', 'activo');
-    }
-
-    /**
-     * Verificar si el usuario está activo
-     */
-    public function esActivo(): bool
-    {
-        return $this->estado === 'activo';
     }
 }

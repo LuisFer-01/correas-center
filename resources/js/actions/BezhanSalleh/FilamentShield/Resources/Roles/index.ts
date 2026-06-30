@@ -1,6 +1,6 @@
 import Pages from './Pages'
-const ContactoResource = {
+const Roles = {
     Pages: Object.assign(Pages, Pages),
 }
 
-export default ContactoResource
+export default Roles

@@ -18,10 +18,10 @@ class EstadoSistemaWidget extends Widget
     protected string $view = 'filament.widgets.estado-sistema-widget';
 
     /**
-     * Control de visibilidad por rol (preparado para Shield)
-     * public static function canView(): bool
-     * {
-     *     return auth()->user()->hasRole('admin');
-     * }
+     * ✅ Control de visibilidad por permiso específico
      */
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('View:EstadoSistemaWidget') ?? false;
+    }
 }

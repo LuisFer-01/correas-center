@@ -78,7 +78,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     index.form = indexForm
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -93,7 +93,7 @@ view.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -121,7 +121,7 @@ view.url = (args: { record: string | number } | [record: string | number ] | str
 }
 
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -130,7 +130,7 @@ view.get = (args: { record: string | number } | [record: string | number ] | str
     method: 'get',
 })
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -140,7 +140,7 @@ view.head = (args: { record: string | number } | [record: string | number ] | st
 })
 
     /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -150,7 +150,7 @@ view.head = (args: { record: string | number } | [record: string | number ] | st
     })
 
             /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -159,7 +159,7 @@ view.head = (args: { record: string | number } | [record: string | number ] | st
             method: 'get',
         })
             /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */

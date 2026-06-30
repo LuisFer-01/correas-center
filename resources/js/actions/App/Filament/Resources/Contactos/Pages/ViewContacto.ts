@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../../wayfinder'
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -15,7 +15,7 @@ ViewContacto.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -43,7 +43,7 @@ ViewContacto.url = (args: { record: string | number } | [record: string | number
 }
 
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -52,7 +52,7 @@ ViewContacto.get = (args: { record: string | number } | [record: string | number
     method: 'get',
 })
 /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -62,7 +62,7 @@ ViewContacto.head = (args: { record: string | number } | [record: string | numbe
 })
 
     /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -72,7 +72,7 @@ ViewContacto.head = (args: { record: string | number } | [record: string | numbe
     })
 
             /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */
@@ -81,7 +81,7 @@ ViewContacto.head = (args: { record: string | number } | [record: string | numbe
             method: 'get',
         })
             /**
-* @see \App\Filament\Resources\ContactoResource\Pages\ViewContacto::__invoke
+* @see \App\Filament\Resources\Contactos\Pages\ViewContacto::__invoke
  * @see app/Filament/Resources/Contactos/Pages/ViewContacto.php:7
  * @route '/admin/contactos/{record}'
  */

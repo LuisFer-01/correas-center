@@ -1,6 +1,8 @@
+import ListProfiles from './ListProfiles'
 import EditProfile from './EditProfile'
 const Pages = {
-    EditProfile: Object.assign(EditProfile, EditProfile),
+    ListProfiles: Object.assign(ListProfiles, ListProfiles),
+EditProfile: Object.assign(EditProfile, EditProfile),
 }
 
 export default Pages

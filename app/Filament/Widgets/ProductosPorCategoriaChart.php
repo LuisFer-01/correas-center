@@ -14,11 +14,11 @@ class ProductosPorCategoriaChart extends ChartWidget
     protected int | string | array $columnSpan = 'md';
 
     /**
-     * Control de visibilidad por rol (preparado para Shield)
+     * ✅ Control de visibilidad por permiso específico
      */
     public static function canView(): bool
     {
-        return true;
+        return auth()->user()?->can('View:ProductosPorCategoriaChart') ?? false;
     }
 
     protected function getData(): array

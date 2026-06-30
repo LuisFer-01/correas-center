@@ -23,6 +23,7 @@ import servicios from './servicios'
 import sucursals from './sucursals'
 import tipoMedidas from './tipo-medidas'
 import users from './users'
+import shield from './shield'
 const resources = {
     aplicacions: Object.assign(aplicacions, aplicacions),
 capacidadInfraestructuras: Object.assign(capacidadInfraestructuras, capacidadInfraestructuras),
@@ -49,6 +50,7 @@ servicios: Object.assign(servicios, servicios),
 sucursals: Object.assign(sucursals, sucursals),
 tipoMedidas: Object.assign(tipoMedidas, tipoMedidas),
 users: Object.assign(users, users),
+shield: Object.assign(shield, shield),
 }
 
 export default resources

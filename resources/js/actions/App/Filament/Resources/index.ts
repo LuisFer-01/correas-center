@@ -5,7 +5,6 @@ import Caracteristicas from './Caracteristicas'
 import Categorias from './Categorias'
 import Composicions from './Composicions'
 import Contactos from './Contactos'
-import ContactoResource from './ContactoResource'
 import Diferencials from './Diferencials'
 import Empresas from './Empresas'
 import Footers from './Footers'
@@ -32,7 +31,6 @@ Caracteristicas: Object.assign(Caracteristicas, Caracteristicas),
 Categorias: Object.assign(Categorias, Categorias),
 Composicions: Object.assign(Composicions, Composicions),
 Contactos: Object.assign(Contactos, Contactos),
-ContactoResource: Object.assign(ContactoResource, ContactoResource),
 Diferencials: Object.assign(Diferencials, Diferencials),
 Empresas: Object.assign(Empresas, Empresas),
 Footers: Object.assign(Footers, Footers),

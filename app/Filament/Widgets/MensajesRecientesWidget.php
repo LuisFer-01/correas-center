@@ -16,6 +16,14 @@ class MensajesRecientesWidget extends TableWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    /**
+     * ✅ Control de visibilidad por permiso específico
+     */
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('View:MensajesRecientesWidget') ?? false;
+    }
+
     public function table(Table $table): Table
     {
         return $table

@@ -15,6 +15,14 @@ class StatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    /**
+     * ✅ Control de visibilidad por permiso específico
+     */
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('View:StatsOverview') ?? false;
+    }
+
     protected function getStats(): array
     {
         return [

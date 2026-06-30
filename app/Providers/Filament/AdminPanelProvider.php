@@ -14,6 +14,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -78,7 +79,22 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 3,
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -86,10 +102,10 @@ class AdminPanelProvider extends PanelProvider
             // Configuración de ancho máximo
             ->maxContentWidth(Width::Full)
             ->userMenuItems([
-                'profile' => \Filament\Navigation\MenuItem::make()
-        ->label('Mi Perfil')
-        ->icon('heroicon-o-user-circle')
-        ->url('/admin/mi-perfil'),
+                'profile' => MenuItem::make()
+                ->label('Mi Perfil')
+                ->icon('heroicon-o-user-circle')
+                ->url('/admin/mi-perfil'),
             ])
             // Nombre del panel
             ->brandName(fn () => Empresa::where('estado', 'activo')->first()?->nombre ?? 'Correas Center')

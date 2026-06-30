@@ -19,4 +19,20 @@ class EditUser extends EditRecord
     {
         return 'Usuario actualizado correctamente';
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        // Guardar los roles temporalmente
+        $this->roles = $data['roles'] ?? [];
+        unset($data['roles']);
+
+        return $data;
+    }
+
+    protected function afterSave(): void
+    {
+        if (isset($this->roles)) {
+            $this->record->syncRoles($this->roles);
+        }
+    }
 }

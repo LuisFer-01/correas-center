@@ -1,5 +1,83 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+index.definition = {
+    methods: ["get","head"],
+    url: '/admin/mi-perfil',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+index.url = (options?: RouteQueryOptions) => {
+    return index.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: index.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: index.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Filament\Resources\Profiles\Pages\ListProfiles::__invoke
+ * @see app/Filament/Resources/Profiles/Pages/ListProfiles.php:7
+ * @route '/admin/mi-perfil'
+ */
+        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    index.form = indexForm
+/**
 * @see \App\Filament\Resources\Profiles\Pages\EditProfile::__invoke
  * @see app/Filament/Resources/Profiles/Pages/EditProfile.php:7
  * @route '/admin/mi-perfil/{record}/edit'
@@ -97,7 +175,8 @@ edit.head = (args: { record: string | number } | [record: string | number ] | st
     
     edit.form = editForm
 const miPerfil = {
-    edit: Object.assign(edit, edit),
+    index: Object.assign(index, index),
+edit: Object.assign(edit, edit),
 }
 
 export default miPerfil

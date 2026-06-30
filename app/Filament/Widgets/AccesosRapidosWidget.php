@@ -18,10 +18,10 @@ class AccesosRapidosWidget extends Widget
     protected string $view = 'filament.widgets.accesos-rapidos-widget';
 
     /**
-     * Control de visibilidad por rol (preparado para Shield)
-     * public static function canView(): bool
-     * {
-     *     return auth()->user()->can('view_accesos_rapidos');
-     * }
+     * ✅ Control de visibilidad por permiso específico
      */
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('View:AccesosRapidosWidget') ?? false;
+    }
 }
