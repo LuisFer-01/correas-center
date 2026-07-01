@@ -284,11 +284,23 @@ interface DownloadButtonProps {
 }
 
 export default function TechnicalSheetDownload({ producto, categoria }: DownloadButtonProps) {
+    // ✅ NUEVO: Función para rastrear descarga de PDF
+    const handleDownload = () => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'pdf_download', {
+                event_category: 'engagement',
+                event_label: `PDF Download - ${categoria.nombre}`,
+                value: 1,
+            });
+        }
+    };
+
     return (
         <PDFDownloadLink
             document={<TechnicalSheetDocument producto={producto} categoria={categoria} />}
             fileName={`caracteristicas-generales-${categoria.slug}.pdf`}
             className="inline-flex items-center gap-2 bg-[#EA0A2A] hover:bg-[#c90825] text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105"
+            onClick={handleDownload}
         >
             {({ blob, url, loading, error }) =>
                 loading ? (

@@ -92,6 +92,16 @@ export default function Contact() {
             setFormData({ nombre: '', empresa: '', telefono: '', email: '', mensaje: '' });
             setTouched({});
             setErrors({});
+
+            // ✅ EVENTO GA4: Formulario de contacto enviado exitosamente
+            if (typeof window !== 'undefined' && (window as any).gtag) {
+                (window as any).gtag('event', 'contact_form_submit', {
+                    event_category: 'engagement',
+                    event_label: 'Contact Form',
+                    value: 1,
+                });
+            }
+
             setTimeout(() => setShowSuccess(false), 5000);
         }
 
@@ -180,7 +190,59 @@ export default function Contact() {
     };
 
     const toggleFaq = (index: number) => {
-        setOpenFaq(openFaq === index ? null : index);
+        const newIndex = openFaq === index ? null : index;
+        setOpenFaq(newIndex);
+
+        // ✅ EVENTO GA4: FAQ expandido
+        if (newIndex !== null && typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'faq_expand', {
+                event_category: 'engagement',
+                event_label: faqData[newIndex].pregunta,
+            });
+        }
+    };
+
+    // ✅ NUEVO: Función para rastrear clic en WhatsApp
+    const handleWhatsAppClick = (location: string) => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'whatsapp_click', {
+                event_category: 'engagement',
+                event_label: location,
+                value: 1,
+            });
+        }
+    };
+
+    // ✅ NUEVO: Función para rastrear cambio de sucursal
+    const handleSucursalChange = (sucursalNombre: string) => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'sucursal_view', {
+                event_category: 'engagement',
+                event_label: sucursalNombre,
+            });
+        }
+    };
+
+    // ✅ NUEVO: Función para rastrear clic en teléfono
+    const handlePhoneClick = (telefono: string) => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'phone_click', {
+                event_category: 'engagement',
+                event_label: telefono,
+                value: 1,
+            });
+        }
+    };
+
+    // ✅ NUEVO: Función para rastrear clic en email
+    const handleEmailClick = (email: string) => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'email_click', {
+                event_category: 'engagement',
+                event_label: email,
+                value: 1,
+            });
+        }
     };
 
     return (
@@ -233,7 +295,13 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-white/80 text-sm">Teléfono</p>
-                                        <p className="text-xl font-semibold">+591 7 7306-576</p>
+                                        <a
+                                            href="tel:+59177306576"
+                                            className="text-xl font-semibold hover:underline"
+                                            onClick={() => handlePhoneClick('+591 7 7306-576')}
+                                        >
+                                            +591 7 7306-576
+                                        </a>
                                     </div>
                                 </div>
 
@@ -243,7 +311,13 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-white/80 text-sm">Email</p>
-                                        <p className="text-xl font-semibold">ventas@correascenter.com</p>
+                                        <a
+                                            href="mailto:ventas@correascenter.com"
+                                            className="text-xl font-semibold hover:underline"
+                                            onClick={() => handleEmailClick('ventas@correascenter.com')}
+                                        >
+                                            ventas@correascenter.com
+                                        </a>
                                     </div>
                                 </div>
 
@@ -266,6 +340,7 @@ export default function Contact() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 hover:scale-105"
+                                onClick={() => handleWhatsAppClick('Contact Page - Floating Button')}
                             >
                                 <MessageCircle size={20} />
                                 Escribir por WhatsApp
@@ -273,6 +348,7 @@ export default function Contact() {
                             <a
                                 href="tel:+59177306576"
                                 className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 hover:scale-105"
+                                onClick={() => handlePhoneClick('+591 7 7306-576')}
                             >
                                 <Phone size={20} />
                                 Llamar Ahora
@@ -460,7 +536,10 @@ export default function Contact() {
                                 {sucursales.map((sucursal: any, index: number) => (
                                     <button
                                         key={sucursal.id}
-                                        onClick={() => setActiveSucursal(index)}
+                                        onClick={() => {
+                                            setActiveSucursal(index);
+                                            handleSucursalChange(sucursal.nombre);
+                                        }}
                                         className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                                             activeSucursal === index
                                                 ? 'border-[#EA0A2A] bg-[#EA0A2A]/5 shadow-md'
@@ -588,6 +667,7 @@ export default function Contact() {
                                 // Abrir el chat de Tawk.to
                                 if (typeof window !== 'undefined' && (window as any).Tawk_API) {
                                     (window as any).Tawk_API.maximize();
+                                    handleWhatsAppClick('Contact Page - Tawk.to Chat');
                                 }
                             }}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 flex items-center gap-2 whitespace-nowrap"
