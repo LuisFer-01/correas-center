@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Menus\RelationManagers;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
@@ -105,13 +105,37 @@ class DetalleMenusRelationManager extends RelationManager
             ->actions([
                 EditAction::make()
                     ->label('Editar'),
-                DeleteAction::make()
-                    ->label('Eliminar'),
+
+                Action::make('cambiarEstado')
+                    ->label(fn ($record) => $record->estado === 'activo' ? 'Desactivar' : 'Activar')
+                    ->icon(fn ($record) => $record->estado === 'activo' ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                    ->color(fn ($record) => $record->estado === 'activo' ? 'danger' : 'success')
+                    ->requiresConfirmation()
+                    ->modalHeading(fn ($record) => $record->estado === 'activo' ? 'Desactivar Asociación' : 'Activar Asociación')
+                    ->modalDescription(fn ($record) => $record->estado === 'activo'
+                        ? '¿Estás seguro de desactivar esta asociación? No se mostrará en el sitio web.'
+                        : '¿Estás seguro de activar esta asociación? Se mostrará en el sitio web.'
+                    )
+                    ->action(function ($record) {
+                        $record->update(['estado' => $record->estado === 'activo' ? 'inactivo' : 'activo']);
+                    }),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->label('Eliminar Seleccionados'),
+                    BulkAction::make('desactivarSeleccionados')
+                        ->label('Desactivar Seleccionados')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(fn ($records) => $records->each->update(['estado' => 'inactivo']))
+                        ->deselectRecordsAfterCompletion(),
+                    BulkAction::make('activarSeleccionados')
+                        ->label('Activar Seleccionados')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(fn ($records) => $records->each->update(['estado' => 'activo']))
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ])
             ->emptyStateHeading('No hay submenús')

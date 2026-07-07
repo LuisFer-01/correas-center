@@ -52,7 +52,7 @@ export default function ProductShow() {
                                 className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                             >
                                 {/* Imagen de la categoría */}
-                                <div className="relative h-48 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
+                                {/* <div className="relative h-48 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
                                     {categoria.imagen ? (
                                         <img src={categoria.imagen} alt={categoria.nombre} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     ) : (
@@ -65,7 +65,7 @@ export default function ProductShow() {
                                         </div>
                                     )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                </div>
+                                </div> */}
 
                                 {/* Contenido */}
                                 <div className="p-6">

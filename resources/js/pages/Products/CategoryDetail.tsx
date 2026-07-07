@@ -106,7 +106,7 @@ export default function CategoryDetail() {
                     </div>
 
                     {/* Imagen destacada de la categoría */}
-                    {categoria.imagen && (
+                    {/*categoria.imagen && (
                         <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
                             <img
                                 src={categoria.imagen}
@@ -114,7 +114,7 @@ export default function CategoryDetail() {
                                 className="w-full h-64 md:h-96 object-cover"
                             />
                         </div>
-                    )}
+                    )*/}
 
                     {/* Descripción */}
                     {categoria.descripcion && (

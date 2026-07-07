@@ -67,7 +67,7 @@ export default function IndustryShow() {
                                     href={`/products/${categoria.producto?.slug}/${categoria.slug}`}
                                     className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#EA0A2A]/30 transform hover:-translate-y-1"
                                 >
-                                    <div className="relative h-40 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
+                                    {/* <div className="relative h-40 bg-gradient-to-br from-[#EA0A2A]/5 to-[#EA0A2A]/15 overflow-hidden">
                                         {categoria.imagen ? (
                                             <img src={categoria.imagen} alt={categoria.nombre} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                         ) : (
@@ -75,7 +75,7 @@ export default function IndustryShow() {
                                                 <Package size={48} className="text-gray-300" />
                                             </div>
                                         )}
-                                    </div>
+                                    </div> */}
 
                                     <div className="p-5">
                                         {categoria.producto && (
