@@ -5,25 +5,18 @@ namespace App\Filament\Resources\Categorias\RelationManagers;
 use App\Models\Aplicacion;
 use App\Models\Caracteristica;
 use App\Models\Composicion;
-use App\Models\GamaProducto;
-use App\Models\Marca;
 use App\Models\Medida;
-use Filament\Actions\AssociateAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Forms\Components\FileUpload;
-use Filament\Actions\CreateAction;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Textarea;
 use Filament\Actions\BulkAction;
-use Filament\Actions\DissociateAction;
-use Filament\Actions\DissociateBulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -38,40 +31,6 @@ class DetalleCategoriasRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                Grid::make(2)
-                    ->schema([
-                        Select::make('marca_id')
-                            ->label('Marca')
-                            ->relationship('marca', 'nombre')
-                            ->searchable()
-                            ->preload()
-                            ->nullable()
-                            ->helperText('Marca asociada a este detalle (opcional)'),
-
-                        Select::make('gama_producto_id')
-                            ->label('Gama / Serie')
-                            ->relationship('gamaProducto', 'nombre')
-                            ->searchable()
-                            ->preload()
-                            ->nullable()
-                            ->helperText('Gama o serie del producto (opcional)')
-                            ->createOptionForm([
-                                TextInput::make('nombre')
-                                    ->label('Nombre de la Gama')
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('orden')
-                                    ->label('Orden')
-                                    ->numeric()
-                                    ->default(0),
-                                Select::make('estado')
-                                    ->label('Estado')
-                                    ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
-                                    ->default('activo')
-                                    ->required(),
-                            ]),
-                    ]),
-
                 Grid::make(2)
                     ->schema([
                         Select::make('caracteristica_id')
@@ -185,16 +144,6 @@ class DetalleCategoriasRelationManager extends RelationManager
                                     ->required(),
                             ]),
 
-                        TextInput::make('valor_personalizado')
-                            ->label('Valor Personalizado (Opcional)')
-                            ->numeric()
-                            ->step(0.0001)
-                            ->nullable()
-                            ->helperText('Si se ingresa un valor, sustituirá a la magnitud de la medida base.'),
-                    ]),
-
-                Grid::make(2)
-                    ->schema([
                         Select::make('aplicacion_id')
                             ->label('Aplicación')
                             ->relationship('aplicacion', 'nombre')
@@ -217,23 +166,26 @@ class DetalleCategoriasRelationManager extends RelationManager
                                     ->default('activo')
                                     ->required(),
                             ]),
+                    ]),
 
+                Grid::make(2)
+                    ->schema([
                         TextInput::make('orden')
                             ->label('Orden')
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
                             ->helperText('Orden de visualización dentro de esta categoría'),
-                    ]),
 
-                Select::make('estado')
-                    ->label('Estado')
-                    ->options([
-                        'activo' => 'Activo',
-                        'inactivo' => 'Inactivo',
-                    ])
-                    ->default('activo')
-                    ->required(),
+                        Select::make('estado')
+                            ->label('Estado')
+                            ->options([
+                                'activo' => 'Activo',
+                                'inactivo' => 'Inactivo',
+                            ])
+                            ->default('activo')
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -257,22 +209,10 @@ class DetalleCategoriasRelationManager extends RelationManager
                     ->weight('bold')
                     ->limit(20),
 
-                TextColumn::make('valor_final')
-                    ->label('Valor Final')
-                    ->state(function ($record) {
-                        $valor = $record->valor_personalizado ?? $record->medida?->magnitud;
-                        $unidad = $record->medida?->tipoMedida?->representacion;
-                        return $valor !== null ? "{$valor} {$unidad}" : '—';
-                    })
+                TextColumn::make('medida.medida_completa')
+                    ->label('Valor')
                     ->badge()
                     ->color('success'),
-
-                TextColumn::make('gamaProducto.nombre')
-                    ->label('Gama')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(20)
-                    ->toggleable(),
 
                 TextColumn::make('caracteristica.nombre')
                     ->label('Característica')
@@ -320,7 +260,6 @@ class DetalleCategoriasRelationManager extends RelationManager
             ->actions([
                 EditAction::make()
                     ->label('Editar'),
-
                 Action::make('cambiarEstado')
                     ->label(fn ($record) => $record->estado === 'activo' ? 'Desactivar' : 'Activar')
                     ->icon(fn ($record) => $record->estado === 'activo' ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
@@ -354,7 +293,7 @@ class DetalleCategoriasRelationManager extends RelationManager
                 ]),
             ])
             ->emptyStateHeading('No hay detalles técnicos')
-            ->emptyStateDescription('Agrega detalles técnicos como marcas, gamas, características, etc.')
+            ->emptyStateDescription('Agrega detalles técnicos como características, medidas, composiciones, etc.')
             ->emptyStateIcon('heroicon-o-clipboard-document-list');
     }
 }

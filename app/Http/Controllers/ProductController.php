@@ -120,7 +120,7 @@ class ProductController extends Controller
         $categoria = Categoria::with([
                 'detalleCategorias' => function($query) {
                     $query->where('detalle_categorias.estado', 'activo')
-                        ->with(['gamaProducto', 'caracteristica', 'medida', 'composicion', 'aplicacion']) // ✅ Agregado 'aplicacion'
+                        ->with(['caracteristica', 'medida', 'composicion', 'aplicacion']) // ✅ Agregado 'aplicacion'
                         ->orderBy('detalle_categorias.orden');
                 }
             ])

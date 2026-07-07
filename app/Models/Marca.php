@@ -39,11 +39,6 @@ class Marca extends Model
         return $this->belongsToMany(Producto::class, 'detalle_productos');
     }
 
-    public function detalleCategorias(): HasMany
-    {
-        return $this->hasMany(DetalleCategoria::class);
-    }
-
     // MUTATOR: Limpia el prefijo 'storage/' antes de guardar en BD
     public function setLogoAttribute($value)
     {

@@ -8,7 +8,6 @@ import Contactos from './Contactos'
 import Diferencials from './Diferencials'
 import Empresas from './Empresas'
 import Footers from './Footers'
-import GamaProductos from './GamaProductos'
 import Heroes from './Heroes'
 import Industrias from './Industrias'
 import Marcas from './Marcas'
@@ -35,7 +34,6 @@ Contactos: Object.assign(Contactos, Contactos),
 Diferencials: Object.assign(Diferencials, Diferencials),
 Empresas: Object.assign(Empresas, Empresas),
 Footers: Object.assign(Footers, Footers),
-GamaProductos: Object.assign(GamaProductos, GamaProductos),
 Heroes: Object.assign(Heroes, Heroes),
 Industrias: Object.assign(Industrias, Industrias),
 Marcas: Object.assign(Marcas, Marcas),

@@ -134,7 +134,7 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
     const medidasAgrupadas: Record<string, any[]> = {};
     categoria.detalles?.forEach((detalle: any) => {
         if (detalle.medida) {
-            const gamaNombre = detalle.gama_producto?.nombre || 'Sin Gama';
+            const gamaNombre = detalle.gama_producto?.nombre || 'Caracteristicas';
             if (!medidasAgrupadas[gamaNombre]) {
                 medidasAgrupadas[gamaNombre] = [];
             }
@@ -191,11 +191,11 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
 
                 {/* Características Técnicas */}
                 {categoria.detalles && categoria.detalles.length > 0 && (
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Características Técnicas</Text>
+                    <View style={styles.appSection}>
+                        {/* <Text style={styles.sectionTitle}>Características Técnicas</Text> */}
 
                         {/* Gamas */}
-                        {(() => {
+                        {/* {(() => {
                             const gamas = categoria.detalles
                                 .filter((d: any) => d.gama_producto)
                                 .map((d: any) => d.gama_producto)
@@ -209,12 +209,12 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                                     ))}
                                 </View>
                             );
-                        })()}
+                        })()} */}
 
                         {/* ✅ Medidas agrupadas por Gama */}
                         {Object.keys(medidasAgrupadas).length > 0 && (
                             <View style={{ marginTop: 10 }}>
-                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#333', marginBottom: 5 }}>Medidas por Gama:</Text>
+                                {/* <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#333', marginBottom: 5 }}>Medidas por Gama:</Text> */}
                                 {Object.entries(medidasAgrupadas).map(([gamaNombre, medidas]: [string, any[]]) => (
                                     <View key={gamaNombre} style={{ marginBottom: 8 }}>
                                         <Text style={styles.gamaSeparator}>{gamaNombre}</Text>
@@ -237,7 +237,7 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                             <View key={index} style={{ marginBottom: 10 }}>
                                 {detalle.caracteristica && (
                                     <View style={styles.row}>
-                                        <Text style={styles.label}>Característica:</Text>
+                                        {/* <Text style={styles.label}>Característica:</Text> */}
                                         <Text style={styles.value}>
                                             {detalle.caracteristica.nombre} - {detalle.caracteristica.descripcion}
                                         </Text>
@@ -245,33 +245,35 @@ function TechnicalSheetDocument({ producto, categoria }: TechnicalSheetProps) {
                                 )}
                                 {detalle.composicion && (
                                     <View style={styles.row}>
-                                        <Text style={styles.label}>Composición:</Text>
+                                        {/* <Text style={styles.label}>Composición:</Text> */}
                                         <Text style={styles.value}>
                                             {detalle.composicion.nombre} - {detalle.composicion.descripcion}
                                         </Text>
                                     </View>
                                 )}
                             </View>
+
                         ))}
+                        {/* Advertencia */}
+                        {/* <View style={styles.warningBox}>
+                            <Text style={styles.warningTitle}>⚠ Información Importante</Text>
+                            <Text style={styles.warningText}>
+                                Los datos mostrados en este documento son características generales de esta categoría.
+                                Pueden existir variaciones en las especificaciones técnicas según la marca del producto.
+                                Para obtener información detallada por marca, por favor contáctanos.
+                            </Text>
+                        </View> */}
+
                     </View>
                 )}
-
-                {/* Advertencia */}
-                <View style={styles.warningBox}>
-                    <Text style={styles.warningTitle}>⚠ Información Importante</Text>
-                    <Text style={styles.warningText}>
-                        Los datos mostrados en este documento son características generales de esta categoría.
-                        Pueden existir variaciones en las especificaciones técnicas según la marca del producto.
-                        Para obtener información detallada por marca, por favor contáctanos.
-                    </Text>
-                </View>
-
                 {/* Footer */}
                 <View style={styles.footer}>
                     <Text>Correas Center - Solución Confiable</Text>
                     <Text>Tel: +591 7 7306-576 | Email: ventas@correascenter.com</Text>
                     <Text>www.correascenter.com</Text>
                 </View>
+
+
             </Page>
         </Document>
     );

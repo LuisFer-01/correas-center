@@ -161,7 +161,7 @@ export default function CategoryDetail() {
                         {/* Contenido principal */}
                         <div className="lg:col-span-2">
                             {/* Gamas */}
-                            {activeTab === 'gamas' && (
+                            {/* {activeTab === 'gamas' && (
                                 <div className="space-y-4">
                                     {gamas.length > 0 ? gamas.map((gama: any) => (
                                         <div key={gama.id} className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-[#EA0A2A]/20 transition-colors">
@@ -176,7 +176,7 @@ export default function CategoryDetail() {
                                         <p className="text-gray-500 text-center py-8">No hay gamas registradas para esta categoría.</p>
                                     )}
                                 </div>
-                            )}
+                            )} */}
 
                             {/* Características */}
                             {activeTab === 'caracteristicas' && (
@@ -231,10 +231,10 @@ export default function CategoryDetail() {
                                         Object.entries(medidasAgrupadas).map(([gamaNombre, medidas]: [string, any[]]) => (
                                             <div key={gamaNombre} className="space-y-3">
                                                 {/* Título separador de Gama */}
-                                                <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
+                                                {/* <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
                                                     <Layers size={16} className="text-[#EA0A2A]" />
                                                     <h3 className="text-md font-bold text-gray-900">{gamaNombre}</h3>
-                                                </div>
+                                                </div> */}
 
                                                 {/* Lista de medidas de esta gama */}
                                                 <div className="space-y-3 pl-2">

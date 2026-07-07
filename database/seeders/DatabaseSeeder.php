@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             MarcaSeeder::class,
             DetalleProductoSeeder::class,
             CategoriaSeeder::class,
-            GamaProductoSeeder::class,
             CaracteristicaSeeder::class,
             TipoMedidaSeeder::class,
             MedidaSeeder::class,

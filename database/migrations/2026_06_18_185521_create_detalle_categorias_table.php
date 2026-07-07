@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('detalle_categorias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
-            $table->foreignId('marca_id')->nullable()->constrained('marcas')->onDelete('cascade');
-            $table->foreignId('gama_producto_id')->nullable()->constrained('gama_productos')->onDelete('cascade');
             $table->foreignId('caracteristica_id')->nullable()->constrained('caracteristicas')->onDelete('cascade');
             $table->foreignId('medida_id')->nullable()->constrained('medidas')->onDelete('cascade');
             $table->foreignId('composicion_id')->nullable()->constrained('composiciones')->onDelete('cascade');

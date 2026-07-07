@@ -28,11 +28,11 @@ class CategoriasTable
                     ->alignCenter()
                     ->toggleable(),
 
-                ImageColumn::make('imagen')
+                /* ImageColumn::make('imagen')
                     ->label('Imagen')
                     ->size(80)
                     ->disk('public')
-                    ->defaultImageUrl(url('/default/placeholder.png')),
+                    ->defaultImageUrl(url('/default/placeholder.png')), */
 
                 TextColumn::make('producto.nombre')
                     ->label('Producto')
@@ -49,11 +49,11 @@ class CategoriasTable
                     ->weight('bold')
                     ->limit(30),
 
-                TextColumn::make('uso')
+                /* TextColumn::make('uso')
                     ->label('Uso')
                     ->searchable()
                     ->limit(25)
-                    ->toggleable(),
+                    ->toggleable(), */
 
                 TextColumn::make('detalle_categorias_count')
                     ->label('Detalles')
