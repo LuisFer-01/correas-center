@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             DetalleProductoSeeder::class,
             CategoriaSeeder::class,
             CaracteristicaSeeder::class,
-            TipoMedidaSeeder::class,
             MedidaSeeder::class,
             ComposicionSeeder::class,
             AplicacionSeeder::class,

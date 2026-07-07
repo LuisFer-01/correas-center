@@ -34,33 +34,6 @@ class MedidasTable
                     ->weight('bold')
                     ->limit(30),
 
-                TextColumn::make('tipoMedida.nombre')
-                    ->label('Tipo')
-                    ->searchable()
-                    ->sortable()
-                    ->badge()
-                    ->color('info'),
-
-                TextColumn::make('tipoMedida.representacion')
-                    ->label('Unidad')
-                    ->searchable()
-                    ->sortable()
-                    ->badge()
-                    ->color('warning'),
-
-                TextColumn::make('magnitud')
-                    ->label('Magnitud')
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(),
-
-                TextColumn::make('medida_completa')
-                    ->label('Medida Completa')
-                    ->searchable()
-                    ->sortable()
-                    ->badge()
-                    ->color('success'),
-
                 TextColumn::make('detalle_categorias_count')
                     ->label('Usos')
                     ->counts('detalleCategorias')
@@ -90,11 +63,6 @@ class MedidasTable
                         'activo' => 'Activo',
                         'inactivo' => 'Inactivo',
                     ]),
-                SelectFilter::make('tipo_medida_id')
-                    ->label('Tipo de Medida')
-                    ->options(TipoMedida::where('estado', 'activo')
-                        ->orderBy('nombre')
-                        ->pluck('nombre', 'id')),
             ])
             ->actions([
                 EditAction::make()

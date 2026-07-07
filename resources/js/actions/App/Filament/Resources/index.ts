@@ -21,7 +21,6 @@ import Registros from './Registros'
 import Servicios from './Servicios'
 import Sucursals from './Sucursals'
 import Suscriptors from './Suscriptors'
-import TipoMedidas from './TipoMedidas'
 import Users from './Users'
 const Resources = {
     Aplicacions: Object.assign(Aplicacions, Aplicacions),
@@ -47,7 +46,6 @@ Registros: Object.assign(Registros, Registros),
 Servicios: Object.assign(Servicios, Servicios),
 Sucursals: Object.assign(Sucursals, Sucursals),
 Suscriptors: Object.assign(Suscriptors, Suscriptors),
-TipoMedidas: Object.assign(TipoMedidas, TipoMedidas),
 Users: Object.assign(Users, Users),
 }
 

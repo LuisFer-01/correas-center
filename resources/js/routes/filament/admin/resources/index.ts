@@ -21,7 +21,6 @@ import registros from './registros'
 import servicios from './servicios'
 import sucursals from './sucursals'
 import suscriptors from './suscriptors'
-import tipoMedidas from './tipo-medidas'
 import users from './users'
 import shield from './shield'
 const resources = {
@@ -48,7 +47,6 @@ registros: Object.assign(registros, registros),
 servicios: Object.assign(servicios, servicios),
 sucursals: Object.assign(sucursals, sucursals),
 suscriptors: Object.assign(suscriptors, suscriptors),
-tipoMedidas: Object.assign(tipoMedidas, tipoMedidas),
 users: Object.assign(users, users),
 shield: Object.assign(shield, shield),
 }
