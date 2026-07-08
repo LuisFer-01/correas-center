@@ -39,6 +39,7 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->nombre} - {$record->descripcion}")
                             ->helperText('Característica técnica destacada (opcional)')
                             ->createOptionForm([
                                 TextInput::make('nombre')
@@ -58,7 +59,7 @@ class DetalleCategoriasRelationManager extends RelationManager
                                     ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
                                     ->default('activo')
                                     ->required(),
-                            ]),
+                            ])->columnSpan(2),
 
                         Select::make('composicion_id')
                             ->label('Composición')
@@ -66,6 +67,7 @@ class DetalleCategoriasRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->nullable()
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->nombre} - {$record->descripcion}")
                             ->helperText('Composición del material (opcional)')
                             ->createOptionForm([
                                 TextInput::make('nombre')
@@ -85,10 +87,10 @@ class DetalleCategoriasRelationManager extends RelationManager
                                     ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
                                     ->default('activo')
                                     ->required(),
-                            ]),
+                            ])->columnSpan(2),
                     ]),
 
-                Grid::make(2)
+                Grid::make(1)
                     ->schema([
                         Select::make('medida_id')
                             ->label('Medida Base')
@@ -103,36 +105,6 @@ class DetalleCategoriasRelationManager extends RelationManager
                                     ->label('Nombre de la Medida')
                                     ->required()
                                     ->maxLength(255),
-                                Select::make('tipo_medida_id')
-                                    ->label('Tipo de Medida')
-                                    ->relationship('tipoMedida', 'nombre')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->createOptionForm([
-                                        TextInput::make('nombre')
-                                            ->label('Nombre del Tipo')
-                                            ->required()
-                                            ->maxLength(255),
-                                        TextInput::make('abreviatura')
-                                            ->label('Abreviatura')
-                                            ->required()
-                                            ->maxLength(50),
-                                        TextInput::make('representacion')
-                                            ->label('Representación')
-                                            ->required()
-                                            ->maxLength(50),
-                                        Select::make('estado')
-                                            ->label('Estado')
-                                            ->options(['activo' => 'Activo', 'inactivo' => 'Inactivo'])
-                                            ->default('activo')
-                                            ->required(),
-                                    ]),
-                                TextInput::make('magnitud')
-                                    ->label('Magnitud / Valor')
-                                    ->numeric()
-                                    ->step(0.0001)
-                                    ->nullable(),
                                 TextInput::make('orden')
                                     ->label('Orden')
                                     ->numeric()
@@ -208,11 +180,6 @@ class DetalleCategoriasRelationManager extends RelationManager
                     ->sortable()
                     ->weight('bold')
                     ->limit(20),
-
-                TextColumn::make('medida.medida_completa')
-                    ->label('Valor')
-                    ->badge()
-                    ->color('success'),
 
                 TextColumn::make('caracteristica.nombre')
                     ->label('Característica')

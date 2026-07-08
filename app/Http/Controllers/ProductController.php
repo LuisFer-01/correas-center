@@ -31,7 +31,7 @@ class ProductController extends Controller
             ->orderBy('orden')
             ->get()
             ->map(function ($producto) {
-                $primeraCategoria = $producto->categorias->first();
+                $primeraCategoria = $producto->first();
                 return [
                     'id' => $producto->id,
                     'nombre' => $producto->nombre,
@@ -67,9 +67,6 @@ class ProductController extends Controller
                     $query->where('categorias.estado', 'activo')
                           ->orderBy('categorias.orden');
                 },
-                'categorias.marcas' => function($query) {
-                    $query->where('marcas.estado', 'activo');
-                },
                 'marcas' => function($query) {
                     $query->where('marcas.estado', 'activo')
                           ->wherePivot('estado', 'activo');
@@ -94,14 +91,6 @@ class ProductController extends Controller
                         'uso' => $categoria->uso,
                         'descripcion_corta' => $categoria->descripcion_corta,
                         'descripcion' => $categoria->descripcion,
-                        // NUEVO: marcas de esta categoría específica
-                        'marcas' => $categoria->marcas->map(function ($marca) {
-                            return [
-                                'id' => $marca->id,
-                                'nombre' => $marca->nombre,
-                                'logo' => $marca->logo_url,
-                            ];
-                        }),
                     ];
                 }),
             ],
@@ -147,10 +136,6 @@ class ProductController extends Controller
                     return [
                         'id' => $detalle->id,
                         'orden' => $detalle->orden,
-                        'gama_producto' => $detalle->gamaProducto ? [
-                            'id' => $detalle->gamaProducto->id,
-                            'nombre' => $detalle->gamaProducto->nombre,
-                        ] : null,
                         'caracteristica' => $detalle->caracteristica ? [
                             'id' => $detalle->caracteristica->id,
                             'nombre' => $detalle->caracteristica->nombre,
